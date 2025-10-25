@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klasztor Magów Ognia - Plan Dnia</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Paleta kolorów zgodnie z wytycznymi
+                        'bazalt-tlo': '#1A1A1A',        // Główna Czerń (Tło Bazaltowe)
+                        'pergamin-tekst': '#D4D4D4',    // Jasna szarość (Tekst Główny)
+                        'zar-karmazynowy': '#B30000',   // Oryginalna czerwień (nieużywana jako główny akcent)
+                        'zlocisty-plomien': '#FFCC00',  // Ciepłe złoto (Primary & Secondary Accent)
+                        'popiol-cienia': '#333333',     // Ciemna szarość (Secondary Background - Karty)
+                        'text-secondary': '#A0A0A0',    // Mniej ważny tekst, subtelne tło
+                    },
+                    fontFamily: {
+                        // Fonty (szeryfowy dla Nagłówków, bezszeryfowy dla Treści)
+                        'header': ['"Cormorant Garamond"', 'serif'],
+                        'body': ['"Roboto"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Ładowanie Fontów --><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1A1A1A; /* bazalt-tlo */
+            color: #D4D4D4; /* pergamin-tekst */
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            text-transform: uppercase;
+        }
+        .section-title {
+            border-bottom: 2px solid #FFCC00; /* ZLOCISTY PLOMIEN */
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+        .event-card {
+            background-color: #333333; /* popiol-cienia */
+            border-left: 4px solid #FFCC00; /* ZLOCISTY PLOMIEN */
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .event-card:hover {
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); /* Efekt rozpalenia */
+            transform: translateY(-3px);
+            border-left-color: #FFCC00; /* zlocisty-plomien */
+        }
+        .time-box {
+            background-color: #1A1A1A; /* kontrastowe tło na czas */
+            color: #FFCC00; /* zlocisty-plomien */
+            border: 1px solid #333333;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+        }
+        .icon-container {
+            min-width: 40px;
+            text-align: center;
+        }
+        .key-element-card {
+            background-color: #333333; /* popiol-cienia */
+            border-top: 4px solid #FFCC00; /* ZLOCISTY PLOMIEN */
+            transition: all 0.3s ease;
+        }
+        .key-element-card:hover {
+            border-top-color: #FFCC00; /* zlocisty-plomien */
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.5); /* Cień złotego blasku */
+        }
+        
+        /* Stylizacja strzałek dla Layoutu Krużganków */
+        @media (min-width: 1024px) {
+            .events-timeline {
+                /* Linia centralna */
+                position: relative;
+                padding-bottom: 20px;
+            }
+            .events-timeline::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background-color: #333333; /* popiol-cienia */
+                transform: translateX(-50%);
+                z-index: 0;
+            }
+            .timeline-dot {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                background-color: #FFCC00; /* ZLOCISTY PLOMIEN */
+                border: 3px solid #1A1A1A; /* Wgłębienie w tle bazaltowym */
+                border-radius: 50%;
+                top: 25px;
+                transform: translateX(-50%);
+                z-index: 10;
+            }
+            .lg\:col-start-1 .timeline-dot {
+                right: -48px; /* Po lewej stronie kolumny 2 */
+            }
+            .lg\:col-start-2 .timeline-dot {
+                left: -48px; /* Po prawej stronie kolumny 1 */
+            }
+        }
+    </style>
+</head>
+<body class="p-4 lg:p-10">
+
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- NAGŁÓWEK --><header class="text-center mb-12 border-b border-popiol-cienia pb-6">
+            <h1 class="text-4xl lg:text-6xl font-extrabold text-zlocisty-plomien tracking-widest mb-2 font-header">
+                KLASZTOR MAGÓW OGNIA
+            </h1>
+            <p class="text-zlocisty-plomien text-lg lg:text-xl font-light font-body">
+                Dyscyplina, Wiara, Wiedza
+            </p>
+            <div class="mt-6 text-sm lg:text-base text-text-secondary max-w-4xl mx-auto font-body">
+                <p>Klasztor Magów Ognia to mikrokosmos społeczny, łączący dyscyplinę klasztoru benedyktyńskiego z akademią filozoficzno-magiczną. Rytm dnia opiera się na cyklach modlitwy, pracy i nauki. Poniższy plan dnia na piątek i sobotę (Epizod I: Życie przed Barierą) ukazuje chronologię kluczowych eventów, politycznych napięć oraz incydentu „Polnej Bestii”.</p>
+            </div>
+        </header>
+
+        
+        <!-- HARMONOGRAM DNI --><div id="schedule-container" class="space-y-16">
+            <!-- Tutaj będzie generowany harmonogram przez JS --></div>
+
+        
+        <!-- KLUCZOWE ELEMENTY SYMULACJI ŚWIATA --><section class="mt-20 pt-8 border-t border-popiol-cienia">
+            <h2 class="text-3xl font-bold section-title text-zlocisty-plomien font-header">
+                KLUCZOWE ELEMENTY SYMULACJI ŚWIATA
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-body">
+                <div class="key-element-card p-6 rounded-md shadow-xl flex items-start space-x-4">
+                    <i class="fas fa-fire text-3xl text-zlocisty-plomien mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-semibold text-pergamin-tekst mb-2 font-header">RYTM CISZY I OGNIA</h3>
+                        <p class="text-text-secondary text-sm">Cisza jest rytuałem. Symbolika ognia: gasnące świece jako znak zaniedbania, zapalanie świec jako akt czujności, a ogień jest medium, z którym się nie żartuje (Reguła: Milczenie przy ogniu).</p>
+                    </div>
+                </div>
+                <div class="key-element-card p-6 rounded-md shadow-xl flex items-start space-x-4">
+                    <i class="fas fa-archway text-3xl text-zlocisty-plomien mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-semibold text-pergamin-tekst mb-2 font-header">ARCHITEKTURA KLASZTORU</h3>
+                        <p class="text-text-secondary text-sm">Każde pomieszczenie ma funkcję praktyczną i symboliczną. Krużganki to miejsce intryg i nauki, Refektarz – rytuałów, Skryptorium – wiedzy i herezji.</p>
+                    </div>
+                </div>
+                <div class="key-element-card p-6 rounded-md shadow-xl flex items-start space-x-4">
+                    <i class="fas fa-book-open text-3xl text-zlocisty-plomien mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-semibold text-pergamin-tekst mb-2 font-header">DZIENNIKI JAKO KARTY POSTACI</h3>
+                        <p class="text-text-secondary text-sm">Karty postaci graczy (nowicjuszy) to ich fizyczne dzienniki, zawierające notatki z lekcji i wspomnienia. Wzmacnia to immersję i pozwala na notowanie wiedzy (w tym wskazówek do Bariery).</p>
+                    </div>
+                </div>
+                <div class="key-element-card p-6 rounded-md shadow-xl flex items-start space-x-4">
+                    <i class="fas fa-gavel text-3xl text-zlocisty-plomien mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-semibold text-pergamin-tekst mb-2 font-header">WŁADZA BIUROKRATYCZNA</h3>
+                        <p class="text-text-secondary text-sm">Nowicjusze uczestniczą w Kancelarii Ognia, sortując korespondencję, co jest jednocześnie nauczaniem polityki i filtrem informacji. Wpisywanie do kronik jest aktem historycznym.</p>
+                    </div>
+                </div>
+                <div class="key-element-card p-6 rounded-md shadow-xl flex items-start space-x-4">
+                    <i class="fas fa-crown text-3xl text-zlocisty-plomien mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-semibold text-pergamin-tekst mb-2 font-header">HIERARCHIA I PRESTIŻ</h3>
+                        <p class="text-text-secondary text-sm">Relacja Mag-Nowicjusz to edukacja i współrealizacja specjalizacji. Magowie ryzykują Prestiż (walutę społeczną), gdy publicznie konfrontują innych.</p>
+                    </div>
+                </div>
+                <div class="key-element-card p-6 rounded-md shadow-xl flex items-start space-x-4">
+                    <i class="fas fa-hammer text-3xl text-zlocisty-plomien mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-semibold text-pergamin-tekst mb-2 font-header">ZAJĘCIA PRAKTYCZNE</h3>
+                        <p class="text-text-secondary text-sm">Lekcje to w większości ćwiczenia praktyczne (kaligrafia, alchemia, rzemiosło, walka kijem), które służą utrzymaniu klasztoru i są systemem wtajemniczenia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Dane harmonogramu (niezmienione)
+        const scheduleData = {
+            "Piątek (RYSA – WPROWADZENIE DO RYTMU)": {
+                description: "Piątek to dzień budowania atmosfery, nauki reguł i subtelnego wprowadzania zewnętrznych konfliktów (miasto vs. farma).",
+                events: [
+                    { time: "07:00", activity: "Dzwon Pierwszego Płomienia", desc: "Przebudzenie, czas na toaletę i modlitwę indywidualną.", npc: "Custos Flammae", location: "Dormitorium/Kaplica", elements: "Wprowadzenie ciszy i rytmu poranka.", icon: "bell" },
+                    { time: "07:30", activity: "Ćwiczenia Ognia i Oddechu", desc: "Rytmiczne formy walki kijem, medytacja w ruchu. Uczy dyscypliny i cierpliwości.", npc: "Brat Krystian", location: "Dziedziniec/Wirydarz", elements: "Realne warsztaty pracy kijem (podstawy kata, postawa, rytm).", icon: "fire-alt" },
+                    { time: "09:00", activity: "Praca Sektorowa (Obowiązek)", desc: "Przygotowanie Kancelarii, czyszczenie palenisk, dystrybucja świec. Nowicjusze mogą pełnić Oczyszczenie Popiołem.", npc: "[Mag Nadzorca Sektora]", location: "Klasztor (Kuchnia, Korytarze)", elements: "Drobne akty służby i dyscypliny.", icon: "wrench" },
+                    { time: "10:00", activity: "ŚNIADANIE I PORZĄDEK DNIA", desc: "Posiłek w Rytuale Ciszy. Spożywanie posiłku to moment rytualny.", npc: "Custos Cineris", location: "Refektarz", elements: "Wprowadzenie: ogłoszenie porządku dnia i wyczytanie nazwisk Magów/Nowicjuszy do konkretnych obowiązków (np. Nowicjusz X ma pomóc w winiarni).", icon: "utensils" },
+                    { time: "11:00", activity: "WYKŁAD WSPÓLNY (Teoria Magii I)", desc: "Trzy Aksjomaty Ognia: Wprowadzenie do doktryn Arcymagów (Żar, Płomień, Popiół).", npc: "Arcymag Popiołów", location: "Kapitularz / Aula", elements: "Nauka jako poznanie filozoficzne (Dogma Flammae).", icon: "book-reader" },
+                    { time: "12:00", activity: "Ćwiczenia PRAKTYCZNE (Blok I)", desc: "4 Równoległe Ćwiczenia (12 osób): Kaligrafia, Alchemia Ognia, Warsztat Runiczny, Winiarnia (Inwentaryzacja).", npc: "Magowie/Mistrzowie", location: "Różne Lokacje", elements: "Tworzenie grup ćwiczeniowych (np. 12-osobowych).", icon: "flask" },
+                    { time: "13:00", activity: "OBIAD W CISZY", desc: "Obiad i modlitwa południowa. Możliwość audiencji w Kaplicy/Kancelarii.", npc: "[Ceremoniarz]", location: "Refektarz", elements: "Wprowadzenie sfery politycznej: Kancelaria Ognia zaczyna przyjmować korespondencję.", icon: "hand-fist" }, 
+                    { time: "14:00", activity: "Ćwiczenia PRAKTYCZNE (Blok II)", desc: "4 Równoległe Ćwiczenia (12 osób): Technika Kręgu, Omenistyka, Kancelaria Ognia, Konserwacja Artefaktów. Balans między duchowością a rzemiosłem.", npc: "Magowie/Mistrzowie", location: "Różne Lokacje", elements: "Balans między duchowością a rzemiosłem.", icon: "shield-alt" },
+                    { time: "16:00", activity: "PRACA SEKTOROWA (Kontynuacja)", desc: "Czas na realizację zleceń Arcymagów i Mistrzów. Nowicjusze realizują „Dziennik Zadań” (Quest Card).", npc: "Magowie/Nowicjusze", location: "Klasztor (Sektory)", elements: "System Prestiżu (zdobywanie +/– punktów).", icon: "scroll" },
+                    { time: "18:00", activity: "KOLACJA I OMENY GWIAZD", desc: "Rytuał ciszy. Jeden z astrologów odczytuje układ sygnałów.", npc: "Przeor / Astrolog", location: "Refektarz", elements: "Atmosfera mistycyzmu: Obserwacja modelu nieba i projekcji astrolabium na suficie.", icon: "star" },
+                    { time: "19:30", activity: "Rytuał Rozdziału Płomieni", desc: "Uroczyste rozdawanie świec ze znakami/zadaniem (np. nocne skradanie, wiadomość do konkretnego maga).", npc: "Praefectus Flammarum", location: "Krużganki", elements: "Światło jako klucz do miejsc ukrytych lub tajnych obowiązków.", icon: "lightbulb" }, 
+                    { time: "20:00", activity: "Nocne Czujenie i Modlitwa", desc: "Medytacja przy płomieniu/lustrze. Śpiew chóralny.", npc: "Magowie i Nowicjusze", location: "Kaplica", elements: "Cisza i dotyk świętości. Możliwość indywidualnej spowiedzi przed płomieniem (Confessio Ignis).", icon: "hands-praying" },
+                    { time: "22:00", activity: "AUDIENCJE I PRZESŁUCHANIA", desc: "Spotkania magów z cywilami (wieści z miasta, farmerzy proszący o ochronę). Przesłuchania nowicjuszy lub postaci „zawieszonych”.", npc: "Rada Magów / Mag Ferrier", location: "Kancelaria / Kapitularz", elements: "Pierwszy konflikt ekonomiczny (sprawa o podatki/kamień/ochronę).", icon: "handshake-angle" },
+                    { time: "23:00", activity: "CISZA NOCNA", desc: "Zmniejszenie oświetlenia, koniec zorganizowanych zajęć. Rozpoczęcie Godziny Skradania.", npc: "Custos Flammae (patroluje)", location: "Korytarze", elements: "Szansa na nocne wymykanie się, kradzież wina ze spiżarni, nocny podlewacz „bagietnego siela”." , icon: "moon" },
+                    { time: "00:00", activity: "NPC SCHODZĄ Z GRY", desc: "Zamknięcie skarbców i archiwów. Gracze mogą kontynuować grę kameralną w pokojach.", npc: "N/A", location: "[Pokoje Prywatne]", elements: "Klimat sekrety, plotki, picie ukradzionego wina.", icon: "bed" }
+                ]
+            },
+            "Sobota (ROZŁAM – INCYDENT I SĄD)": {
+                description: "Sobota to dzień eskalacji konfliktu i moment kulminacyjny I Epizodu (przed pojawieniem się listu o barierze). Chaos fabularny przerywa ustalony rytm.",
+                events: [
+                    { time: "07:00", activity: "Dzwon Pierwszego Płomienia", desc: "Standardowe przebudzenie. Nowicjusze doglądają Sektorów.", npc: "Custos Flammae", location: "Klasztor", elements: "Odkrycie poranne: nowicjusze z Winiarni odkrywają brak (zbita pieczęć, brak kropli wina).", icon: "bell" },
+                    { time: "07:30", activity: "Ćwiczenia Ognia i Oddechu", desc: "Rytuał oczyszczający przez ciało.", npc: "Brat Krystian", location: "Dziedziniec/Wirydarz", elements: "Aromaty klasztoru (dymiona kiełbasa, stukot kijów).", icon: "fire-alt" },
+                    { time: "09:00", activity: "Praca Sektorowa/Śledztwo", desc: "Początek cichego śledztwa w sprawie zaginięcia wina lub artefaktu.", npc: "Nowicjusze (grupy)", location: "Winiarnia/Kancelaria", elements: "Zbieranie tropów: ślady stóp, przełamana pieczęć.", icon: "magnifying-glass" },
+                    { time: "10:00", activity: "ŚNIADANIE W REFLEKTARZU (PRZERWANE)", desc: "Rytuał Ciszy. Arcymag/Ceremoniarz wygłasza wstęp do Porządku Dnia (wspomina o narastających rozbojach z kolonii karnej).", npc: "Przeor Ignis/Ceremoniarz", location: "Refektarz", elements: "Ognisty rytuał (np. wpisywanie snów do dzienników).", icon: "utensils" },
+                    { time: "10:30", activity: "INCYDENT POLNEJ BESTII", desc: "Dramatyczne przerwanie ceremonii. Wbiega posłaniec i ogłasza: „Polna bestia! Widziano ją w piwnicach pod starym skrzydłem!”.", npc: "Posłaniec [NPC]", location: "Refektarz (Sala główna)", elements: "Chaos, dramatyczna cisza. Magowie powoli wstają, gotowi na alarm.", icon: "skull-crossbones" },
+                    { time: "11:00", activity: "Ćwiczenia AWARYJNE", desc: "Działanie w Ogniu Wydarzeń. Ćwiczenia z kijem/organizacja alarmu. Magowie dzielą zadania: poszukiwania, zabezpieczenia, alchemiczne pułapki.", npc: "Brat Krystian / [Mag Strażnik]", location: "Dziedziniec / Piwnice", elements: "Scena inicjacyjna: test dyscypliny nowicjuszy w obliczu kryzysu.", icon: "burst" },
+                    { time: "12:00", activity: "WYKŁAD WSPÓLNY (Teoria Magii II)", desc: "Konstrukcja Wielkich Zaklęć. Wprowadzenie do możliwości rzucenia czaru obejmującego duży obszar (podprowadzenie pod barierę).", npc: "Arcymag Płomienia", location: "Aula", elements: "Wskazówki fabularne dotyczące kamieni ogniskujących/struktury bariery.", icon: "hat-wizard" },
+                    { time: "13:00", activity: "OBIAD", desc: "Posiłek z bardziej nerwową atmosferą. Plotki o bestii (realna, czy efekt eksperymentu?).", npc: "[Custos]", location: "Refektarz", elements: "Napięcie. Między nowicjuszami pojawiają się oskarżenia o sabotaż/kradzież.", icon: "hand-fist" },
+                    { time: "14:00", activity: "Rytuał SĄDU Klasztornego", desc: "Publiczny Sąd Ognia. Przesłuchanie postaci oskarżonej lub człowieka zawieszonego (np. nowicjusza, który nie przeszedł próby, lub skazańca czekającego na wyrok).", npc: "Rada Trzech Arcymagów / Mag Ferrier", location: "Kapitularz / Refektarz", elements: "Moralne dylematy: decyzja, czy wydać osobę władzom świeckim, czy poddać ją Oczyszczeniu Płomieniem.", icon: "gavel" },
+                    { time: "16:00", activity: "Próba Ognia / Rzemiosło", desc: "Warsztaty Rzemieślnicze Brata Krystiana: Tłoczenie wina lub suszenie kiełbas. Towarzyszy temu symboliczny toast za spokój ducha.", npc: "Brat Krystian", location: "Kuchnia i Spiżarnia", elements: "Fizyczność świata: aromat dymionej kiełbasy. Wątek żółtej czapki (świecki sędzia upomina się o insygnia).", icon: "wine-bottle" },
+                    { time: "18:00", activity: "KOLACJA I OMENY ZMIANY", desc: "Rytuał Ciszy. Proroctwo w świetle: płomień świec układa się w spiralę podobną do układu planet — omen nadchodzącej zmiany.", npc: "Przeor / Astrolog", location: "Refektarz", elements: "Wprowadzenie elementu mistycznego, ale w naukowym kontekście (astrologia Magów Ognia).", icon: "meteor" },
+                    { time: "19:30", activity: "Rytuał Oczyszczenia Win", desc: "Indywidualne lub zbiorowe zmywanie win. Ktoś prosi o rytuał, aby zmazać winę przeszłości w ogniu.", npc: "Mag Oczyszczenia", location: "Kaplica / Oratorium", elements: "Może tu zostać poruszony wątek nowicjusza, którego przyjęcie było oszustwem.", icon: "faucet-drip" },
+                    { time: "20:30", activity: "Nocna Medytacja / Winiarnia", desc: "Sceny fabularne wokół beczek z winem, medytacja przy beczkach. Kij służy do rysowania znaków w popiele.", npc: "Brat Krystian / [Novitius Ognia]", location: "Winiarnia", elements: "Skradanie się, plotki i rozmowy o dylematach moralnych.", icon: "whiskey-glass" },
+                    { time: "22:00", activity: "Poufne Audiencje / List Królewski", desc: "Otrzymanie ozdobnego listu królewskiego z informacją o decyzji utworzenia Bariery.", npc: "Rada Arcymagów", location: "Kapitularz", elements: "Przełom fabularny. Klasztor zaczyna działać politycznie.", icon: "envelope-open-text" },
+                    { time: "23:00", activity: "CISZA NOCNA / Tajne Zebrania", desc: "Godzina skradania. Magowie (np. Xardas) zamykają się w Bibliotece/Laboratoriach, próbując zrozumieć plany stworzenia Bariery.", npc: "Xardas / Nowicjusze", location: "Biblioteka / Archiwum", elements: "Poszukiwania zakazanych ksiąg i notatek.", icon: "user-secret" }
+                ]
+            }
+        };
+
+        const container = document.getElementById('schedule-container');
+
+        const getIconClass = (iconName) => {
+            const iconMap = {
+                "bell": "fas fa-bell",
+                "fire-alt": "fas fa-fire-alt",
+                "wrench": "fas fa-wrench",
+                "utensils": "fas fa-utensils",
+                "book-reader": "fas fa-book-reader",
+                "flask": "fas fa-flask",
+                "hand-fist": "fas fa-hand-fist", 
+                "shield-alt": "fas fa-shield-alt",
+                "scroll": "fas fa-scroll",
+                "star": "fas fa-star",
+                "lightbulb": "fas fa-lightbulb", 
+                "hands-praying": "fas fa-hands-praying",
+                "handshake-angle": "fas fa-handshake-angle",
+                "moon": "fas fa-moon",
+                "bed": "fas fa-bed",
+                "magnifying-glass": "fas fa-magnifying-glass",
+                "skull-crossbones": "fas fa-skull-crossbones",
+                "burst": "fas fa-burst", 
+                "hat-wizard": "fas fa-hat-wizard",
+                "gavel": "fas fa-gavel",
+                "wine-bottle": "fas fa-wine-bottle",
+                "meteor": "fas fa-meteor",
+                "faucet-drip": "fas fa-faucet-drip",
+                "whiskey-glass": "fas fa-whiskey-glass",
+                "envelope-open-text": "fas fa-envelope-open-text",
+                "user-secret": "fas fa-user-secret",
+                "archway": "fas fa-archway",
+                "book-open": "fas fa-book-open",
+                "crown": "fas fa-crown",
+                "hammer": "fas fa-hammer",
+            };
+            return iconMap[iconName] || "fas fa-question-circle"; 
+        };
+
+        Object.keys(scheduleData).forEach(day => {
+            const data = scheduleData[day];
+
+            // Day Section Title
+            const daySection = document.createElement('section');
+            daySection.className = 'mb-10';
+            daySection.innerHTML = `
+                <h2 class="text-3xl font-extrabold section-title text-zlocisty-plomien font-header">${day}</h2>
+                <p class="text-text-secondary mb-8 font-body">${data.description}</p>
+            `;
+            container.appendChild(daySection);
+
+            // Timeline / Cards container
+            const eventsContainer = document.createElement('div');
+            eventsContainer.className = 'events-timeline relative space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-16 lg:gap-y-10';
+            
+            data.events.forEach((event, index) => {
+                const eventCardWrapper = document.createElement('div');
+                // Użycie flex-row-reverse dla parzystych (lewa kolumna) i normalnie dla nieparzystych (prawa kolumna)
+                const isLeftColumn = index % 2 === 0;
+                eventCardWrapper.className = `lg:relative ${isLeftColumn ? 'lg:col-start-1 lg:text-right' : 'lg:col-start-2'}`;
+
+                const eventCard = document.createElement('div');
+                eventCard.className = `event-card p-5 rounded-md shadow-xl flex items-start space-x-4 font-body`;
+
+                // Dostosowanie kierunku wewnątrz karty dla lewej kolumny
+                if (isLeftColumn) {
+                    eventCard.classList.add('lg:flex-row-reverse', 'lg:space-x-reverse');
+                } else {
+                    eventCard.classList.add('flex-row');
+                }
+                
+                eventCard.innerHTML = `
+                    <div class="icon-container text-zlocisty-plomien text-3xl flex-shrink-0">
+                        <i class="${getIconClass(event.icon)}"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="time-box inline-block px-3 py-1 text-xs font-semibold mb-2 rounded-full">${event.time}</div>
+                        <h3 class="text-xl font-semibold text-zlocisty-plomien mb-1 font-header">${event.activity}</h3>
+                        <p class="text-pergamin-tekst text-sm mb-2">${event.desc}</p>
+                        <p class="text-text-secondary text-xs"><strong class="text-zlocisty-plomien">KTO:</strong> ${event.npc}</p>
+                        <p class="text-text-secondary text-xs"><strong class="text-zlocisty-plomien">GDZIE:</strong> ${event.location}</p>
+                        <p class="text-text-secondary text-xs mt-2 italic">${event.elements.replace(/<br>/g, '; ')}</p>
+                    </div>
+                `;
+
+                // Dodanie kropki timeline na dużych ekranach (z-index 10, aby była nad linią)
+                if (window.innerWidth >= 1024) {
+                    const dot = document.createElement('div');
+                    dot.className = `timeline-dot ${isLeftColumn ? 'lg:right-[-48px]' : 'lg:left-[-48px]'}`;
+                    eventCardWrapper.appendChild(dot);
+                }
+
+                eventCardWrapper.appendChild(eventCard);
+                eventsContainer.appendChild(eventCardWrapper);
+            });
+            container.appendChild(eventsContainer);
+        });
+    </script>
+</body>
+</html>
