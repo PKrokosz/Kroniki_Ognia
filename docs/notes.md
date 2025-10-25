@@ -4,6 +4,34 @@
 - Do dodania `index.html` jako landing page dla GitHub Pages.
 - Należy utrzymać oryginalne teksty bez zmian merytorycznych.
 - Nowa nawigacja została wdrożona wraz z testem `tests/test_navigation.py`; wszystkie strony korzystają z identycznego nagłówka.
+- `.gitignore` rozszerzono o standardowe wpisy (środowiska, cache, logi), aby repo pozostawało wolne od artefaktów lokalnych i binarnych.
+
+## 5xWhy — Higiena `.gitignore`
+1. Dlaczego potrzebujemy rozszerzyć `.gitignore`?
+   - (A) Aby uniknąć przypadkowego commitowania wirtualnych środowisk.
+   - (B) Aby zmniejszyć szum przy code review i CI.
+   - (C) Aby uspójnić repo z wytycznymi CTO persony.
+   **Decyzja:** A jako fundament operacyjny, wzmocniony dyscypliną review z (B).
+2. Dlaczego należy objąć cache testów i typowania?
+   - (A) `.pytest_cache` i `.mypy_cache` szybko rosną i są zależne od środowiska.
+   - (B) Pozwalają zachować powtarzalność wyników CI.
+   - (C) Ułatwiają onboarding nowych agentów poprzez czyste checkouty.
+   **Decyzja:** A jako ochrona przed inflacją repo, z dodatkowym onboardingiem z (C).
+3. Dlaczego warto ignorować katalogi edytorów (`.idea/`, `.vscode/`)?
+   - (A) Każdy agent korzysta z innej konfiguracji IDE.
+   - (B) Pliki te często zawierają ścieżki lokalne i sekrety.
+   - (C) Zmiany w tych plikach utrudniają code review.
+   **Decyzja:** A jako gwarancja neutralności narzędzi, poszerzona o bezpieczeństwo z (B).
+4. Dlaczego wpisy dla logów i plików `.env` są krytyczne?
+   - (A) Zapobiegają wyciekowi danych konfiguracyjnych lub tokenów.
+   - (B) Minimalizują konflikty podczas debugowania.
+   - (C) Wspierają pipeline bezpieczeństwa repo.
+   **Decyzja:** A jako ochrona tajemnic, z kontrolą bezpieczeństwa z (C).
+5. Dlaczego potrzebny jest kolejny krok automatyzujący walidację `.gitignore`?
+   - (A) Manualna kontrola może zostać pominięta w przyszłych iteracjach.
+   - (B) Automatyzacja pozwoli szybciej wykrywać regresje.
+   - (C) Wzmacnia kulturę narzędziową przed MVP.
+   **Decyzja:** B jako impuls do CI, wzbogacony o kulturę narzędziową z (C).
 
 # Notatki (Faza 2)
 - Paleta barw została przygaszona wokół barw ziemistych, dodano ambientową warstwę tła i animację pulsującą, zachowując czytelność tekstów.
