@@ -27,3 +27,15 @@
 - Na urządzeniach mobilnych nawigacja układa się w kolumnę, a karty mają zmniejszone paddingi.
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
 - Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present` oraz `tests/test_responsive_theme.py::test_ambient_effects_defined` są zielone.
+
+## Cel fazy 3 — Integracja bazy brainstormu
+- [Scope] Udostępnić szybkie przejście do Notebook LM jako źródła prawdy dla wiedzy z burzy mózgów.
+- [Scope] Zachować narracyjny klimat poprzez motyw "flying object" i animowanego zwiadowcę.
+- [Scope] Zapewnić dostępność CTA (prefers-reduced-motion, mobilny układ) oraz automatyczną weryfikację testami.
+- [Non-Goals] Embedowanie pełnego Notebook LM, synchronizacja treści w czasie rzeczywistym.
+
+## Definicja ukończenia fazy 3 (DoD)
+- `pytest` obejmuje test `tests/test_notebook_banner.py::test_notebook_banner_present_with_link` i przechodzi zielono.
+- Baner Notebook LM jest widoczny i funkcjonalny na każdej podstronie repo.
+- Dokumentacja (README, notes) opisuje nowe CTA i wskazuje sposób ręcznej weryfikacji.
+- Akceptacyjne: kliknięcie banera otwiera wskazany notebook, a motyw "flying object" jest zachowany w tekście.
