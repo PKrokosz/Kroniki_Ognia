@@ -1,8 +1,13 @@
 let backendUrlPromise;
 
+function resolveConfigPath() {
+  const basePath = window.location.pathname.replace(/\/[^/]*$/, '/');
+  return `${basePath}config.json`;
+}
+
 async function getBackendUrl() {
   if (!backendUrlPromise) {
-    backendUrlPromise = fetch('/config.json', { cache: 'no-store' })
+    backendUrlPromise = fetch(resolveConfigPath(), { cache: 'no-store' })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Failed to load config.json: ${res.status}`);

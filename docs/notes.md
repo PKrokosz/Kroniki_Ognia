@@ -79,6 +79,7 @@
 
 # Notatki (Faza 5)
 - Front wczytuje `BACKEND_URL` z `public/config.json`, dzięki czemu GitHub Pages może wskazywać na tunel `https://api-kroniki.<MOJA-DOMENA>` bez przebudowy frontu.
+- Duplikat `config.json` w katalogu głównym eliminuje 404 podczas serwowania strony spod `/Kroniki_Ognia/` i jest weryfikowany testem `tests/test_config_json.py`.
 - Formularz otrzymał pola na tytuł, treść i opcjonalne tagi; JS ustawia `form.action` po załadowaniu konfiguracji.
 - Backend Flask wymusza schemat `{title, content, tags?}`, zapisuje tagi w JSON oraz loguje wpisy z timestampem. CORS ogranicza pochodzenie do GitHub Pages i tunelu, a Flask-Limiter blokuje flood do 10/min.
 - `tests/test_api.py` oraz zaktualizowane `tests/test_idea_submission.py` pilnują kontraktu odpowiedzi `{"id": ..., "status": "ok"}` oraz poprawnego utrwalenia danych.
@@ -110,6 +111,33 @@
    - (B) Bash pozwala szybko sprawdzić tunel po wdrożeniu.
    - (C) Dublet testów zwiększa zaufanie architekta.
    **Decyzja:** A jako fundament w pipeline, rozszerzony o operacyjny komfort z (B).
+
+## 5xWhy — Podwójny `config.json`
+1. Dlaczego potrzebujemy kopii `config.json` w katalogu głównym?
+   - (A) GitHub Pages dla projektów (`/Kroniki_Ognia/`) szuka plików względem ścieżki repozytorium.
+   - (B) Narzędzia lokalne (np. `python -m http.server`) serwują root bez katalogu `public/`.
+   - (C) Dokumentacja staje się spójniejsza, gdy wskazuje jeden plik konfiguracyjny.
+   **Decyzja:** A jako wymóg hostingu, zasilony wygodą lokalnych testów z (B).
+2. Dlaczego oba pliki muszą mieć identyczną zawartość?
+   - (A) Rozjazd adresów tunelu powodowałby losowe błędy w fetch.
+   - (B) Automatyczne testy mogą łatwo wykryć niespójność.
+   - (C) Synchronizacja manualna jest prosta i szybka.
+   **Decyzja:** A jako krytyczne bezpieczeństwo, z automatyczną kontrolą z (B).
+3. Dlaczego warto dodać test do pilnowania duplikatu?
+   - (A) Chroni przed zapomnieniem o aktualizacji jednego z plików.
+   - (B) Buduje kulturę "konfiguracja jako kod".
+   - (C) Ułatwia audyt CTO personie.
+   **Decyzja:** A jako główny hamulec regresji, doprawiony audytem z (C).
+4. Dlaczego test powinien sprawdzać format URL?
+   - (A) Dzięki temu szybciej wyłapiemy przypadkowy brak protokołu.
+   - (B) Zapewnia spójność z wymogiem tunelu HTTPS.
+   - (C) Ułatwia tworzenie smoke testów CLI.
+   **Decyzja:** B jako wymóg bezpieczeństwa, rozszerzony o ergonomię CLI z (C).
+5. Dlaczego nadal utrzymujemy plik w `public/`?
+   - (A) Repozytorium służy też do budowania statycznych assetów w przyszłości.
+   - (B) Historyczne dokumenty i ADR-y odwołują się do tej lokalizacji.
+   - (C) Umożliwia reużycie w alternatywnych bundlerach.
+   **Decyzja:** B dla ciągłości dokumentacji, wzbogacone o elastyczność narzędzi z (C).
 
 ## 5xWhy — Custom domain i hosting
 1. Dlaczego potrzebujemy własnej domeny na GitHub Pages?
