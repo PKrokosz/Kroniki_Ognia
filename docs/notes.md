@@ -164,6 +164,7 @@
 - README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” z krokami konfiguracji tunelu.
 - `POST /api/ideas` wymaga nagłówka `X-API-Key` (domyślnie `dev-key`) i potrafi przekazać zdarzenie do n8n w tle.
 - Workflow `ci.yml` uruchamia `pytest`, `ruff` i `mypy` przy każdym PR.
+- Test preflight CORS pilnuje, że nagłówek `X-API-Key` przechodzi z GitHub Pages na tunelowany backend.
 
 ## 5xWhy — Dlaczego dokumentujemy Quick Tunnel w README
 1. Dlaczego potrzebna jest sekcja krok po kroku?
@@ -218,6 +219,33 @@
    - (B) Testy end-to-end zachowują kompatybilność dzięki domyślnemu `dev-key`.
    - (C) CTA HTML pozostaje czyste — brak dodatkowych inputów w treści formularza.
    **Decyzja:** A jako wsparcie środowisk, rozszerzone kompatybilnością z (B).
+
+## 5xWhy — Dlaczego rozszerzamy CORS o nagłówek `X-API-Key`
+1. Dlaczego przeglądarka blokowała formularz mimo poprawnego klucza API?
+   - (A) Preflight CORS nie znajdował `X-API-Key` w `Access-Control-Allow-Headers`.
+   - (B) Tunel cloudflared okresowo zrywał sesję i zwracał błędy 5xx.
+   - (C) Frontend korzystał z niezsynchronizowanego `config.json`.
+   **Decyzja:** A jako blokada krytyczna, uzupełniona monitoringiem tunelu z (B).
+2. Dlaczego nagłówek nie był dodany do konfiguracji CORS?
+   - (A) Lista dozwolonych nagłówków została przygotowana manualnie i obejmowała tylko `Content-Type` i `Authorization`.
+   - (B) Polegano na domyślnej konfiguracji Flask-CORS.
+   - (C) Nazewnictwo nagłówków nie było udokumentowane w README.
+   **Decyzja:** A jako realna luka, rozszerzona o dokumentację z (C).
+3. Dlaczego manualna lista pozostała niezmieniona mimo dodania klucza API?
+   - (A) Review backendu koncentrował się na walidacji payloadu, nie na nagłówkach CORS.
+   - (B) Brakowało testu kontraktowego sprawdzającego preflight.
+   - (C) Tunel w testach lokalnych pomijał nagłówek `X-API-Key`.
+   **Decyzja:** B jako brakujący test regresyjny, uzupełniony focus-em review z (A).
+4. Dlaczego nie zidentyfikowano problemu przed publikacją na GitHub Pages?
+   - (A) Scenariusze QA zakładały ten sam host dla frontu i backendu.
+   - (B) Nie przeprowadzono E2E w trybie `https://pkrokosz.github.io` + tunel.
+   - (C) Komunikaty konsoli nie były agregowane w dokumentacji.
+   **Decyzja:** B jako luka testowa, rozszerzona o agregację błędów z (C).
+5. Dlaczego dodajemy automatyczny test CORS?
+   - (A) Chroni przed regresją przy kolejnej zmianie nagłówków.
+   - (B) Umożliwia szybkie wykrycie problemu w CI zamiast w produkcji.
+   - (C) Dokumentuje wymagania CTO względem bezpieczeństwa tunelu.
+   **Decyzja:** A jako tarcza regresji, zasilona szybkim feedbackiem z (B).
 
 # Notatki (Iteracja — higiena dokumentacji i ambient 2024-09)
 - README, plan, zadania, notatki i CONTEXT zostały odchudzone z duplikatów, a nagłówki są unikalne.
@@ -283,3 +311,9 @@
    - (B) Przygotowuje grunt pod przyszłe lazy-loady i generowane sekcje.
    - (C) Zapobiega powielaniu inicjalizacji po SPA-like aktualizacjach.
    **Decyzja:** A jako wymóg kompatybilności, uzupełniony przyszłościowością z (B).
+
+## Raport agenta — Faza 5 (CORS preflight)
+- **Co zostało zrobione:** Formularz „Dodaj pomysł” znów działa spod GitHub Pages dzięki rozszerzeniu CORS o nagłówek `X-API-Key` oraz testowi preflight zabezpieczającemu kontrakt.
+- **Dlaczego:** Zrezygnowaliśmy z poluzowania polityki CORS (`*`/dowolne nagłówki), by utrzymać kontrolę hostów i spełnić wymagania CTO dotyczące bezpieczeństwa tunelu.
+- **Cel funkcji i stan pipeline’u:** Zmiana uszczelnia fazę 5 (tunel backendu) i utrzymuje pipeline QA (pytest/ruff/mypy) zielony — test regresyjny chroni kontrakt.
+- **Kolejny krok ku MVP:** Priorytetem jest automatyczny monitoring tunelu (np. zadanie cronowe uruchamiające smoke test) — prowadzi do Zadania 7 w fazie 5.

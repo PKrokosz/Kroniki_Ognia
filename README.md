@@ -27,7 +27,7 @@ Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisuj�
 
 Payload ma schemat `{ "title": str, "content": str, "tags": [str]? }`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok", "record_id": "..." }` (gdzie `id` to klucz idempotencji, a `record_id` pochodzi z SQLite). Endpoint `POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB i waliduje poprawność JSON-u. W razie błędu zwraca komunikat JSON z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
 
-Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dziennik tekstowy). Limit 10 zgłoszeń na minutę chroni przed floodem, a CORS dopuszcza wyłącznie `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com`.
+Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dziennik tekstowy). Limit 10 zgłoszeń na minutę chroni przed floodem, a CORS dopuszcza wyłącznie `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com` i explicitnie pozwala na nagłówek `X-API-Key` w preflight.
 
 ### Prosty klucz API i forwarding do n8n
 

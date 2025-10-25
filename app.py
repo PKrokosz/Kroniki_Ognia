@@ -123,7 +123,7 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
                     "https://*.trycloudflare.com",
                 ],
                 "methods": ["GET", "POST", "OPTIONS"],
-                "allow_headers": ["Content-Type", "Authorization"],
+                "allow_headers": ["Content-Type", "Authorization", "X-API-Key"],
             }
         },
     )

@@ -34,6 +34,23 @@ def test_post_ideas_smoke():
     assert data.get("record_id")
 
 
+def test_cors_allows_api_key_header():
+    client = app.test_client()
+    response = client.options(
+        "/api/ideas",
+        headers={
+            "Origin": "https://pkrokosz.github.io",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "X-API-Key, Content-Type",
+        },
+    )
+
+    assert response.status_code == 200
+    allow_headers = response.headers.get("Access-Control-Allow-Headers", "")
+    normalized = {header.strip().lower() for header in allow_headers.split(",") if header.strip()}
+    assert "x-api-key" in normalized
+
+
 def test_post_ideas_requires_api_key():
     client = app.test_client()
     resp = client.post(
