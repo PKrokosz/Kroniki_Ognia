@@ -15,6 +15,8 @@
 - [x] Zadanie 3: Zaprojektować rozmyte, animowane tła z trzema obrazami na podstronę — Test: `pytest tests/test_ambient_backgrounds.py`
 - [x] Zadanie 4: Zapewnić widoczność warstw ambient (opacity ≥ 0.45, `z-index` ≥ -1) — Test: `pytest tests/test_ambient_backgrounds.py::test_ambient_layers_meet_visibility_thresholds`
 - [x] Zadanie 5: Wprowadzić sekcję visual key z trzema progami narracyjnymi i testem — Test: `pytest tests/test_visual_key.py::test_visual_key_section_present`
+- [x] Zadanie 8: Ustandaryzować siatki kart poprzez `repeat(auto-fit, minmax(...))` i `--card-min-width` — Test: `pytest tests/test_responsive_theme.py::test_cards_grid_auto_fit`
+- [x] Zadanie 9: Zamienić fotografie visual key na rozmyte tła z kontrolą opacity — Test: `pytest tests/test_responsive_theme.py::test_visual_key_images_blurred`
 - [ ] Zadanie 6: Sterować prędkością warstw tła zależnie od scrolla (`prefers-reduced-motion`, IntersectionObserver) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_scroll_speed_variant`)
 - [ ] Zadanie 7: Zaprojektować tryb akcentowy zwiększający ekspozycję warstw w sekcjach CTA — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_section_accent_visibility`)
 

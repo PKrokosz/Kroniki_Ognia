@@ -96,6 +96,11 @@ mypy app.py                      # statyczne typowanie backendu Flask
 Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` przy każdym pull requeście.
 
 ## Aktualne usprawnienia
+### Layout responsywny kart i visual key
+- Siatki `.cards-grid` korzystają z `repeat(auto-fit, minmax(...))` sterowanego zmienną `--card-min-width`, dzięki czemu karty zachowują proporcje na wąskich i szerokich ekranach.
+- Tekst w kartach i sekcjach ma wymuszone `overflow-wrap:anywhere`, co eliminuje problem z nadmiernie długimi słowami i nierównym zawijaniem.
+- Kafelki sekcji „Próby Płomienia” renderują fotografie jako rozmyte tła (`filter: blur(...)`) z półprzezroczystym overlayem, pozostawiając czytelny tekst figcaption.
+
 ### Ambient i warstwa wizualna
 - Podniesiono widoczność animowanych teł: `opacity` warstw osiąga ≥ 0.45, a filtr `saturate(1.35) brightness(1.12)` eksponuje fotografie z `img/`.
 - `ambient-background` posiada `z-index: -1`, dzięki czemu dryfujące warstwy znajdują się ponad innymi efektami tła i są weryfikowane testem `tests/test_ambient_backgrounds.py::test_ambient_layers_meet_visibility_thresholds`.
