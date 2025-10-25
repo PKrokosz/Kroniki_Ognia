@@ -23,6 +23,7 @@ pip install -r requirements.txt
 pytest
 ```
 
+Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`).
 
 ## Akceptacja ręczna
@@ -30,6 +31,13 @@ Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mo
 - Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
 - Oceń nową, stonowaną paletę i subtelny efekt pulsującego tła w kontekście narracji projektu.
 - Kliknij baner Notebook LM i sprawdź, czy otwiera się właściwy notebook z bazą wiedzy brainstormu.
+
+## Konfiguracja domeny `www.larpkronikiognia.pl`
+1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium nie przechowuje pliku `CNAME`; GitHub Pages zapisze go automatycznie w gałęzi serwującej stronę.
+2. **Rekordy DNS dla poddomeny:** w panelu operatora domeny dodaj rekord `CNAME` dla hosta `www`, wskazujący na adres GitHub Pages organizacji/profilu (np. `larpkronikiognia.github.io`). Wartość możesz potwierdzić w ustawieniach Pages.
+3. **Rekordy dla domeny głównej:** aby `larpkronikiognia.pl` przekierowywała na `www`, dodaj rekordy `A` na adresy `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (zalecane przez GitHub) lub skorzystaj z `ALIAS/ANAME`, jeśli dostawca je udostępnia.
+4. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.
+5. **Weryfikacja:** sprawdź poprawność przez `dig www.larpkronikiognia.pl CNAME` oraz `curl -I https://www.larpkronikiognia.pl` — oba polecenia powinny wskazywać na GitHub Pages i zwracać status 200. Repozytorium nie przechowuje pliku `CNAME`, więc po każdej zmianie domeny potwierdź w ustawieniach Pages, że wpis został zapisany.
 
 ## Aktualizacja fazy 2
 - Paleta kolorów została przygaszona i oparta na barwach ziemistych; akcenty złamane bursztynem nadają bardziej ponury ton.

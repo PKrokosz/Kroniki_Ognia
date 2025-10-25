@@ -9,6 +9,8 @@ Repo owner directives:
 - Utrzymuj na każdej stronie baner "flying object" kierujący do Notebook LM, włączając animowaną ikonę oraz tekst o zwiadowcy.
 - Tests, lint, and documentation updates are mandatory companions to feature work.
 - Expand this AGENTS file when new patterns or decisions emerge.
+- Custom domain `www.larpkronikiognia.pl` konfigurujemy w ustawieniach GitHub Pages; repozytorium nie przechowuje pliku `CNAME`.
+- Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME` i brak pliku w repo.
 
 Documentation scope:
 - `docs/` contains phase plans, notes, ADRs; keep them synchronized with repository state.

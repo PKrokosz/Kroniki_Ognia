@@ -28,6 +28,17 @@
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
 - Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present` oraz `tests/test_responsive_theme.py::test_ambient_effects_defined` są zielone.
 
+## Cel fazy 3 — Custom domain i hosting Pages
+- [Scope] Zapewnienie automatycznego testu kontrolującego brak pliku `CNAME` w repozytorium oraz kompletność dokumentacji ręcznej konfiguracji domeny.
+- [Scope] Udokumentowanie kroków DNS oraz procedury weryfikacji i audytu w README/dokumentacji.
+- [Scope] Przygotowanie checklisty do monitorowania dostępności i certyfikatu HTTPS (kontynuacja w kolejnych zadaniach).
+- [Non-Goals] Automatyczne narzędzia monitoringu uptime, wdrożenia CD poza GitHub Pages, zakup certyfikatów zewnętrznych.
+
+## Definicja ukończenia fazy 3 (DoD)
+- `pytest` obejmuje test `tests/test_custom_domain.py` potwierdzający brak śledzonego pliku `CNAME` i obecność dokumentacji.
+- README opisuje kroki konfiguracji DNS, a `docs/notes.md` zawiera log 5xWhy dla decyzji o przeniesieniu `CNAME` do ustawień Pages.
+- `docs/tasks.md` zawiera checklistę z ukończonym zadaniem dokumentacji custom domain i planem dalszych kroków dla monitoringu.
+- Akceptacyjne: ręczna weryfikacja `dig`/`curl` odnotowana w README.
 ## Cel fazy 3 — Integracja bazy brainstormu
 - [Scope] Udostępnić szybkie przejście do Notebook LM jako źródła prawdy dla wiedzy z burzy mózgów.
 - [Scope] Zachować narracyjny klimat poprzez motyw "flying object" i animowanego zwiadowcę.
