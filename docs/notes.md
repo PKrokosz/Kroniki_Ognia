@@ -39,6 +39,7 @@
 
 # Notatki (Faza 3)
 - Dodano test `tests/test_custom_domain.py`, który pilnuje zawartości pliku `CNAME` oraz znaku nowej linii na końcu.
+- Test został doprecyzowany tak, aby wymuszać dokładnie jedną linię `www.larpkronikiognia.pl` zakończoną `\n`, eliminując przypadkowe spacje.
 - README zawiera procedurę konfiguracji DNS dla `www.larpkronikiognia.pl`, włącznie z adresami IP dla rekordu A i checklistą weryfikacji.
 - Plan oraz tasks uzupełniono o fazę 3, a ADR odnotowuje decyzję o mapowaniu domeny na GitHub Pages.
 
@@ -68,3 +69,30 @@
    - (B) Zapewnia ciągłość dostępu do materiałów fabularnych.
    - (C) Przygotowuje repo na przyszłe integracje (np. status page).
    **Decyzja:** B jako główny powód, rozszerzony o przygotowanie integracji z (C).
+
+## 5xWhy — Format pliku CNAME
+1. Dlaczego wymuszać pojedynczą linię w pliku `CNAME`?
+   - (A) GitHub Pages odrzuca pliki z dodatkowymi spacjami, co blokuje deploy.
+   - (B) Zmniejsza ryzyko konfliktów merge'owych, bo format jest przewidywalny.
+   - (C) Ułatwia agentom manualną weryfikację w UI GitHuba.
+   **Decyzja:** A jako krytyczne uzasadnienie, wzbogacone o przewidywalność z (B).
+2. Dlaczego test powinien sprawdzać dokładny tekst zamiast `.strip()`?
+   - (A) `.strip()` ukrywa błędy polegające na dodatkowych spacjach lub tabulatorach.
+   - (B) Dzięki temu łatwiej przygotować fixture dla kolejnych testów DNS.
+   - (C) Pozwala w przyszłości rozszerzyć walidację o inne domeny.
+   **Decyzja:** A jako główny cel, uzupełniony o możliwość dalszej walidacji z (C).
+3. Dlaczego dokumentacja powinna wspominać o `\n`?
+   - (A) Edytory tekstowe potrafią usuwać ostatnią nową linię bez ostrzeżenia.
+   - (B) Nowicjusze repo szybciej skojarzą problem z deployem.
+   - (C) Ułatwia współpracę z zespołem infrastruktury.
+   **Decyzja:** A z dopisanym aspektem edukacyjnym z (B).
+4. Dlaczego warto odnotować regułę w `AGENTS.md`?
+   - (A) Dokument kieruje przyszłych agentów i narzuca standard pracy.
+   - (B) Zmniejsza liczbę rozbieżności między testami a oczekiwaniami.
+   - (C) Ułatwia audyt procesowy CTO personie.
+   **Decyzja:** A jako prymarny argument, rozszerzony o audytowalność z (C).
+5. Dlaczego zadanie kontynuacyjne ma dotyczyć HTTPS?
+   - (A) Zapewnia pełny end-to-end od DNS po certyfikat.
+   - (B) Buduje na świeżo ustabilizowanym `CNAME`, wykorzystując te same testy.
+   - (C) Daje wartość organizatorom planującym kampanie promocyjne.
+   **Decyzja:** A jako kierunek do MVP, z dodaniem reużywalności testów z (B).

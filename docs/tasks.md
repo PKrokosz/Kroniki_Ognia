@@ -9,4 +9,5 @@
 
 ## Faza 3 — Custom domain i hosting Pages
 - [x] Zadanie 1: Ustabilizować plik `CNAME` i dodać test regresji — Test: `pytest tests/test_custom_domain.py::test_cname_points_to_custom_domain`
+- [x] Zadanie 1a: Zweryfikować format `CNAME` (pojedyncza linia z `\n`) — Test: `pytest tests/test_custom_domain.py::test_cname_points_to_custom_domain`
 - [ ] Zadanie 2: Przygotować automatyczną weryfikację certyfikatu HTTPS — Test: `pytest tests/test_https_monitoring.py::test_certificate_expiry` (do implementacji)

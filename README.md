@@ -31,7 +31,7 @@ Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mo
 - Oceń nową, stonowaną paletę i subtelny efekt pulsującego tła w kontekście narracji projektu.
 
 ## Konfiguracja domeny `www.larpkronikiognia.pl`
-1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium przechowuje plik `CNAME` z tą wartością, dzięki czemu GitHub automatycznie konfiguruje certyfikat TLS.
+1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium przechowuje plik `CNAME` z tą wartością (dokładnie `www.larpkronikiognia.pl` zakończone pojedynczym `\n`), dzięki czemu GitHub automatycznie konfiguruje certyfikat TLS.
 2. **Rekordy DNS dla poddomeny:** w panelu operatora domeny dodaj rekord `CNAME` dla hosta `www`, wskazujący na adres GitHub Pages organizacji/profilu (np. `larpkronikiognia.github.io`). Wartość możesz potwierdzić w ustawieniach Pages.
 3. **Rekordy dla domeny głównej:** aby `larpkronikiognia.pl` przekierowywała na `www`, dodaj rekordy `A` na adresy `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (zalecane przez GitHub) lub skorzystaj z `ALIAS/ANAME`, jeśli dostawca je udostępnia.
 4. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.

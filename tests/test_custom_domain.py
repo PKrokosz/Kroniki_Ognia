@@ -4,9 +4,9 @@ from pathlib import Path
 def test_cname_points_to_custom_domain() -> None:
     cname_path = Path("CNAME")
     assert cname_path.exists(), "Brak pliku CNAME wymaganego przez GitHub Pages."
-    content = cname_path.read_text(encoding="utf-8").strip()
-    assert content == "www.larpkronikiognia.pl", (
-        "Plik CNAME powinien wskazywać na www.larpkronikiognia.pl"
+    content = cname_path.read_text(encoding="utf-8")
+    assert content == "www.larpkronikiognia.pl\n", (
+        "Plik CNAME powinien zawierać wyłącznie www.larpkronikiognia.pl zakończone nową linią"
     )
 
 

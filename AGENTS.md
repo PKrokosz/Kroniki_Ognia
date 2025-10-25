@@ -8,7 +8,7 @@ Repo owner directives:
 - Keep navigation consistent across all HTML pages (include top nav linking to each document and GitHub Pages index).
 - Tests, lint, and documentation updates are mandatory companions to feature work.
 - Expand this AGENTS file when new patterns or decisions emerge.
-- Custom domain `www.larpkronikiognia.pl` must remain in `CNAME` with trailing newline; regression tests live in `tests/test_custom_domain.py`.
+- Custom domain `www.larpkronikiognia.pl` must remain in `CNAME` z dokładnie jedną linią zakończoną `\n`; regresyjne testy żyją w `tests/test_custom_domain.py`.
 
 Documentation scope:
 - `docs/` contains phase plans, notes, ADRs; keep them synchronized with repository state.
