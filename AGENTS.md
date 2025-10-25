@@ -6,10 +6,12 @@ Repo owner directives:
 - Every touched area must include acceptance criteria in docs/tasks.md and be reflected in plan/notes/README updates.
 - For UI work create/maintain shared assets (e.g., `assets/`) instead of page-specific inline duplication.
 - Keep navigation consistent across all HTML pages (include top nav linking to each document and GitHub Pages index).
+- Utrzymuj na każdej stronie baner "flying object" kierujący do Notebook LM, włączając animowaną ikonę oraz tekst o zwiadowcy.
 - Tests, lint, and documentation updates are mandatory companions to feature work.
 - Expand this AGENTS file when new patterns or decisions emerge.
 - Custom domain `www.larpkronikiognia.pl` konfigurujemy w ustawieniach GitHub Pages; repozytorium nie przechowuje pliku `CNAME`.
 - Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME`, brak pliku w repo i wskazuje host `pkr0kosz.github.io` (plus ewentualną domenę `.com`).
+- Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME` i brak pliku w repo.
 
 Documentation scope:
 - `docs/` contains phase plans, notes, ADRs; keep them synchronized with repository state.
