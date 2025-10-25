@@ -18,7 +18,7 @@ Repo owner directives:
   400 dla walidacji).
 - Formularze integrujące backend muszą ładować moduł `assets/js/backend-config.js`, oznaczać endpoint `data-api` i polegać na
   `wireBackendForms` do ustawienia `form.action`.
-- Formularze wysyłające do `POST /api/ideas` muszą dodawać nagłówek `X-API-Key` (domyślnie `dev-key` w `data-api-key`).
+- Formularze wysyłające do `POST /api/ideas` muszą dodawać nagłówki `Authorization: Bearer <klucz>` oraz `X-API-Key` (domyślnie `dev-key` w `data-api-key`).
 - Backend `app.py` utrzymuje endpoint `GET /api/health` (JSON `{ "status": "ok" }`) oraz restrykcyjną walidację `POST /api/ideas`
   (`Content-Type: application/json`, limit 5 KB, poprawne JSON-y). Aktualizacje muszą zachować te kontrakty i testy.
 - Forwarding do n8n musi utrzymywać alias `pomysł` (`tytuł`, `treść`, `tagi`) i domyślnie kierować na `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`; produkcję konfigurujemy przez `N8N_WEBHOOK_URL` i opcjonalny `N8N_TOKEN`.

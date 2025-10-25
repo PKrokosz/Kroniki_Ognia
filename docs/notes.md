@@ -275,6 +275,33 @@
    - (C) Dokumentuje wymagania CTO względem bezpieczeństwa tunelu.
    **Decyzja:** A jako tarcza regresji, zasilona szybkim feedbackiem z (B).
 
+## 5xWhy — Dlaczego dodajemy nagłówek Authorization dla formularza pomysłów
+1. Dlaczego front musi wysyłać `Authorization: Bearer` oprócz `X-API-Key`?
+   - (A) Nowa polityka bezpieczeństwa partnera wymaga standardowego nagłówka Bearer.
+   - (B) Tunelowane requesty łatwiej debugować w narzędziach, które wykrywają nagłówek Authorization.
+   - (C) Umożliwia przyszłe scalenie z usługami oczekującymi OAuth 2.0.
+   **Decyzja:** A jako wymóg zewnętrzny, rozszerzony ergonomią debuggera z (B).
+2. Dlaczego utrzymujemy jednocześnie `X-API-Key`?
+   - (A) Istniejące integracje i skrypty smoke wciąż używają starego nagłówka.
+   - (B) Pozwala to na płynne wycofywanie fallbacku bez przestojów.
+   - (C) Testy kontraktowe już operują na kluczu w tym nagłówku.
+   **Decyzja:** A jako zgodność wsteczna, wzmocniona ścieżką migracji z (B).
+3. Dlaczego backend porównuje oba nagłówki przez funkcję pomocniczą?
+   - (A) Zapewnia jedno źródło prawdy dla sposobu odczytu klucza.
+   - (B) Upraszcza dodanie kolejnych schematów (np. `ApiKey <token>`).
+   - (C) Ułatwia testowanie i mockowanie w pytest.
+   **Decyzja:** A jako baza utrzymaniowa, uzupełniona elastycznością z (B).
+4. Dlaczego testujemy zarówno Bearer, jak i legacy `X-API-Key`?
+   - (A) Chroni przed regresją podczas okresu przejściowego.
+   - (B) Dokumentuje oficjalnie wspierane scenariusze w CI.
+   - (C) Zapewnia, że stare klienckie automaty nie przestaną działać z dnia na dzień.
+   **Decyzja:** A jako tarcza regresji, połączona z dokumentacją w (B).
+5. Dlaczego dodaliśmy parametr `?v=20241005` do importu `idea-form.js`?
+   - (A) Wymusza odświeżenie cache przeglądarek po zmianie nagłówków.
+   - (B) Pozwala łatwo identyfikować wersje formularza podczas QA.
+   - (C) Minimalizuje ryzyko, że GitHub Pages zaserwuje starą wersję modułu.
+   **Decyzja:** C jako kluczowy mechanizm bustingu cache, wsparty diagnostyką z (B).
+
 # Notatki (Iteracja — higiena dokumentacji i ambient 2024-09)
 - README, plan, zadania, notatki i CONTEXT zostały odchudzone z duplikatów, a nagłówki są unikalne.
 - Dodano test `tests/test_documentation.py`, który blokuje powrót zduplikowanych sekcji README.

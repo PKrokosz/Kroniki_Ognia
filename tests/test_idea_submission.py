@@ -23,7 +23,10 @@ def test_submit_idea_persists(tmp_path):
             "content": "Testowy pomysł o rytuale",
             "tags": ["rytuał", "ognisko"],
         },
-        headers={"X-API-Key": API_KEY},
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "X-API-Key": API_KEY,
+        },
     )
 
     assert response.status_code == 201
@@ -52,7 +55,10 @@ def test_submit_idea_requires_text(tmp_path):
     response = client.post(
         "/api/ideas",
         json={"title": "Bez treści", "content": "   "},
-        headers={"X-API-Key": API_KEY},
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "X-API-Key": API_KEY,
+        },
     )
 
     assert response.status_code == 400

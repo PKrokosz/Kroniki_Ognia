@@ -11,7 +11,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
-from flask import Flask, Response, current_app, jsonify, request
+from flask import Flask, Request, Response, current_app, jsonify, request
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -32,6 +32,23 @@ DEFAULT_N8N_WEBHOOK = "http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99
 N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", DEFAULT_N8N_WEBHOOK)
 N8N_TOKEN = os.getenv("N8N_TOKEN", "")
 API_KEY = os.getenv("API_KEY", "dev-key")
+
+
+def _extract_request_api_key(req: Request) -> str | None:
+    header_key = req.headers.get("X-API-Key")
+    if header_key:
+        return header_key
+
+    authorization = req.headers.get("Authorization", "")
+    if not isinstance(authorization, str):
+        return None
+
+    scheme, _, token = authorization.partition(" ")
+    if scheme.lower() != "bearer":
+        return None
+
+    token = token.strip()
+    return token or None
 
 
 def _forward_to_n8n_async(payload: dict[str, Any]) -> None:
@@ -164,7 +181,8 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
     @flask_app.post("/api/ideas")
     @limiter.limit("10 per minute")
     def submit_idea() -> tuple[Response, int] | Response:
-        if request.headers.get("X-API-Key") != API_KEY:
+        provided_key = _extract_request_api_key(request)
+        if provided_key != API_KEY:
             return jsonify({"status": "error", "error": "unauthorized"}), 401
 
         if request.mimetype != "application/json":

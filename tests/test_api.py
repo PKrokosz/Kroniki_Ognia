@@ -5,6 +5,10 @@ import pytest
 
 from app import API_KEY, app
 
+app.config["RATELIMIT_ENABLED"] = False
+_limiter = next(iter(app.extensions["limiter"]))
+_limiter.enabled = False  # type: ignore[attr-defined]
+
 
 def test_health_endpoint():
     client = app.test_client()
@@ -24,7 +28,7 @@ def test_post_ideas_smoke():
         "/api/ideas",
         data=json.dumps({"title": "t", "content": "c"}),
         content_type="application/json",
-        headers={"X-API-Key": API_KEY},
+        headers={"Authorization": f"Bearer {API_KEY}"},
     )
     # Aktualizacja: endpoint sukcesu powinien zawsze zwracać 201.
     assert resp.status_code == 201
@@ -34,20 +38,21 @@ def test_post_ideas_smoke():
     assert data.get("record_id")
 
 
-def test_cors_allows_api_key_header():
+def test_cors_allows_authorization_and_api_key_headers():
     client = app.test_client()
     response = client.options(
         "/api/ideas",
         headers={
             "Origin": "https://pkrokosz.github.io",
             "Access-Control-Request-Method": "POST",
-            "Access-Control-Request-Headers": "X-API-Key, Content-Type",
+            "Access-Control-Request-Headers": "Authorization, X-API-Key, Content-Type",
         },
     )
 
     assert response.status_code == 200
     allow_headers = response.headers.get("Access-Control-Allow-Headers", "")
     normalized = {header.strip().lower() for header in allow_headers.split(",") if header.strip()}
+    assert "authorization" in normalized
     assert "x-api-key" in normalized
 
 
@@ -63,13 +68,35 @@ def test_post_ideas_requires_api_key():
     assert payload == {"status": "error", "error": "unauthorized"}
 
 
+def test_post_ideas_accepts_legacy_x_api_key_header():
+    client = app.test_client()
+    resp = client.post(
+        "/api/ideas",
+        data=json.dumps({"title": "t", "content": "c"}),
+        content_type="application/json",
+        headers={"X-API-Key": API_KEY},
+    )
+    assert resp.status_code == 201
+
+
+def test_post_ideas_rejects_incorrect_bearer_token():
+    client = app.test_client()
+    resp = client.post(
+        "/api/ideas",
+        data=json.dumps({"title": "t", "content": "c"}),
+        content_type="application/json",
+        headers={"Authorization": "Bearer wrong"},
+    )
+    assert resp.status_code == 401
+
+
 def test_post_ideas_rejects_non_json_content_type():
     client = app.test_client()
     resp = client.post(
         "/api/ideas",
         data="title=t&content=c",
         content_type="application/x-www-form-urlencoded",
-        headers={"X-API-Key": API_KEY},
+        headers={"Authorization": f"Bearer {API_KEY}"},
     )
     assert resp.status_code == 415
     payload = resp.get_json()
@@ -82,7 +109,7 @@ def test_post_ideas_rejects_large_payload():
     resp = client.post(
         "/api/ideas",
         json={"title": "t", "content": too_large},
-        headers={"X-API-Key": API_KEY},
+        headers={"Authorization": f"Bearer {API_KEY}"},
     )
     assert resp.status_code == 413
     payload = resp.get_json()
@@ -96,7 +123,7 @@ def test_post_ideas_requires_json_object(payload):
         "/api/ideas",
         data=json.dumps(payload),
         content_type="application/json",
-        headers={"X-API-Key": API_KEY},
+        headers={"Authorization": f"Bearer {API_KEY}"},
     )
     status = resp.status_code
     body = resp.get_json()
@@ -110,7 +137,7 @@ def test_post_ideas_rejects_invalid_json():
         "/api/ideas",
         data="{invalid json}",
         content_type="application/json",
-        headers={"X-API-Key": API_KEY},
+        headers={"Authorization": f"Bearer {API_KEY}"},
     )
     assert resp.status_code == 400
     payload = resp.get_json()
@@ -131,7 +158,10 @@ def test_post_ideas_forwards_to_n8n(monkeypatch):
     resp = client.post(
         "/api/ideas",
         json={"title": "Idea", "content": "Treść", "tags": ["ognisko"]},
-        headers={"X-API-Key": API_KEY},
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "X-API-Key": API_KEY,
+        },
     )
 
     assert resp.status_code == 201

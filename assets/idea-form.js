@@ -9,6 +9,7 @@ const backendReady = wireBackendForms();
   }
 
   const apiKey = form.dataset.apiKey || 'dev-key';
+  const authorizationHeader = `Bearer ${apiKey}`;
 
   const titleInput = document.getElementById('idea-title');
   const textarea = document.getElementById('idea-text');
@@ -93,6 +94,7 @@ const backendReady = wireBackendForms();
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': authorizationHeader,
           'X-API-Key': apiKey,
         },
         body: JSON.stringify(payload),

@@ -27,12 +27,12 @@ Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisuj�
 
 Payload ma schemat `{ "title": str, "content": str, "tags": [str]? }`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok", "record_id": "..." }` (gdzie `id` to klucz idempotencji, a `record_id` pochodzi z SQLite). Endpoint `POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB i waliduje poprawność JSON-u. W razie błędu zwraca komunikat JSON z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
 
-Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dziennik tekstowy). Limit 10 zgłoszeń na minutę chroni przed floodem, a CORS dopuszcza wyłącznie `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com` i explicitnie pozwala na nagłówek `X-API-Key` w preflight.
+Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dziennik tekstowy). Limit 10 zgłoszeń na minutę chroni przed floodem, a CORS dopuszcza wyłącznie `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com` i explicitnie pozwala na nagłówki `Authorization` oraz `X-API-Key` w preflight.
 
 ### Prosty klucz API i forwarding do n8n
 
-- Każde wywołanie `POST /api/ideas` musi przekazać nagłówek `X-API-Key` (domyślnie `dev-key`). Wersję produkcyjną skonfigurujesz przez zmienną środowiskową `API_KEY`.
-- Formularz front-endowy pobiera wartość klucza z atrybutu `data-api-key` (fallback do `dev-key`) i dołącza ją automatycznie w `assets/idea-form.js`.
+- Każde wywołanie `POST /api/ideas` musi przekazać nagłówek `Authorization: Bearer <klucz>` (domyślnie `dev-key`). Dla kompatybilności utrzymujemy także `X-API-Key` — backend honoruje oba warianty, jednak front wysyła je równolegle.
+- Formularz front-endowy pobiera wartość klucza z atrybutu `data-api-key` (fallback do `dev-key`) i dołącza ją automatycznie w `assets/idea-form.js` jako `Authorization: Bearer ...` oraz `X-API-Key`.
 - Backend domyślnie wysyła każde zgłoszenie na webhook `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`. W środowisku produkcyjnym nadpisz go zmienną `N8N_WEBHOOK_URL`; nagłówek autoryzacji `Bearer` jest dołączany tylko wtedy, gdy ustawisz `N8N_TOKEN`.
 - Payload do n8n zawiera `event_id` (unikalny klucz idempotencji), dane zgłoszenia oraz metadane klienta (`ip`, `User-Agent`). Dla kompatybilności z lokalnym scenariuszem dodano również sekcję `pomysł` z polskimi polami (`tytuł`, `treść`, `tagi`).
 
@@ -157,6 +157,7 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 - Moduł `assets/js/backend-config.js` scala pobieranie `BACKEND_URL` i przypisuje akcje formularzom oznaczonym `data-api`.
 - Skrypt `scripts/smoke.sh` pomaga szybko zweryfikować tunel produkcyjny.
 - Endpoint `/api/health` raportuje gotowość storage i jest chroniony testem `tests/test_api.py::test_health_ok`.
+- Formularz „Dodaj pomysł” wysyła równocześnie nagłówki `Authorization: Bearer <klucz>` i `X-API-Key`, a backend honoruje oba warianty.
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i sprawdź, że wszystkie linki prowadzą do właściwych stron.
