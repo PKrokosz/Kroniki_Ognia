@@ -576,6 +576,41 @@
    **Decyzja:** B dla kompatybilności testów, z elastycznością rozbudowy z (C).
 
 # Notatki (Faza 5)
+- Backend zyskał endpoint `GET /api/health`, który raportuje status storage (istnienie bazy SQLite oraz dziennika tekstowego) i wspiera monitorowanie tunelu.
+- Test `tests/test_api.py::test_health_ok` korzysta z klienta Flask, by zweryfikować odpowiedź JSON (`status: ok` oraz flagi storage).
+
+## 5xWhy — Endpoint health-check
+1. Dlaczego potrzebujemy `/api/health`?
+   - (A) Aby szybko sprawdzić, czy storage (baza i dziennik) istnieją przed przyjęciem formularza.
+   - (B) Aby tunelowane środowisko mogło raportować status bez ingerencji użytkownika.
+   - (C) Aby przygotować fundament pod monitorowanie w GitHub Actions.
+   **Decyzja:** A jako kluczowa gwarancja gotowości, uzupełniona o automatyzację z (C).
+2. Dlaczego odpowiedź ma być w JSON?
+   - (A) JSON jest naturalnym formatem dla integracji testów i monitoringu.
+   - (B) Tekstowy format utrudniałby walidację po stronie frontendu.
+   - (C) Dzięki JSON łatwiej rozszerzyć payload o kolejne metryki.
+   **Decyzja:** A jako wymóg automatyzacji, wzmocniony o możliwość rozbudowy z (C).
+3. Dlaczego testujemy istnienie plików storage?
+   - (A) To minimalny dowód, że inicjalizacja backendu przebiegła pomyślnie.
+   - (B) Pozwala wykryć błędne ścieżki `IDEAS_DATA_DIR` zanim pojawią się zgłoszenia.
+   - (C) Przygotowuje grunt pod walidację spójności danych (liczby rekordów).
+   **Decyzja:** A jako szybki sygnał gotowości, z kontrolą konfiguracji z (B).
+4. Dlaczego używamy klienta Flask w teście?
+   - (A) Zapewnia minimalny narzut (bez serwera HTTP) i szybkie smoke'y.
+   - (B) Umożliwia bezpośredni dostęp do odpowiedzi JSON bez dodatkowego parsowania.
+   - (C) Chroni przed zależnością od zewnętrznych narzędzi CLI w CI.
+   **Decyzja:** A jako gwarancja prostoty, rozszerzona o ergonomię testów z (B).
+5. Dlaczego planujemy rozszerzyć health-check o dane tunelu?
+   - (A) Monitorowanie powinno potwierdzać także konfigurację `BACKEND_URL`.
+   - (B) To krok w stronę E2E między frontem a backendem.
+   - (C) Umożliwi automatyczne alarmy o utracie tunelu.
+   **Decyzja:** A jako najbliższy krok, doprawiony integracyjną wizją z (B).
+
+## Raport agenta — Health-check API
+- **Co zostało zrobione:** Użytkownicy i monitoring otrzymali endpoint zdrowia backendu, który w jednej odpowiedzi JSON potwierdza gotowość bazy pomysłów oraz dziennika narracyjnego.
+- **Dlaczego (z czego zrezygnowano):** Odłożono liczenie rekordów i walidację adresu tunelu, aby szybciej dostarczyć podstawowe potwierdzenie storage.
+- **Cel funkcji i stan pipeline'u:** Health-check pełni rolę szybkiej diagnostyki MVP; pipeline posiada świeży test `pytest tests/test_api.py::test_health_ok`, kolejnym etapem będzie rozszerzenie payloadu o konfigurację tunelu.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo zmierza do kompletnego doświadczenia warsztatowego z niezawodnym backendem; następnym zadaniem będzie automatyczna weryfikacja `BACKEND_URL` w health-checku i integracja z monitoringiem tunelu.
 - Toolchain deweloperski został rozszerzony o `ruff` i `mypy`, a brakujące stuby (`types-Flask-Cors`, `types-requests`) pozwalają uruchomić statyczną analizę bez błędów importu.
 - Po instalacji `pip install -r requirements.txt` można lokalnie sprawdzić: `ruff check .`, `mypy app.py`, `pytest` — komplet narzędzi potrzebny przed wdrożeniem tunelu backendu.
 

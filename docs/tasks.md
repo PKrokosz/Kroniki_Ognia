@@ -48,6 +48,8 @@
 - [x] Zadanie 3: Dodać `scripts/smoke.sh` oraz sekcję README „Run with tunnel” — Test: `pytest tests/test_api.py::test_post_ideas_smoke` (CLI opisany w README)
 - [x] Zadanie 3b: Dodać `GET /api/health` i test zdrowia backendu — Test: `pytest tests/test_api.py::test_health_endpoint`
 - [x] Zadanie 4: Utwardzić walidację JSON (`Content-Type`, limit 5 KB, błąd parsowania) — Test: `pytest tests/test_api.py::test_post_ideas_rejects_non_json_content_type` + pozostałe warianty
+- [x] Zadanie 1d: Udostępnić endpoint `/api/health` raportujący storage i test JSON — Test: `pytest tests/test_api.py::test_health_ok`
+- [ ] Zadanie 1e: Rozszerzyć `/api/health` o walidację tunelu (`BACKEND_URL`) i spójność storage — Test: do zaprojektowania (`tests/test_api.py::test_health_reports_backend_url`)
 - [ ] Zadanie 4 (kontynuacja): Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: `pytest tests/test_tunnel_health.py::test_cron_monitoring` (do zdefiniowania)
 - [ ] Zadanie 5 (kontynuacja): Przygotować skrypt synchronizujący `config.json` pomiędzy katalogiem głównym a `public/` — Test: `pytest tests/test_config_json.py::test_sync_script` (do zaprojektowania)
 - [ ] Zadanie 6: Zaimplementować monitor health-checka z alertem (np. cron + webhook) — Test: `pytest tests/test_tunnel_health.py::test_health_alert_workflow` (do zaprojektowania)

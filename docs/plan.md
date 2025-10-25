@@ -99,3 +99,4 @@
 - Skrypt `scripts/smoke.sh` przyjmuje URL tunelu i zwraca odpowiedź JSON; README opisuje jego użycie.
 - CORS i rate limit są skonfigurowane w `app.py`, a ADR/notes zawierają analizę 5xWhy dla tunelu.
 - Health-check i walidacja rozmiaru/nagłówków JSON są chronione testami w `tests/test_api.py`.
+- `/api/health` raportuje gotowość storage w JSON i jest chroniony testem `tests/test_api.py::test_health_ok`.
