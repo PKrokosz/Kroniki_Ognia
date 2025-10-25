@@ -38,6 +38,7 @@ Coding standards:
 - Panel komentarzy "Oceń pomysł" w `organizacja.html` musi pozostać domyślnie zwinięty, obsługiwać `localStorage` z czytelnym komunikatem statusu oraz być testowany w `tests/test_feedback_panel.py`.
 - Interaktywne komponenty front-endowe wymagają obsługi braku `localStorage` (fallback komunikatu) i aktualizacji dokumentacji w README oraz `docs/notes.md`.
 - Ambient backgrounds korzystają z kontenera `.ambient-background` z trzema warstwami `.ambient-layer--1..3` na każdej stronie. Każda strona wykorzystuje obrazy z `img/` (około trzy na widok); aktualizacje wymagają synchronizacji z testem `tests/test_ambient_backgrounds.py` i mapą w `assets/styles.css`.
+- Sekcja visual key „Próby Płomienia” na `index.html` utrzymuje trzy kafelki (`visual-key__tile--ember`, `--glow`, `--flame`) z obrazami `img/1.jpg`, `img/4.jpg`, `img/7.jpg`, CTA do `cechy.html`, `imersja_mechanika.html`, `draft_planu.html` oraz przycisk `data-visual-key-autoplay` respektujący `prefers-reduced-motion`. Zmiany wymagają aktualizacji `assets/visual-key.js`, styli i testu `tests/test_visual_key.py`.
 
 Commit/PR standards:
 - Use Conventional Commits.
