@@ -46,6 +46,8 @@
 - [x] Zadanie 1c: Udostępnić `config.json` w katalogu głównym repozytorium dla hostingu pod `/Kroniki_Ognia/` — Test: `pytest tests/test_config_json.py::test_root_and_public_configs_match`
 - [x] Zadanie 2: Dostosować backend do schematu `{title, content, tags}` z CORS i rate limitem 10/min — Test: `pytest tests/test_idea_submission.py::test_submit_idea_persists`
 - [x] Zadanie 3: Dodać `scripts/smoke.sh` oraz sekcję README „Run with tunnel” — Test: `pytest tests/test_api.py::test_post_ideas_smoke` (CLI opisany w README)
+- [x] Zadanie 1d: Udostępnić endpoint `/api/health` raportujący storage i test JSON — Test: `pytest tests/test_api.py::test_health_ok`
+- [ ] Zadanie 1e: Rozszerzyć `/api/health` o walidację tunelu (`BACKEND_URL`) i spójność storage — Test: do zaprojektowania (`tests/test_api.py::test_health_reports_backend_url`)
 - [ ] Zadanie 4 (kontynuacja): Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: `pytest tests/test_tunnel_health.py::test_cron_monitoring` (do zdefiniowania)
 - [ ] Zadanie 5 (kontynuacja): Przygotować skrypt synchronizujący `config.json` pomiędzy katalogiem głównym a `public/` — Test: `pytest tests/test_config_json.py::test_sync_script` (do zaprojektowania)
 - [ ] Zadanie 6: Zintegrować `ruff check .` i `mypy app.py` w workflow CI (`.github/workflows/codex.yml`) — Test: pipeline uruchamia oba kroki i kończy się statusem green

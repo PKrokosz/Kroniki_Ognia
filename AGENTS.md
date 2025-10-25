@@ -22,6 +22,7 @@ Repo owner directives:
 - Katalog główny repozytorium musi zawierać bliźniaczy `config.json`; oba pliki pozostają w 100% zsynchronizowane i są chronione testami.
 - Katalog główny repozytorium musi zawierać pusty plik `.nojekyll`, a README dokumentuje, że dzięki niemu GitHub Pages nie uruchamia Jekylla; testy powinny to kontrolować.
 - `scripts/smoke.sh` jest kanonicznym narzędziem do sprawdzania tunelu `https://api-kroniki.<MOJA-DOMENA>` i musi odzwierciedlać aktualny kontrakt API.
+- `/api/health` raportuje gotowość storage w JSON (baza + dziennik) i jest chroniony testem `tests/test_api.py::test_health_ok`; przy rozbudowie rozszerz payload, zachowując istniejące pola.
 
 Documentation scope:
 - `docs/` contains phase plans, notes, ADRs; keep them synchronized with repository state.

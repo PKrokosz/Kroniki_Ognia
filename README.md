@@ -31,6 +31,7 @@ flask --app app run
 
 > Domyślnie dane trafiają do `data/ideas.sqlite3` i `data/ideas.txt`. Ścieżkę można nadpisać zmienną `IDEAS_DATA_DIR`.
 > Endpoint `POST /api/ideas` posiada limit 10 zgłoszeń na minutę z jednego adresu IP oraz nagłówki CORS dla GitHub Pages i tunelu.
+> Endpoint `GET /api/health` ujawnia status storage (istnienie bazy i dziennika) wykorzystywany w smoke teście tunelu.
 
 ## Run with tunnel
 
@@ -78,6 +79,7 @@ Test `tests/test_visual_key.py` pilnuje sekcji ekspozycji „Próby Płomienia�
 Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `GET /api/health` raportuje gotowość storage.
 Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`.
 `tests/test_nojekyll.py` zabezpiecza obecność pliku `.nojekyll` i opis w README, aby hosting GitHub Pages pozostał statyczny.
 
@@ -151,3 +153,4 @@ mypy app.py                      # statyczne typowanie backendu Flask
 - Dodać automatyczny linting HTML/CSS (np. HTMLHint, Stylelint) i włączyć do CI.
 - Przygotować komponentowe podejście (np. Eleventy) dla dalszej rozbudowy.
 - Zaprojektować widok prezentujący zgłoszone pomysły wraz z moderacją i eksportem.
+- Rozszerzyć `/api/health` o szczegóły tunelu (np. echo adresu `BACKEND_URL`) i zautomatyzowany test porównujący konfiguracje.
