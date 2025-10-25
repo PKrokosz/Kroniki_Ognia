@@ -86,3 +86,14 @@
 - `scripts/smoke.sh` opisany w README umożliwia walidację tunelu.
 - CORS i rate limit skonfigurowane w `app.py`; ADR/notes zawierają analizę 5xWhy tunelu.
 - Health-check i walidacja JSON są chronione testami (`tests/test_api.py`).
+
+## Cel fazy 6 — Kuracja treści kafelków
+- [Scope] Udostępnić edycję tekstów kafelków przez zakładki po prawej stronie oraz pamięć w `localStorage`.
+- [Scope] Zapewnić fallback UI informujący o blokadzie zapisu przy wyłączonym `localStorage`.
+- [Scope] Ujednolicić logikę edycji w dedykowanym module JS z testami regresji i dokumentacją procesu.
+- [Non-Goals] Synchronizacja zmian między urządzeniami, wersjonowanie edytowanych treści, backendowy zapis kafelków.
+
+## Definicja ukończenia fazy 6 — Kuracja treści kafelków (DoD)
+- `assets/editable-tiles.js` dodaje zakładki edycji do wszystkich kafelków tekstowych i obsługuje zapis w `localStorage`.
+- Fallback przy braku `localStorage` komunikuje niedostępność edycji i blokuje tryb zapisu.
+- README i notes opisują sposób edycji oraz log zdarzeń 5xWhy; test `tests/test_editable_tiles.py` pilnuje obecności modułu i styli.

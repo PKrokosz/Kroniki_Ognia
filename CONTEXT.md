@@ -19,3 +19,4 @@ Zasady:
 - Formularz „Dodaj pomysł” wymaga działającego endpointu `/api/ideas`; kontrakt pilnuje `tests/test_idea_submission.py` oraz `tests/test_api.py`.
 - Smoke `tests/test_api.py` oraz `scripts/smoke.sh` gwarantują, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `/api/health` raportuje gotowość storage.
 - Dokumentacja pozostaje zwięzła i bez duplikatów nagłówków; `tests/test_documentation.py` pilnuje spójności README.
+- Kafelki tekstowe na wszystkich stronach udostępniają edycję treści przez zakładkę sterowaną `assets/editable-tiles.js`; działanie wymaga `localStorage`, a fallback informuje o blokadzie zapisu.
