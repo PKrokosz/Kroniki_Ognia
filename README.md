@@ -32,15 +32,15 @@ flask --app app run
 
 ## Run with tunnel
 
-Statyczny front na GitHub Pages ładuje adres backendu z `public/config.json`.
+Statyczny front na GitHub Pages ładuje adres backendu z `config.json` serwowanego wraz z witryną (osiągalnego zarówno pod `/config.json`, jak i `/Kroniki_Ognia/config.json`). Plik `public/config.json` pozostaje referencją do utrzymania konfiguracji w repozytorium i musi pozostawać zsynchronizowany.
 
 ```json
 {
-  "BACKEND_URL": "https://api-kroniki.<MOJA-DOMENA>"
+  "BACKEND_URL": "https://random-words-1234.trycloudflare.com"
 }
 ```
 
-> co robi: wskazuje publiczny adres tunelu bez końcowego ukośnika.
+> co robi: wskazuje publiczny adres tunelu bez końcowego ukośnika. Obie kopie `config.json` należy aktualizować jednocześnie, aby testy nie zablokowały wdrożenia.
 
 Po wdrożeniu tunelu backend Flask powinien być osiągalny pod podanym adresem. Formularz ustawi `form.action` oraz wywoła `fetch` na `${BACKEND_URL}/api/ideas`.
 
@@ -60,6 +60,7 @@ pytest
 ```
 
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
+Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`), zgodność plików konfiguracyjnych (`tests/test_config_json.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).

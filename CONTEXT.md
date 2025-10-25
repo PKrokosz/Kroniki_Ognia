@@ -7,7 +7,7 @@
 - `docs/notes.md`
 - Bieżące ADR w `docs/adr/`
 - Backend Flask (`app.py`) realizuje formularz „Dodaj pomysł”; dane trafiają do katalogu `data/`.
-- `public/config.json` wskazuje adres tunelu backendu, wykorzystywany przez JS frontu.
+- `config.json` (w katalogu głównym i `public/`) wskazuje adres tunelu backendu, wykorzystywany przez JS frontu.
 
 Zasady:
 - Brak odwołań do historii czatu.

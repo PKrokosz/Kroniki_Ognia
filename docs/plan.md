@@ -90,6 +90,6 @@
 
 ## Definicja ukończenia fazy 5 (DoD)
 - `pytest` obejmuje smoke `tests/test_api.py` oraz zaktualizowane testy kontraktowe.
-- `public/config.json` zawiera produkcyjny adres tunelu bez końcowego ukośnika i jest udokumentowany w README.
+- `config.json` jest serwowany zarówno z katalogu głównego, jak i z `public/`, zawiera produkcyjny adres tunelu bez końcowego ukośnika i jest udokumentowany w README.
 - Skrypt `scripts/smoke.sh` przyjmuje URL tunelu i zwraca odpowiedź JSON; README opisuje jego użycie.
 - CORS i rate limit są skonfigurowane w `app.py`, a ADR/notes zawierają analizę 5xWhy dla tunelu.
