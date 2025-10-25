@@ -4,6 +4,35 @@
 - Do dodania `index.html` jako landing page dla GitHub Pages.
 - Należy utrzymać oryginalne teksty bez zmian merytorycznych.
 - Nowa nawigacja została wdrożona wraz z testem `tests/test_navigation.py`; wszystkie strony korzystają z identycznego nagłówka.
+- Pipeline CI rozszerzono o `ruff` i `mypy`, aby każda zmiana w Pythonie przechodziła przez linting i analizę typów, a wynik dokumentuje README oraz `docs/tasks.md`.
+- `.gitignore` rozszerzono o standardowe wpisy (środowiska, cache, logi), aby repo pozostawało wolne od artefaktów lokalnych i binarnych.
+
+## 5xWhy — Higiena `.gitignore`
+1. Dlaczego potrzebujemy rozszerzyć `.gitignore`?
+   - (A) Aby uniknąć przypadkowego commitowania wirtualnych środowisk.
+   - (B) Aby zmniejszyć szum przy code review i CI.
+   - (C) Aby uspójnić repo z wytycznymi CTO persony.
+   **Decyzja:** A jako fundament operacyjny, wzmocniony dyscypliną review z (B).
+2. Dlaczego należy objąć cache testów i typowania?
+   - (A) `.pytest_cache` i `.mypy_cache` szybko rosną i są zależne od środowiska.
+   - (B) Pozwalają zachować powtarzalność wyników CI.
+   - (C) Ułatwiają onboarding nowych agentów poprzez czyste checkouty.
+   **Decyzja:** A jako ochrona przed inflacją repo, z dodatkowym onboardingiem z (C).
+3. Dlaczego warto ignorować katalogi edytorów (`.idea/`, `.vscode/`)?
+   - (A) Każdy agent korzysta z innej konfiguracji IDE.
+   - (B) Pliki te często zawierają ścieżki lokalne i sekrety.
+   - (C) Zmiany w tych plikach utrudniają code review.
+   **Decyzja:** A jako gwarancja neutralności narzędzi, poszerzona o bezpieczeństwo z (B).
+4. Dlaczego wpisy dla logów i plików `.env` są krytyczne?
+   - (A) Zapobiegają wyciekowi danych konfiguracyjnych lub tokenów.
+   - (B) Minimalizują konflikty podczas debugowania.
+   - (C) Wspierają pipeline bezpieczeństwa repo.
+   **Decyzja:** A jako ochrona tajemnic, z kontrolą bezpieczeństwa z (C).
+5. Dlaczego potrzebny jest kolejny krok automatyzujący walidację `.gitignore`?
+   - (A) Manualna kontrola może zostać pominięta w przyszłych iteracjach.
+   - (B) Automatyzacja pozwoli szybciej wykrywać regresje.
+   - (C) Wzmacnia kulturę narzędziową przed MVP.
+   **Decyzja:** B jako impuls do CI, wzbogacony o kulturę narzędziową z (C).
 
 # Notatki (Faza 2)
 - Paleta barw została przygaszona wokół barw ziemistych, dodano ambientową warstwę tła i animację pulsującą, zachowując czytelność tekstów.
@@ -11,6 +40,8 @@
 - Powstał zestaw testów `tests/test_responsive_theme.py` weryfikujących zarówno bloki @media, jak i obecność efektów graficznych.
 - Wdrożono wielowarstwowe, rozmyte tła z zasobów `img/` — trzy obrazy na podstronę płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
 - Wzmocniono ekspozycję ambientowych warstw: zwiększona jasność, saturacja i amplituda ruchu sprawiają, że galeria jest wyraźnie widoczna nawet pod nakładającymi się efektami.
+- Landing wzbogacono o sekcję visual key "Próby Płomienia" z trzema progami (Iskra, Żar, Płomień), wykorzystującą zdjęcia `img/1.jpg`, `img/4.jpg`, `img/7.jpg` oraz prowadzącą do kluczowych podstron.
+- Sekcja visual key otrzymała przycisk autoodtwarzania z respektowaniem `prefers-reduced-motion` i komunikatami statusu.
 
 ## 5xWhy — Wzmocnienie widoczności ambientu
 1. Dlaczego należy zwiększyć jasność i saturację warstw?
@@ -66,11 +97,39 @@
    - (C) Pozwala zachować kompatybilność z dotychczasowymi testami.
    **Decyzja:** B jako gwarancja prostoty, uzupełniona o wydajność z (A).
 
+## 5xWhy — Sekcja visual key
+1. Dlaczego potrzebujemy sekcji visual key na landingu?
+   - (A) Aby pokazać klimat projektu przed formularzem "Dodaj pomysł".
+   - (B) Aby wykorzystać istniejące zdjęcia `img/` jako natychmiastowe odwołania.
+   - (C) Aby zaoferować mistrzom gry szybki pitch treści podstron.
+   **Decyzja:** A jako główny impuls, wzmocniony biblioteką zdjęć z (B).
+2. Dlaczego sekcja powinna mieć trzy progi narracyjne?
+   - (A) Tryptyk odzwierciedla strukturę repozytorium (świat, narzędzia, plan).
+   - (B) Trzy kroki ułatwiają prowadzenie prezentacji live.
+   - (C) Parzysta liczba kafelków trudniej buduje dramaturgię.
+   **Decyzja:** A jako fundament, uzupełniony o rytm prezentacji z (B).
+3. Dlaczego zastosowaliśmy tryb autoodtwarzania zamiast slidera?
+   - (A) Autoodtwarzanie można włączyć lub pominąć — nie wymusza ruchu.
+   - (B) Slider wymagałby dodatkowej paginacji i kontroli focusu.
+   - (C) Przycisk łatwiej testować i respektuje dostępność.
+   **Decyzja:** A zapewnia kontrolę użytkownikowi, wzmocniona prostotą testów z (C).
+4. Dlaczego status sekcji jest komunikowany przez `aria-live`?
+   - (A) Osoby niewidzące muszą wiedzieć, czy autoodtwarzanie działa.
+   - (B) Pozwala raportować blokadę przy `prefers-reduced-motion`.
+   - (C) Wspiera QA przy sprawdzaniu zachowania przycisku.
+   **Decyzja:** A jako wymóg dostępności, rozszerzony o klarowne komunikaty z (B).
+5. Dlaczego obrazy pochodzą z `img/1.jpg`, `img/4.jpg`, `img/7.jpg`?
+   - (A) Otwierają i zamykają istniejące ambienty, zachowując spójność.
+   - (B) Unikamy duplikacji plików i dbamy o testy, które już pilnują katalogu.
+   - (C) Ten zestaw pokrywa drogę od wprowadzenia po finał dnia.
+   **Decyzja:** C jako narracyjny łuk, wsparte przez spójność zasobów z (A).
+
 # Notatki (Faza 3)
 - Dodano wspólny baner "flying object" prowadzący do Notebook LM z bazą wiedzy brainstormu; zachowuje klimat projektu dzięki animowanej ikonie zwiadowcy.
 - Test `tests/test_notebook_banner.py` kontroluje link, atrybuty bezpieczeństwa oraz komunikat narracyjny.
 - Baner respektuje preferencje ograniczonego ruchu i układ mobilny, dzięki czemu CTA pozostaje dostępne.
 - Baner uzupełniono o CTA do archiwum Google Drive z zasobami wspierającymi produkcję; kolorowa ikona sygnalizuje, że chodzi o repozytorium plików wizualnych.
+- Plik `.nojekyll` w katalogu głównym blokuje przetwarzanie Jekylla na GitHub Pages, dzięki czemu cała struktura repozytorium jest serwowana bezpośrednio jako statyczna witryna i test `tests/test_nojekyll.py` będzie szybko alarmował o brakach.
 
 ## 5xWhy — Dlaczego link do archiwum Google Drive
 1. Dlaczego dodajemy link do Google Drive?
@@ -374,6 +433,33 @@
    - (C) Zapewnia zgodność z wymaganiami CI i dokumentacją planu.
    **Decyzja:** A jako fundament, rozszerzone o dyscyplinę CI z (C).
 
+## 5xWhy — Statyczne kontrole kodu Python
+1. Dlaczego dodajemy `ruff` i `mypy` do CI?
+   - (A) Aby wychwytywać błędy stylu i typów zanim trafią do głównej gałęzi.
+   - (B) Aby przygotować repo na automatyczne review przez subagentów.
+   - (C) Aby utrzymać jakość backendu przed rozbudową API.
+   **Decyzja:** A jako najważniejszy strażnik jakości, uzupełniony o przyszłą współpracę agentów z (B).
+2. Dlaczego `ruff` ma działać w tym samym jobie co `pytest`?
+   - (A) Minimalizuje czas konfiguracji nowego workflow.
+   - (B) Zapewnia jeden punkt blokujący merge.
+   - (C) Ułatwia odczyt logów w CI.
+   **Decyzja:** B jako priorytet pipeline'u, poszerzony o szybsze logi z (C).
+3. Dlaczego konfiguracja `mypy` ignoruje tylko brakujące importy `flask_limiter`?
+   - (A) Biblioteka nie dostarcza oficjalnych stubów.
+   - (B) Chcemy zachować kontrolę nad resztą zależności bez globalnego ignorowania błędów.
+   - (C) Pozwala to wychwycić regresje w kodzie aplikacji mimo braków w stubs.
+   **Decyzja:** B jako klucz, z dołożeniem czujności wobec aplikacji z (C).
+4. Dlaczego aktualizujemy `requirements.txt` zamiast instalować narzędzia ad-hoc w CI?
+   - (A) Ułatwia to deweloperom lokalne uruchamianie lintów tym samym poleceniem.
+   - (B) Zabezpiecza wersje narzędzi przed dryfem.
+   - (C) Upraszcza onboarding nowych agentów.
+   **Decyzja:** A jako najważniejsze, rozszerzone o stabilność wersji z (B).
+5. Dlaczego trzeba odnotować zmianę w README?
+   - (A) README pełni funkcję checklisty jakości przed wydaniem.
+   - (B) Nowi uczestnicy repo mogą nie znać `ruff` ani `mypy`.
+   - (C) Zapewnia to spójność z polityką "lint + typecheck + test" jako blokera merge'a.
+   **Decyzja:** C jako fundament procesu, wzmocniony onboardingiem z (B).
+
 ## 5xWhy — Baner Notebook LM
 1. Dlaczego dodajemy baner z odnośnikiem do Notebook LM?
    - (A) By użytkownicy szybko trafili do pełnej bazy wiedzy po burzy mózgów.
@@ -400,6 +486,33 @@
    - (B) Aby zsynchronizować wiedzę z pipeline'em dokumentacyjnym.
    - (C) Aby przygotować kolejny test akceptacyjny dla integracji.
    **Decyzja:** B jako kierunek, z planem na streszczenie z (A).
+
+## 5xWhy — Dlaczego wymuszamy `.nojekyll`
+1. Dlaczego dodajemy plik `.nojekyll`?
+   - (A) Aby GitHub Pages nie uruchamiał Jekylla, który ignoruje katalogi zaczynające się od `_`.
+   - (B) Aby pipeline był kompatybilny z istniejącymi testami wykorzystującymi katalog `tests/` na froncie.
+   - (C) Aby uniknąć konfliktów z własnym generatorem statycznym w przyszłości.
+   **Decyzja:** A jako najpilniejsza potrzeba, wzmocniona świadomością kompatybilności z (B).
+2. Dlaczego musimy utrzymywać dokumentację o `.nojekyll`?
+   - (A) Nowi współtwórcy zrozumieją, że brak pliku to regresja w deployu.
+   - (B) Dokumentacja służy jako checklist przy audytach CTO.
+   - (C) README pomaga przy on-boardingu osób odpowiedzialnych za Pages.
+   **Decyzja:** A jako główna ochrona, doprawiona aspektem onboardingu z (C).
+3. Dlaczego potrzebny jest test automatyczny dla `.nojekyll`?
+   - (A) Ręczna kontrola łatwo przeoczy brak pliku po refaktorach.
+   - (B) Test może także sprawdzać, czy README tłumaczy decyzję.
+   - (C) Włączenie do CI pozwala szybko reagować na regresje hostingowe.
+   **Decyzja:** C jako strażnik CI, rozszerzony o dokumentacyjną kontrolę z (B).
+4. Dlaczego test ma pilnować również wzmianki w README?
+   - (A) Bez przypomnienia w dokumentacji decyzja mogłaby zostać cofnięta.
+   - (B) README jest najczęściej czytanym plikiem przez utrzymanie.
+   - (C) Chronimy spójność między wiedzą operacyjną a stanem repo.
+   **Decyzja:** C jako wymóg spójności, uzupełniony o popularność README z (B).
+5. Dlaczego planujemy dalszą automatyzację kontroli artefaktów Jekylla?
+   - (A) GitHub może ponownie włączyć Jekylla przy zmianie ustawień projektu.
+   - (B) Monitoring `/_site` wykryje przypadkowe wdrożenia generatora.
+   - (C) Alert w pipeline pozwoli reagować zanim trafi to do produkcji.
+   **Decyzja:** C jako główny cel operacyjny, wzbogacony o obserwację artefaktów z (B).
 
 # Notatki (Faza 4)
 - Strona główna otrzymuje formularz "Dodaj pomysł" z natychmiastowym feedbackiem i dostępnością `aria-live`.
@@ -469,9 +582,50 @@
 - **Dlaczego (z czego zrezygnowano):** Odłożono liczenie rekordów i walidację adresu tunelu, aby szybciej dostarczyć podstawowe potwierdzenie storage.
 - **Cel funkcji i stan pipeline'u:** Health-check pełni rolę szybkiej diagnostyki MVP; pipeline posiada świeży test `pytest tests/test_api.py::test_health_ok`, kolejnym etapem będzie rozszerzenie payloadu o konfigurację tunelu.
 - **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo zmierza do kompletnego doświadczenia warsztatowego z niezawodnym backendem; następnym zadaniem będzie automatyczna weryfikacja `BACKEND_URL` w health-checku i integracja z monitoringiem tunelu.
+- Toolchain deweloperski został rozszerzony o `ruff` i `mypy`, a brakujące stuby (`types-Flask-Cors`, `types-requests`) pozwalają uruchomić statyczną analizę bez błędów importu.
+- Po instalacji `pip install -r requirements.txt` można lokalnie sprawdzić: `ruff check .`, `mypy app.py`, `pytest` — komplet narzędzi potrzebny przed wdrożeniem tunelu backendu.
+
+## 5xWhy — Dlaczego dodajemy linting i typowanie backendu
+1. Dlaczego do requirements trafia `ruff`?
+   - (A) Żeby pilnować stylu i błędów logicznych w lekkim CLI.
+   - (B) Żeby przygotować grunt pod automatyczne lintowanie w CI.
+   - (C) Żeby przyspieszyć code review między agentami.
+   **Decyzja:** B jako inwestycja w pipeline, z natychmiastową korzyścią szybkości z (C).
+2. Dlaczego `mypy` uruchamiamy na `app.py` już teraz?
+   - (A) Backend gromadzi coraz więcej logiki i warto ją weryfikować typami.
+   - (B) Statyczna analiza wyłapuje brakujące importy i edge-case'y JSON.
+   - (C) Przygotowuje programistów na rozbudowę API o kolejne endpointy.
+   **Decyzja:** A jako główny cel jakości, rozszerzony o wczesną detekcję błędów z (B).
+3. Dlaczego dokładamy stuby `types-Flask-Cors` i `types-requests`?
+   - (A) Bez nich `mypy` zatrzymuje się na brakujących typach.
+   - (B) Stuby dokumentują kontrakt bibliotek trzecich i ułatwiają nawigację.
+   - (C) W przyszłości ułatwią przejście na bardziej restrykcyjne ustawienia `mypy`.
+   **Decyzja:** A jako konieczny krok, doprawiony dokumentacyjnością z (B).
+4. Dlaczego dokumentujemy komendy w README?
+   - (A) Nowi agenci muszą znać kolejność uruchamiania narzędzi przed pracą nad backendem.
+   - (B) README pełni rolę checklisty akceptacyjnej i nie może pomijać nowych blokad jakościowych.
+   - (C) Pozwala szybko zareagować, gdy `pip` ostrzega o pracy jako `root`.
+   **Decyzja:** B jako główny driver, rozszerzony o bezpieczeństwo środowiska z (C).
+5. Dlaczego aktualizujemy `docs/tasks.md`?
+   - (A) Checklisty muszą odzwierciedlać obowiązkowe kroki QA.
+   - (B) Ułatwia monitorowanie, czy ruff/mypy zostały uruchomione w każdej fazie.
+   - (C) Przygotowuje nas pod integrację narzędzi w CI.
+   **Decyzja:** A jako wymóg procesowy, z perspektywą CI z (C).
+
+## Raport agenta — Kontrola jakości backendu
+- **Co zostało zrobione:** Narzędzia `ruff` i `mypy` zostały włączone do codziennego zestawu QA, a brakujące stuby umożliwiają pełne przejście analizy statycznej.
+- **Dlaczego (z czego zrezygnowano):** Odłożono konfigurację zaawansowanych pluginów (np. strict optional w `mypy`) na późniejszą fazę, aby najpierw ustabilizować podstawowy lint.
+- **Cel funkcji i stan pipeline'u:** Zapewnić szybkie wychwytywanie regresji w backendzie przed wdrożeniem tunelu; pipeline ma teraz komplet komend `ruff`, `mypy`, `pytest` jako wymóg DoD.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo przybliża się do produkcyjnego MVP dzięki szczelniejszej kontroli jakości; kolejnym krokiem będzie włączenie tych komend do workflow CI oraz rozszerzenie statycznej analizy na katalog `tests/`.
 
 ## Raport agenta — Ambientowe tła
 - **Co zostało zrobione:** Każda podstrona otrzymała trzywarstwowe, rozmyte tło z galerii zdjęć, które powoli przesuwa się horyzontalnie, utrzymując klimat płonącego klasztoru.
 - **Dlaczego (z czego zrezygnowano):** Odłożono dynamiczne sterowanie prędkością w oparciu o scroll JS, aby zachować lekkość implementacji i kompatybilność z hostingiem statycznym.
 - **Cel funkcji i stan pipeline'u:** Warstwa wizualna ma pogłębić immersję bez utraty dostępności; pipeline jest zabezpieczony nowym testem `tests/test_ambient_backgrounds.py`, a kontynuacją jest zaplanowanie sterowania ruchem w `docs/tasks.md`.
 - **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo zmierza ku pełnemu doświadczeniu LARP (wizualia + interakcje). Następny krok to dostosowanie prędkości tła do scrolla i przygotowanie narzędzi do dalszego rozszerzania ambientu.
+
+## Raport agenta — Statyczne kontrole CI
+- **Co zostało zrobione:** Workflow CI instaluje teraz `ruff` i `mypy`, dzięki czemu każda zmiana backendu przechodzi pełen zestaw lintingu, typów i testów opisany także w README.
+- **Dlaczego (z czego zrezygnowano):** Zrezygnowaliśmy z osobnych jobów na rzecz prostego rozszerzenia istniejącego pipeline'u, aby utrzymać szybki feedback.
+- **Cel funkcji i stan pipeline'u:** Celem jest stała jakość kodu Python oraz dokumentacja procesu; pipeline ma nowy check, a w backlogu pozostaje lokalny skrót `make lint` agregujący narzędzia.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo przybliża się do MVP, bo backend i testy są teraz pilnowane automatycznie; kolejnym krokiem jest przygotowanie lokalnego workflow skrótów CLI, by zespoły mogły łatwiej uruchamiać kompletny zestaw kontroli.
