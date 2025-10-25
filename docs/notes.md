@@ -10,6 +10,11 @@
 - Nawigacja na urządzeniach mobilnych przechodzi w układ kolumnowy, a karty otrzymują mniejsze paddingi, co poprawia ergonomię.
 - Powstał zestaw testów `tests/test_responsive_theme.py` weryfikujących zarówno bloki @media, jak i obecność efektów graficznych.
 
+# Notatki (Faza 3)
+- Dodano wspólny baner "flying object" prowadzący do Notebook LM z bazą wiedzy brainstormu; zachowuje klimat projektu dzięki animowanej ikonie zwiadowcy.
+- Test `tests/test_notebook_banner.py` kontroluje link, atrybuty bezpieczeństwa oraz komunikat narracyjny.
+- Baner respektuje preferencje ograniczonego ruchu i układ mobilny, dzięki czemu CTA pozostaje dostępne.
+
 ## 5xWhy — Responsywność i nastrój
 1. Dlaczego należy zmienić paletę i układ?  
    - (A) By dopasować wizję artystyczną do nastroju opowieści.  
@@ -31,8 +36,35 @@
    - (B) Pipeline CI wymaga mierzalnych kryteriów.  
    - (C) Przygotowuje grunt pod kolejne fazy.  
    **Decyzja:** B jako pewny fundament, z rozszerzeniem o prewencję regresji z (A).
-5. Dlaczego pipeline potrzebuje dokumentacji zmian?  
-   - (A) Zapewnia kontekst dla przyszłych agentów.  
-   - (B) Ułatwia audyt CTO persony.  
-   - (C) Buduje pamięć projektową (CONTEXT).  
+5. Dlaczego pipeline potrzebuje dokumentacji zmian?
+   - (A) Zapewnia kontekst dla przyszłych agentów.
+   - (B) Ułatwia audyt CTO persony.
+   - (C) Buduje pamięć projektową (CONTEXT).
    **Decyzja:** A jako wiodące, uzupełnione o audytowalność z (B).
+
+## 5xWhy — Baner Notebook LM
+1. Dlaczego dodajemy baner z odnośnikiem do Notebook LM?
+   - (A) By użytkownicy szybko trafili do pełnej bazy wiedzy po burzy mózgów.
+   - (B) By wzmocnić narrację repo o latającym zwiadowcy prowadzącym do wiedzy.
+   - (C) By zebrać wszystkie zasoby w jednym miejscu dla przygotowania MVP.
+   **Decyzja:** A jako priorytet, wzbogacony o element narracyjny z (B).
+2. Dlaczego komunikat ma formę "flying object"?
+   - (A) Podtrzymuje klimat mistycznego klasztoru ognia.
+   - (B) Wyróżnia CTA na tle innych elementów strony.
+   - (C) Pozwala rozbudować motyw przewodni na przyszłe interakcje.
+   **Decyzja:** B jako klucz do widoczności, z klimatem z (A).
+3. Dlaczego baner potrzebuje osobnego testu automatycznego?
+   - (A) Gwarantuje stałą dostępność linku do knowledge base.
+   - (B) Chroni atrybuty bezpieczeństwa (`rel`, `target`).
+   - (C) Zapobiega przypadkowemu usunięciu narracyjnego komunikatu.
+   **Decyzja:** A jako fundament, rozszerzony o wymagania bezpieczeństwa z (B).
+4. Dlaczego animacja musi respektować `prefers-reduced-motion`?
+   - (A) Dostępność to wymóg MVP.
+   - (B) Minimalizuje ryzyko dyskomfortu użytkowników.
+   - (C) Pozwala zachować płynność działania strony.
+   **Decyzja:** A jako główna motywacja, z uwzględnieniem komfortu z (B).
+5. Dlaczego planujemy kontynuację prac nad Notebook LM?
+   - (A) Aby streścić kluczowe wnioski w samej witrynie.
+   - (B) Aby zsynchronizować wiedzę z pipeline'em dokumentacyjnym.
+   - (C) Aby przygotować kolejny test akceptacyjny dla integracji.
+   **Decyzja:** B jako kierunek, z planem na streszczenie z (A).
