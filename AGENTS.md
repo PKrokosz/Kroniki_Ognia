@@ -25,6 +25,8 @@ Coding standards:
 - Tests live under `tests/` and must be runnable with `pytest`.
 - Maintain a subdued, ember-toned palette (earthy browns, muted golds) and reuse the ambient overlay/hero patterns when rozbudowywanie UI.
 - Zachowuj responsywne bloki @media <= 600px tak, by nawigacja przechodziła w układ kolumnowy; nowe komponenty muszą respektować mobilny padding.
+- Panel komentarzy "Oceń pomysł" w `organizacja.html` musi pozostać domyślnie zwinięty, obsługiwać `localStorage` z czytelnym komunikatem statusu oraz być testowany w `tests/test_feedback_panel.py`.
+- Interaktywne komponenty front-endowe wymagają obsługi braku `localStorage` (fallback komunikatu) i aktualizacji dokumentacji w README oraz `docs/notes.md`.
 
 Commit/PR standards:
 - Use Conventional Commits.

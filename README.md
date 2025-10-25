@@ -24,7 +24,7 @@ pytest
 ```
 
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`).
+Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
@@ -56,6 +56,11 @@ Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mo
 - Pojawił się baner "flying object" kierujący do Notebook LM z bazą wiedzy po burzy mózgów, spójny na wszystkich podstronach.
 - Animowana ikona zwiadowcy zachowuje klimat ognia, a preferencje ograniczonego ruchu wyłączają animację.
 - Test `tests/test_notebook_banner.py` pilnuje obecności linku, etykiety ARIA oraz zabezpieczeń `rel="noopener"`.
+
+## Aktualizacja fazy 4
+- Sekcja "Organizacja" oferuje panel komentarza przy każdym wątku — rozwijany przyciskiem "Oceń pomysł" i zapisujący notatki w `localStorage`.
+- Styl panelu wpisuje się w bursztynową paletę repozytorium i respektuje układ mobilny.
+- Test `tests/test_feedback_panel.py` pilnuje obecności znaczników danych oraz styli komponentu.
 
 ## Status fazy
 - Plan fazy 1 i zadania: `docs/plan.md`, `docs/tasks.md`.
