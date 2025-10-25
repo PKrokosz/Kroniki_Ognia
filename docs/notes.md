@@ -4,6 +4,7 @@
 - Do dodania `index.html` jako landing page dla GitHub Pages.
 - Należy utrzymać oryginalne teksty bez zmian merytorycznych.
 - Nowa nawigacja została wdrożona wraz z testem `tests/test_navigation.py`; wszystkie strony korzystają z identycznego nagłówka.
+- Pipeline CI rozszerzono o `ruff` i `mypy`, aby każda zmiana w Pythonie przechodziła przez linting i analizę typów, a wynik dokumentuje README oraz `docs/tasks.md`.
 - `.gitignore` rozszerzono o standardowe wpisy (środowiska, cache, logi), aby repo pozostawało wolne od artefaktów lokalnych i binarnych.
 
 ## 5xWhy — Higiena `.gitignore`
@@ -432,6 +433,33 @@
    - (C) Zapewnia zgodność z wymaganiami CI i dokumentacją planu.
    **Decyzja:** A jako fundament, rozszerzone o dyscyplinę CI z (C).
 
+## 5xWhy — Statyczne kontrole kodu Python
+1. Dlaczego dodajemy `ruff` i `mypy` do CI?
+   - (A) Aby wychwytywać błędy stylu i typów zanim trafią do głównej gałęzi.
+   - (B) Aby przygotować repo na automatyczne review przez subagentów.
+   - (C) Aby utrzymać jakość backendu przed rozbudową API.
+   **Decyzja:** A jako najważniejszy strażnik jakości, uzupełniony o przyszłą współpracę agentów z (B).
+2. Dlaczego `ruff` ma działać w tym samym jobie co `pytest`?
+   - (A) Minimalizuje czas konfiguracji nowego workflow.
+   - (B) Zapewnia jeden punkt blokujący merge.
+   - (C) Ułatwia odczyt logów w CI.
+   **Decyzja:** B jako priorytet pipeline'u, poszerzony o szybsze logi z (C).
+3. Dlaczego konfiguracja `mypy` ignoruje tylko brakujące importy `flask_limiter`?
+   - (A) Biblioteka nie dostarcza oficjalnych stubów.
+   - (B) Chcemy zachować kontrolę nad resztą zależności bez globalnego ignorowania błędów.
+   - (C) Pozwala to wychwycić regresje w kodzie aplikacji mimo braków w stubs.
+   **Decyzja:** B jako klucz, z dołożeniem czujności wobec aplikacji z (C).
+4. Dlaczego aktualizujemy `requirements.txt` zamiast instalować narzędzia ad-hoc w CI?
+   - (A) Ułatwia to deweloperom lokalne uruchamianie lintów tym samym poleceniem.
+   - (B) Zabezpiecza wersje narzędzi przed dryfem.
+   - (C) Upraszcza onboarding nowych agentów.
+   **Decyzja:** A jako najważniejsze, rozszerzone o stabilność wersji z (B).
+5. Dlaczego trzeba odnotować zmianę w README?
+   - (A) README pełni funkcję checklisty jakości przed wydaniem.
+   - (B) Nowi uczestnicy repo mogą nie znać `ruff` ani `mypy`.
+   - (C) Zapewnia to spójność z polityką "lint + typecheck + test" jako blokera merge'a.
+   **Decyzja:** C jako fundament procesu, wzmocniony onboardingiem z (B).
+
 ## 5xWhy — Baner Notebook LM
 1. Dlaczego dodajemy baner z odnośnikiem do Notebook LM?
    - (A) By użytkownicy szybko trafili do pełnej bazy wiedzy po burzy mózgów.
@@ -560,3 +588,9 @@
 - **Dlaczego (z czego zrezygnowano):** Odłożono dynamiczne sterowanie prędkością w oparciu o scroll JS, aby zachować lekkość implementacji i kompatybilność z hostingiem statycznym.
 - **Cel funkcji i stan pipeline'u:** Warstwa wizualna ma pogłębić immersję bez utraty dostępności; pipeline jest zabezpieczony nowym testem `tests/test_ambient_backgrounds.py`, a kontynuacją jest zaplanowanie sterowania ruchem w `docs/tasks.md`.
 - **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo zmierza ku pełnemu doświadczeniu LARP (wizualia + interakcje). Następny krok to dostosowanie prędkości tła do scrolla i przygotowanie narzędzi do dalszego rozszerzania ambientu.
+
+## Raport agenta — Statyczne kontrole CI
+- **Co zostało zrobione:** Workflow CI instaluje teraz `ruff` i `mypy`, dzięki czemu każda zmiana backendu przechodzi pełen zestaw lintingu, typów i testów opisany także w README.
+- **Dlaczego (z czego zrezygnowano):** Zrezygnowaliśmy z osobnych jobów na rzecz prostego rozszerzenia istniejącego pipeline'u, aby utrzymać szybki feedback.
+- **Cel funkcji i stan pipeline'u:** Celem jest stała jakość kodu Python oraz dokumentacja procesu; pipeline ma nowy check, a w backlogu pozostaje lokalny skrót `make lint` agregujący narzędzia.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo przybliża się do MVP, bo backend i testy są teraz pilnowane automatycznie; kolejnym krokiem jest przygotowanie lokalnego workflow skrótów CLI, by zespoły mogły łatwiej uruchamiać kompletny zestaw kontroli.

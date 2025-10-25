@@ -8,6 +8,7 @@ Repo owner directives:
 - Keep navigation consistent across all HTML pages (include top nav linking to each document and GitHub Pages index).
 - Utrzymuj na każdej stronie baner "flying object" kierujący do Notebook LM, włączając animowaną ikonę oraz tekst o zwiadowcy; baner musi także zawierać CTA do archiwum Google Drive z ikoną (`data-icon="google-drive"`) i klasą `notebook-banner__link--drive`.
 - Tests, lint, and documentation updates are mandatory companions to feature work.
+- CI `ci` workflow instaluje i uruchamia `pytest`, `ruff` oraz `mypy`; każda zmiana w Pythonie musi przechodzić ten zestaw lokalnie przed PR.
 - Expand this AGENTS file when new patterns or decisions emerge.
 - Custom domain `www.larpkronikiognia.pl` konfigurujemy w ustawieniach GitHub Pages; repozytorium nie przechowuje pliku `CNAME`.
 - Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME`, brak pliku w repo i wskazuje host `pkr0kosz.github.io` (plus ewentualną domenę `.com`).

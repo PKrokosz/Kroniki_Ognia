@@ -6,6 +6,7 @@
 - [Non-Goals] Nowa zawartość fabularna, rozbudowane funkcje JS poza nawigacją.
 
 ## Definicja ukończenia (DoD)
+- Lint (`ruff`), typecheck (`mypy`), test (`pytest`) zielone jako blokery merge'a.
 - Lint, typecheck, test: `ruff check .`, `mypy app.py`, `pytest` zielone; kolejne linty front-endowe zaplanujemy w następnych fazach.
 - Wszystkie strony korzystają ze wspólnego arkusza `assets/styles.css` i dzielonej nawigacji.
 - Istnieje `index.html` jako strona startowa GitHub Pages.
