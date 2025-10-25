@@ -15,6 +15,8 @@
 - [x] Zadanie 1: Udokumentować ręczną konfigurację custom domain bez pliku `CNAME` — Test: `pytest tests/test_custom_domain.py::test_manual_custom_domain_documented`
 - [x] Zadanie 1a: Zabezpieczyć repo przed przypadkowym dodaniem `CNAME` — Test: `pytest tests/test_custom_domain.py::test_cname_managed_via_github_settings`
 - [x] Zadanie 1b: Ustalić właściwy rekord `CNAME` na `pkr0kosz.github.io` (wraz z opcją `.com`) — Test: `pytest tests/test_custom_domain.py::test_dns_host_documented`
+- [x] Zadanie 4: Dodać `.nojekyll` i test weryfikujący statyczne serwowanie GitHub Pages — Test: `pytest tests/test_nojekyll.py::test_nojekyll_file_present`
+- [ ] Zadanie 4a (kontynuacja): Automatycznie monitorować artefakty Jekylla (np. `_site/`) w pipeline — Test: do zaprojektowania (`tests/test_nojekyll.py::test_nojekyll_guard_pipeline`)
 - [ ] Zadanie 2: Przygotować automatyczną weryfikację certyfikatu HTTPS — Test: `pytest tests/test_https_monitoring.py::test_certificate_expiry` (do implementacji)
 - [ ] Zadanie 3: Zautomatyzować sprawdzanie wpisu custom domain przez API GitHub Pages — Test: `pytest tests/test_pages_domain_status.py::test_custom_domain_sync` (do zaprojektowania)
 - [ ] Zadanie 2: Przygotować automatyczną weryfikację certyfikatu HTTPS — Test: `pytest tests/test_https_monitoring.py::test_certificate_expiry` (do implementacji)
