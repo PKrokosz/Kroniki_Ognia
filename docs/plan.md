@@ -87,9 +87,10 @@
 
 ## Cel fazy 5 — Tunelowany backend Pages ↔ Flask
 - [Scope] Konfiguracja frontu do wczytywania `BACKEND_URL` z `public/config.json` i ustawiania `form.action` po stronie klienta.
-- [Scope] Zapewnienie nagłówków CORS tylko dla hostów GitHub Pages i tunelu `https://api-kroniki.<MOJA-DOMENA>`.
+- [Scope] Zapewnienie nagłówków CORS tylko dla `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com`.
 - [Scope] Dodanie smoke testów i skryptu CLI do walidacji tunelu (pytest + `scripts/smoke.sh`).
 - [Scope] Ustanowienie limitu `10/min` na `POST /api/ideas` (Flask-Limiter) z dokumentacją w README.
+- [Scope] Udostępnienie prostego health-checka JSON dla monitoringu tunelu.
 - [Non-Goals] Pełna autoryzacja żądań, zarządzanie tajnymi tokenami, publikacja listy pomysłów w UI.
 
 ## Definicja ukończenia fazy 5 (DoD)
@@ -97,4 +98,5 @@
 - `config.json` jest serwowany zarówno z katalogu głównego, jak i z `public/`, zawiera produkcyjny adres tunelu bez końcowego ukośnika i jest udokumentowany w README.
 - Skrypt `scripts/smoke.sh` przyjmuje URL tunelu i zwraca odpowiedź JSON; README opisuje jego użycie.
 - CORS i rate limit są skonfigurowane w `app.py`, a ADR/notes zawierają analizę 5xWhy dla tunelu.
+- Health-check i walidacja rozmiaru/nagłówków JSON są chronione testami w `tests/test_api.py`.
 - `/api/health` raportuje gotowość storage w JSON i jest chroniony testem `tests/test_api.py::test_health_ok`.

@@ -13,6 +13,7 @@ from flask import Flask, Response, current_app, jsonify, request
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from werkzeug.exceptions import BadRequest
 
 
 def _resolve_data_dir(app: Flask) -> Path:
@@ -80,9 +81,9 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
         resources={
             r"/api/*": {
                 "origins": [
-                    "https://<twoje-pages>.github.io",
-                    "https://<custom-domain-pages>",
-                    "https://api-kroniki.<MOJA-DOMENA>",
+                    "https://pkrokosz.github.io",
+                    "https://pkrokosz.github.io/Kroniki_Ognia",
+                    "https://*.trycloudflare.com",
                 ],
                 "methods": ["GET", "POST", "OPTIONS"],
                 "allow_headers": ["Content-Type", "Authorization"],
@@ -121,10 +122,26 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
     @flask_app.post("/api/ideas")
     @limiter.limit("10 per minute")
     def submit_idea() -> tuple[Response, int] | Response:
-        raw_payload: Mapping[str, Any] | None = request.get_json(silent=True)
-        if not raw_payload:
-            raw_payload = request.form
-        payload = raw_payload or {}
+        if request.mimetype != "application/json":
+            return (
+                jsonify({"message": "Wymagany nagłówek Content-Type: application/json."}),
+                415,
+            )
+
+        content_length = request.content_length
+        if content_length is not None and content_length > 5 * 1024:
+            return (
+                jsonify({"message": "Payload przekracza limit 5 KB."}),
+                413,
+            )
+
+        try:
+            payload = request.get_json(force=False, silent=False)
+        except BadRequest:
+            return jsonify({"message": "Nieprawidłowy JSON w żądaniu."}), 400
+
+        if not isinstance(payload, Mapping):
+            return jsonify({"message": "Payload musi być obiektem JSON."}), 400
 
         legacy_idea = str(payload.get("idea") or "").strip()
         title = str(payload.get("title") or "").strip()

@@ -23,6 +23,9 @@ python -m http.server 8000
 Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego.
 
 Payload ma schemat `{"title": str, "content": str, "tags": [str]?}`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`.
+`POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB oraz waliduje, że przesłane JSON-y są poprawnymi obiektami. W razie błędu zwraca komunikat w JSON-ie wraz z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
+
+Endpoint `GET /api/health` służy jako prosty health-check backendu i zwraca `{"status": "ok"}` z kodem `200`.
 
 ```bash
 pip install -r requirements.txt
@@ -79,6 +82,7 @@ Test `tests/test_visual_key.py` pilnuje sekcji ekspozycji „Próby Płomienia�
 Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a dodatkowe testy kontrolują endpoint health-check oraz walidację nagłówków, limit 5 KB i poprawność JSON-u dla zgłoszeń pomysłów.
 Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `GET /api/health` raportuje gotowość storage.
 Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`.
 `tests/test_nojekyll.py` zabezpiecza obecność pliku `.nojekyll` i opis w README, aby hosting GitHub Pages pozostał statyczny.
