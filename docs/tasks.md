@@ -2,6 +2,8 @@
 - [x] Zadanie 1: Utworzyć wspólną nawigację i arkusz stylów dla wszystkich stron HTML — Test: `pytest tests/test_navigation.py::test_nav_links_consistent`
 - [x] Zadanie 2: Przygotować `index.html` z przeglądem i linkami — Test: ręczna weryfikacja ładowania (opis w README)
 - [x] Zadanie 3: Skonfigurować pipeline dokumentacyjny i CI (`docs/*`, `.codex`, workflow) — Test: sprawdzenie obecności plików + `pytest`
+- [x] Zadanie 4: Rozszerzyć `.gitignore` o standardowe artefakty środowiskowe — Test: `pytest` + `git status --short` bez nowych plików
+- [ ] Zadanie 5: Zautomatyzować kontrolę `.gitignore` w CI (skrypt walidujący obecność kluczowych wpisów) — Test: do zdefiniowania (`tests/test_gitignore_guard.py`)
 
 ## Faza 2 — Mobilna mroczna atmosfera
 - [x] Zadanie 1: Przeskalować nagłówek i karty pod ekrany < 600px — Test: `pytest tests/test_responsive_theme.py::test_mobile_media_queries_present`
