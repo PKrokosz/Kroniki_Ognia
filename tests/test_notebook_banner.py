@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from pathlib import Path
+from typing import TypedDict
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 HTML_FILES = [
@@ -15,6 +16,13 @@ GOOGLE_DRIVE_URL = "https://drive.google.com/drive/folders/1ra1Qt97ojx5oc_De8R3u
 ARIA_LABEL = "Notebook LM — baza wiedzy z brainstormu"
 
 
+class LinkInfo(TypedDict):
+    href: str | None
+    target: str | None
+    rel: str | None
+    class_list: list[str]
+
+
 class BannerParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -22,7 +30,7 @@ class BannerParser(HTMLParser):
         self.banner_depth = 0
         self.banner_found = False
         self.banner_aria_label: str | None = None
-        self.links: list[dict[str, str | None]] = []
+        self.links: list[LinkInfo] = []
         self.banner_text: list[str] = []
         self.drive_icon_present = False
 
@@ -39,12 +47,12 @@ class BannerParser(HTMLParser):
             self.banner_depth += 1
             if tag == "a":
                 self.links.append(
-                    {
-                        "href": attrs_dict.get("href"),
-                        "target": attrs_dict.get("target"),
-                        "rel": attrs_dict.get("rel"),
-                        "class_list": (attrs_dict.get("class") or "").split(),
-                    }
+                    LinkInfo(
+                        href=attrs_dict.get("href"),
+                        target=attrs_dict.get("target"),
+                        rel=attrs_dict.get("rel"),
+                        class_list=(attrs_dict.get("class") or "").split(),
+                    )
                 )
             if tag == "svg" and attrs_dict.get("data-icon") == "google-drive":
                 self.drive_icon_present = True
