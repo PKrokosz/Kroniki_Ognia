@@ -2,6 +2,7 @@
 - [x] Zadanie 1: Utworzyć wspólną nawigację i arkusz stylów dla wszystkich stron HTML — Test: `pytest tests/test_navigation.py::test_nav_links_consistent`
 - [x] Zadanie 2: Przygotować `index.html` z przeglądem i linkami — Test: ręczna weryfikacja ładowania (opis w README)
 - [x] Zadanie 3: Skonfigurować pipeline dokumentacyjny i CI (`docs/*`, `.codex`, workflow) — Test: sprawdzenie obecności plików + `pytest`
+- [x] Zadanie 4: Rozszerzyć toolchain backendu o `ruff` i `mypy` — Test: `ruff check .`, `mypy app.py`
 - [x] Zadanie 4: Rozszerzyć `.gitignore` o standardowe artefakty środowiskowe — Test: `pytest` + `git status --short` bez nowych plików
 - [ ] Zadanie 5: Zautomatyzować kontrolę `.gitignore` w CI (skrypt walidujący obecność kluczowych wpisów) — Test: do zdefiniowania (`tests/test_gitignore_guard.py`)
 
@@ -45,3 +46,4 @@
 - [x] Zadanie 3: Dodać `scripts/smoke.sh` oraz sekcję README „Run with tunnel” — Test: `pytest tests/test_api.py::test_post_ideas_smoke` (CLI opisany w README)
 - [ ] Zadanie 4 (kontynuacja): Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: `pytest tests/test_tunnel_health.py::test_cron_monitoring` (do zdefiniowania)
 - [ ] Zadanie 5 (kontynuacja): Przygotować skrypt synchronizujący `config.json` pomiędzy katalogiem głównym a `public/` — Test: `pytest tests/test_config_json.py::test_sync_script` (do zaprojektowania)
+- [ ] Zadanie 6: Zintegrować `ruff check .` i `mypy app.py` w workflow CI (`.github/workflows/codex.yml`) — Test: pipeline uruchamia oba kroki i kończy się statusem green
