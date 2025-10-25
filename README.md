@@ -6,6 +6,7 @@ Statyczna witryna dokumentująca projekt LARP "Kroniki Ognia". Repozytorium grom
 - `index.html` — landing page GitHub Pages.
 - `cechy.html`, `draft_planu.html`, `imersja_mechanika.html`, `organizacja.html` — podstrony tematyczne.
 - `assets/styles.css` — wspólny arkusz stylów oraz definicje ambientowych teł.
+- `assets/editable-tiles.js` — zakładki edycji treści kafelków z pamięcią w `localStorage`.
 - `assets/js/backend-config.js` — moduł konfigurujący formularze pod adres tunelu backendu.
 - `assets/idea-form.js` — walidacja formularza „Dodaj pomysł” i komunikaty dla użytkownika.
 - `assets/visual-key.js` — interakcje sekcji visual key „Próby Płomienia”.
@@ -105,6 +106,12 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 
 ### Infrastruktura CI
 - Workflow `codex.yml` wykonuje `ruff check .`, `mypy app.py` i `pytest`, aby spełnić wymagania CTO persony dotyczące lintów oraz analizy typów.
+
+### Edycja kafelków
+- Każdy kafelek tekstowy (`.plan-card`, `.feature-card`, `.tool-card`, `.card-popiol`, `.focus-card`, `.timeline-card`) otrzymał zakładkę „Edytuj” po prawej krawędzi.
+- Po otwarciu zakładki zawartość kafelka przechodzi w tryb `contenteditable`; zapis utrwala zmiany w `localStorage`, a komunikat `aria-live` potwierdza operację.
+- Brak dostępu do `localStorage` blokuje edycję i wyświetla globalne powiadomienie o konieczności odblokowania pamięci przeglądarki.
+- Test `tests/test_editable_tiles.py` pilnuje obecności modułu JS na każdej stronie i obecności styli dla zakładki oraz fallbacku.
 
 ## Aktualizacja fazy 1
 - Ujednolicona nawigacja i styl wszystkich stron HTML; test `tests/test_navigation.py` pilnuje spójności.

@@ -53,3 +53,8 @@
 - [ ] Zadanie 6: Zintegrować monitor health-checka z alertem (np. cron + webhook) — Test: do zaprojektowania (`tests/test_tunnel_health.py::test_health_alert_workflow`)
 - [ ] Zadanie 7: Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: do zaprojektowania (`tests/test_tunnel_health.py::test_cron_monitoring`)
 - [ ] Zadanie 8: Zasymulować w testach front-endowych niedostępność `config.json` i wymusić komunikat fallback w UI — Test: do implementacji (`tests/test_navigation.py::test_backend_config_error_state`)
+
+## Faza 6 — Kuracja treści kafelków
+- [x] Zadanie 1: Udostępnić zakładki edycji treści kafelków z zapisem w `localStorage` — Test: `pytest tests/test_editable_tiles.py::test_editable_tiles_module_loaded`
+- [x] Zadanie 1a: Zaprojektować fallback UI przy braku `localStorage` i udokumentować proces — Test: `pytest tests/test_editable_tiles.py::test_editable_tiles_fallback_documented`
+- [ ] Zadanie 2: Zasymulować synchronizację edytowanych kafelków przez eksport JSON (proof-of-concept) — Test: do zaplanowania (`tests/test_editable_tiles.py::test_tile_export_placeholder`)

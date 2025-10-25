@@ -167,3 +167,35 @@
    - (B) Automatyczny zestaw zmniejsza ryzyko regresji przy kolejnych fazach.
    - (C) Ułatwia przygotowanie raportów jakościowych.
    **Decyzja:** A jako polityka jakości, wzmocniona stabilnością z (B).
+
+# Notatki (Faza 6)
+- Zakładki edycji na kafelkach umożliwiają korekty narracji bez edycji kodu; zapis wykorzystuje `localStorage`, a brak dostępu komunikowany jest w UI.
+- Moduł `assets/editable-tiles.js` obserwuje DOM (MutationObserver), dzięki czemu działa także na dynamicznych kafelkach `organizacja.html`.
+- Styl `tile-edit-*` zachowuje klimat żaru i nie narusza istniejących hoverów kart, ponieważ aktywne karty otrzymują dodatkowy margines na panel edycji.
+
+## 5xWhy — Dlaczego edycja kafelków zostaje po stronie przeglądarki
+1. Dlaczego korzystamy z `localStorage`, a nie backendu?
+   - (A) Zapewnia natychmiastowe, offline-ready modyfikacje bez dodatkowej infrastruktury.
+   - (B) Upraszcza kontrolę wersji, bo zmiany nie opuszczają przeglądarki.
+   - (C) Chroni narrację przed nieautoryzowanymi wpisami użytkowników.
+   **Decyzja:** A jako baza MVP (brak backendu), wzmocniona bezpieczeństwem z (C).
+2. Dlaczego interfejs to zakładka po prawej stronie?
+   - (A) Nie zasłania kluczowej treści i nie wymaga przebudowy layoutu kafelka.
+   - (B) Podkreśla modularność kart w duchu „fiszki archiwalnej”.
+   - (C) Zapewnia spójność z innymi kontrolkami (np. panelami feedbacku) poprzez zachowanie pionowych linii.
+   **Decyzja:** A jako ergonomia, wzbogacona wizualnym motywem archiwalnym z (B).
+3. Dlaczego tryb edycji wykorzystuje `contenteditable` zamiast formularza modalnego?
+   - (A) Pozwala zachować istniejące formatowanie (np. listy, pogrubienia) bez konwersji.
+   - (B) Minimalizuje liczbę kliknięć — edycja odbywa się w miejscu.
+   - (C) Ułatwia kopiowanie fragmentów do innych narzędzi bez przełączania kontekstu.
+   **Decyzja:** A jako gwarancja zachowania struktury, rozszerzona o szybkość z (B).
+4. Dlaczego blokujemy edycję przy braku `localStorage` zamiast pozwalać na nietrwałe zmiany?
+   - (A) Zapobiega złudzeniu zapisania i utracie pracy przy odświeżeniu.
+   - (B) Upraszcza komunikaty dostępności — jasny stan „edytowalne” vs „zablokowane”.
+   - (C) Zmniejsza powierzchnię błędów w testach regresji.
+   **Decyzja:** A jako ochrona użytkownika, doprawiona klarownością komunikatów z (B).
+5. Dlaczego moduł obserwuje DOM przez `MutationObserver`?
+   - (A) Strona `organizacja.html` renderuje kafelki dynamicznie.
+   - (B) Przygotowuje grunt pod przyszłe lazy-loady i generowane sekcje.
+   - (C) Zapobiega powielaniu inicjalizacji po SPA-like aktualizacjach.
+   **Decyzja:** A jako wymóg kompatybilności, uzupełniony przyszłościowością z (B).

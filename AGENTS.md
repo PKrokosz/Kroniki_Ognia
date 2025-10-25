@@ -47,6 +47,7 @@ Coding standards:
 - Interaktywne komponenty front-endowe wymagają obsługi braku `localStorage` (fallback komunikatu) i aktualizacji dokumentacji w README oraz `docs/notes.md`.
 - Ambient backgrounds korzystają z kontenera `.ambient-background` z trzema warstwami `.ambient-layer--1..3` na każdej stronie. Każda strona wykorzystuje obrazy z `img/` (około trzy na widok); aktualizacje wymagają synchronizacji z testem `tests/test_ambient_backgrounds.py` i mapą w `assets/styles.css`.
 - Sekcja visual key „Próby Płomienia” na `index.html` utrzymuje trzy kafelki (`visual-key__tile--ember`, `--glow`, `--flame`) z obrazami `img/1.jpg`, `img/4.jpg`, `img/7.jpg`, CTA do `cechy.html`, `imersja_mechanika.html`, `draft_planu.html` oraz przycisk `data-visual-key-autoplay` respektujący `prefers-reduced-motion`. Zmiany wymagają aktualizacji `assets/visual-key.js`, styli i testu `tests/test_visual_key.py`.
+- Kafelki tekstowe (klasy `.plan-card`, `.feature-card`, `.tool-card`, `.card-popiol`, `.focus-card`, `.timeline-card`) udostępniają zakładkę edycji po prawej stronie. Logika mieszka w `assets/editable-tiles.js`, a styli w dedykowanych klasach `tile-edit-*`. Każde rozszerzenie musi zachować kompatybilność z `localStorage`, fallback bez zapisu i test `tests/test_editable_tiles.py`.
 
 Commit/PR standards:
 - Use Conventional Commits.
