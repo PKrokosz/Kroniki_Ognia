@@ -171,6 +171,12 @@ body {
   text-align: left;
 }
 
+.notebook-banner__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .notebook-banner__icon {
   font-size: 1.75rem;
   animation: notebookGlide 9s ease-in-out infinite;
@@ -182,6 +188,13 @@ body {
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--color-text-muted);
+}
+
+.notebook-banner__cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
 .notebook-banner__link {
@@ -217,6 +230,21 @@ body {
   width: 16px;
   height: 16px;
   fill: currentColor;
+}
+
+.notebook-banner__link--drive {
+  background: rgba(66, 133, 244, 0.18);
+}
+
+.notebook-banner__link--drive:hover,
+.notebook-banner__link--drive:focus {
+  background: rgba(66, 133, 244, 0.3);
+}
+
+.notebook-banner__drive-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
 }
 
 @keyframes notebookGlide {
@@ -490,6 +518,10 @@ a:focus {
     text-align: center;
   }
 
+  .notebook-banner__cta-group {
+    justify-content: center;
+  }
+
   .site-header .container {
     flex-direction: column;
     align-items: stretch;
@@ -524,6 +556,20 @@ a:focus {
   .timeline-card,
   .plan-card {
     padding: 20px;
+  }
+
+  .rate-panel {
+    padding: 16px;
+  }
+
+  .rate-actions {
+    width: 100%;
+  }
+
+  .rate-save,
+  .rate-clear {
+    flex: 1 1 160px;
+    text-align: center;
   }
 
   .section-intro-text {
@@ -602,6 +648,118 @@ a:focus {
 .site-main p {
   color: var(--color-text-muted);
   line-height: 1.7;
+}
+
+.plan-card .rate-toggle {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(196, 161, 90, 0.45);
+  background: rgba(179, 122, 54, 0.18);
+  color: var(--color-text);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.plan-card .rate-toggle:hover,
+.plan-card .rate-toggle:focus {
+  background: rgba(196, 161, 90, 0.32);
+  border-color: rgba(196, 161, 90, 0.65);
+  transform: translateY(-1px);
+}
+
+.plan-card .rate-toggle:focus {
+  outline: 2px solid rgba(196, 161, 90, 0.65);
+  outline-offset: 2px;
+}
+
+.rate-panel {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(196, 161, 90, 0.35);
+  background: rgba(24, 22, 33, 0.88);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rate-label {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.rate-panel textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: rgba(5, 4, 7, 0.7);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.rate-panel textarea:focus {
+  outline: 2px solid rgba(196, 161, 90, 0.65);
+  outline-offset: 2px;
+}
+
+.rate-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rate-save,
+.rate-clear {
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.rate-save {
+  background: linear-gradient(135deg, rgba(196, 161, 90, 0.32), rgba(179, 122, 54, 0.28));
+  color: var(--color-text);
+  border-color: rgba(196, 161, 90, 0.4);
+}
+
+.rate-save:hover,
+.rate-save:focus {
+  background: linear-gradient(135deg, rgba(196, 161, 90, 0.45), rgba(179, 122, 54, 0.42));
+  border-color: rgba(196, 161, 90, 0.6);
+}
+
+.rate-clear {
+  background: transparent;
+  color: var(--color-text-muted);
+  border-color: rgba(196, 161, 90, 0.25);
+}
+
+.rate-clear:hover,
+.rate-clear:focus {
+  color: var(--color-text);
+  border-color: rgba(196, 161, 90, 0.45);
+}
+
+.rate-status {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
 }
 
 .plan-day {

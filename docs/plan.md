@@ -48,14 +48,27 @@
 - [Scope] Udostępnić szybkie przejście do Notebook LM jako źródła prawdy dla wiedzy z burzy mózgów.
 - [Scope] Zachować narracyjny klimat poprzez motyw "flying object" i animowanego zwiadowcę.
 - [Scope] Zapewnić dostępność CTA (prefers-reduced-motion, mobilny układ) oraz automatyczną weryfikację testami.
+- [Scope] Rozszerzyć baner o dodatkowe CTA do archiwum Google Drive, zachowując wspólną stylistykę i bezpieczeństwo linków.
 - [Non-Goals] Embedowanie pełnego Notebook LM, synchronizacja treści w czasie rzeczywistym.
 
 ## Definicja ukończenia fazy 3 (DoD)
 - `pytest` obejmuje test `tests/test_notebook_banner.py::test_notebook_banner_present_with_link` i przechodzi zielono.
+- `pytest` obejmuje test `tests/test_notebook_banner.py::test_notebook_banner_includes_drive_archive_link` potwierdzający CTA do Google Drive.
 - Baner Notebook LM jest widoczny i funkcjonalny na każdej podstronie repo.
 - Dokumentacja (README, notes) opisuje nowe CTA i wskazuje sposób ręcznej weryfikacji.
 - Akceptacyjne: kliknięcie banera otwiera wskazany notebook, a motyw "flying object" jest zachowany w tekście.
 
+## Cel fazy 4 — Pętle feedbacku uczestników
+- [Scope] Umożliwić komentowanie każdego wątku na stronie "Organizacja" poprzez lekki panel z przyciskiem "Oceń pomysł".
+- [Scope] Zabezpieczyć doświadczenie mobilne i estetykę panelu w ramach istniejącej palety.
+- [Scope] Wprowadzić testy regresyjne chroniące strukturę danych, styl i integrację z `localStorage`.
+- [Non-Goals] Współdzielenie komentarzy między urządzeniami, moderacja online, backend.
+
+## Definicja ukończenia fazy 4 (DoD)
+- `pytest tests/test_feedback_panel.py` przechodzi i potwierdza obecność komponentu.
+- Panel komentarzy domyślnie jest zwinięty, obsługuje `localStorage` i komunikaty statusu.
+- README oraz notatki dokumentują sposób użycia panelu i testy.
+- Akceptacyjne: ręczne otwarcie panelu pozwala zapisać komentarz, który utrzymuje się po odświeżeniu przeglądarki.
 ## Cel fazy 4 — Rejestr pomysłów uczestników
 - [Scope] Udostępnić na stronie głównej formularz "Dodaj pomysł" z walidacją i informacją zwrotną.
 - [Scope] Zapisać zgłoszenia w trwałej bazie danych oraz równoległym pliku tekstowym do audytu narracyjnego.

@@ -17,15 +17,27 @@
   <div class="notebook-banner" role="complementary" aria-label="Notebook LM — baza wiedzy z brainstormu">
     <div class="notebook-banner__inner">
       <span class="notebook-banner__icon" aria-hidden="true">🪽</span>
-      <p class="notebook-banner__text">
-        Latający zwiadowca projektu niesie wieści: pełna baza wiedzy z burzy mózgów czeka w Notebooku.
-        <a class="notebook-banner__link" href="https://notebooklm.google.com/notebook/cf797fdc-a8c2-44eb-b933-5ca5a3216674" target="_blank" rel="noopener">
-          Otwórz Notebook LM
-          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-            <path d="M3.2 8a.8.8 0 0 1 .8-.8h6.02L7.56 4.76a.8.8 0 0 1 1.13-1.13l4 4a.8.8 0 0 1 0 1.13l-4 4a.8.8 0 1 1-1.13-1.13L10.02 8.8H4a.8.8 0 0 1-.8-.8Z" />
-          </svg>
-        </a>
-      </p>
+      <div class="notebook-banner__content">
+        <p class="notebook-banner__text">
+          Latający zwiadowca projektu niesie wieści: pełna baza wiedzy z burzy mózgów czeka w Notebooku.
+        </p>
+        <div class="notebook-banner__cta-group" role="group" aria-label="Materiały projektu Kroniki Ognia">
+          <a class="notebook-banner__link" href="https://notebooklm.google.com/notebook/cf797fdc-a8c2-44eb-b933-5ca5a3216674" target="_blank" rel="noopener">
+            Otwórz Notebook LM
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M3.2 8a.8.8 0 0 1 .8-.8h6.02L7.56 4.76a.8.8 0 0 1 1.13-1.13l4 4a.8.8 0 0 1 0 1.13l-4 4a.8.8 0 1 1-1.13-1.13L10.02 8.8H4a.8.8 0 0 1-.8-.8Z" />
+            </svg>
+          </a>
+          <a class="notebook-banner__link notebook-banner__link--drive" href="https://drive.google.com/drive/folders/1ra1Qt97ojx5oc_De8R3ubHayC_gnKLRO?usp=sharing" target="_blank" rel="noopener">
+            <svg class="notebook-banner__drive-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-icon="google-drive">
+              <path d="M7.53 3 2 12l4.47 7.5h6.13L7.53 3Z" fill="#0F9D58" />
+              <path d="m16.47 3 5.53 9-4.47 7.5H11.4l5.07-8.25L16.47 3Z" fill="#4285F4" />
+              <path d="M11.4 19.5H6.47L2 12h6.13l3.27 5.31L11.4 19.5Z" fill="#F4B400" />
+            </svg>
+            Archiwum Google Drive
+          </a>
+        </div>
+      </div>
     </div>
   </div>
   <header class="site-header">
@@ -144,19 +156,34 @@
             ];
 
             // Funkcja do renderowania kart (przyjazna dla urządzeń mobilnych)
-            function renderCard(thread) {
+            function renderCard(section, thread, index) {
+                const cardKey = `${section.id}-${index}`;
+                const panelId = `rate-panel-${cardKey}`;
+                const noteId = `rate-note-${cardKey}`;
                 return `
-                    <div class="plan-card">
+                    <div class="plan-card" data-thread-key="${cardKey}">
                         <h3>${thread.wątek}</h3>
                         <p>${thread.opis}</p>
                         <div class="source-text">Źródła: ${thread.źródła}</div>
+                        <button class="rate-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" title="Oceń i skomentuj ten pomysł">
+                            ⭐ Oceń pomysł
+                        </button>
+                        <div class="rate-panel" id="${panelId}" hidden>
+                            <label class="rate-label" for="${noteId}">Twój komentarz dla strażników ognia</label>
+                            <textarea id="${noteId}" rows="4" placeholder="Zapisz wrażenia lub usprawnienia..." aria-describedby="${panelId}-status"></textarea>
+                            <div class="rate-actions">
+                                <button class="rate-save" type="button" data-action="save">Zachowaj komentarz</button>
+                                <button class="rate-clear" type="button" data-action="clear">Wyczyść</button>
+                            </div>
+                            <p class="rate-status" id="${panelId}-status" role="status" aria-live="polite"></p>
+                        </div>
                     </div>
                 `;
             }
 
             // Funkcja do renderowania całej sekcji
             function renderSection(section) {
-                const cardsHtml = section.threads.map(renderCard).join('');
+                const cardsHtml = section.threads.map((thread, index) => renderCard(section, thread, index)).join('');
                 return `
                     <section id="${section.id}" class="content-section">
                         <h2 class="section-title"><span class="section-icon">${section.icon}</span> ${section.title}</h2>
@@ -168,11 +195,102 @@
                 `;
             }
 
+            function getFeedbackStorage() {
+                try {
+                    if (typeof window !== 'undefined' && 'localStorage' in window) {
+                        const testKey = '__organizacja_feedback__';
+                        window.localStorage.setItem(testKey, '1');
+                        window.localStorage.removeItem(testKey);
+                        return window.localStorage;
+                    }
+                } catch (error) {
+                    console.warn('Local storage unavailable for komentarze wątków.', error);
+                }
+                return null;
+            }
+
+            function initRatingPanels() {
+                const storage = getFeedbackStorage();
+                const cards = document.querySelectorAll('.plan-card[data-thread-key]');
+                cards.forEach((card) => {
+                    const threadKey = card.getAttribute('data-thread-key');
+                    if (!threadKey) {
+                        return;
+                    }
+                    const toggle = card.querySelector('.rate-toggle');
+                    const panel = card.querySelector('.rate-panel');
+                    const textarea = card.querySelector('textarea');
+                    const saveButton = card.querySelector('.rate-save');
+                    const clearButton = card.querySelector('.rate-clear');
+                    const status = card.querySelector('.rate-status');
+                    const storageKey = `organizacja-feedback:${threadKey}`;
+
+                    if (storage && textarea) {
+                        const storedValue = storage.getItem(storageKey);
+                        if (storedValue) {
+                            textarea.value = storedValue;
+                            if (status) {
+                                status.textContent = 'Komentarz zapisany lokalnie.';
+                            }
+                        }
+                    }
+
+                    if (toggle && panel && textarea) {
+                        toggle.addEventListener('click', () => {
+                            const isHidden = panel.hasAttribute('hidden');
+                            if (isHidden) {
+                                panel.removeAttribute('hidden');
+                                toggle.setAttribute('aria-expanded', 'true');
+                                textarea.focus();
+                            } else {
+                                panel.setAttribute('hidden', '');
+                                toggle.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    }
+
+                    if (saveButton && textarea) {
+                        saveButton.addEventListener('click', () => {
+                            if (!status) {
+                                return;
+                            }
+                            const value = textarea.value.trim();
+                            if (storage) {
+                                if (value) {
+                                    storage.setItem(storageKey, value);
+                                    status.textContent = 'Zapisano komentarz dla tego wątku.';
+                                } else {
+                                    storage.removeItem(storageKey);
+                                    status.textContent = 'Usunięto pusty komentarz.';
+                                }
+                            } else {
+                                status.textContent = 'Twoja przeglądarka blokuje zapisywanie komentarzy.';
+                            }
+                        });
+                    }
+
+                    if (clearButton) {
+                        clearButton.addEventListener('click', () => {
+                            if (textarea) {
+                                textarea.value = '';
+                            }
+                            if (storage) {
+                                storage.removeItem(storageKey);
+                            }
+                            if (status) {
+                                status.textContent = 'Komentarz wyczyszczony.';
+                            }
+                        });
+                    }
+                });
+            }
+
             // Renderowanie wszystkich sekcji do main
             document.addEventListener('DOMContentLoaded', () => {
                 const mainContainer = document.getElementById('sections-root');
                 const htmlContent = sectionsData.map(renderSection).join('');
                 mainContainer.innerHTML = htmlContent;
+                initRatingPanels();
             });
         </script>
 

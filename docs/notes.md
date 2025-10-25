@@ -42,6 +42,34 @@
 - Dodano wspólny baner "flying object" prowadzący do Notebook LM z bazą wiedzy brainstormu; zachowuje klimat projektu dzięki animowanej ikonie zwiadowcy.
 - Test `tests/test_notebook_banner.py` kontroluje link, atrybuty bezpieczeństwa oraz komunikat narracyjny.
 - Baner respektuje preferencje ograniczonego ruchu i układ mobilny, dzięki czemu CTA pozostaje dostępne.
+- Baner uzupełniono o CTA do archiwum Google Drive z zasobami wspierającymi produkcję; kolorowa ikona sygnalizuje, że chodzi o repozytorium plików wizualnych.
+
+## 5xWhy — Dlaczego link do archiwum Google Drive
+1. Dlaczego dodajemy link do Google Drive?
+   - (A) Aby zespół szybko dotarł do plików referencyjnych (zdjęcia, moodboardy).
+   - (B) Aby zapewnić redundancję wobec Notebook LM na wypadek awarii.
+   - (C) Aby przygotować repozytorium pod przyszły import zasobów wizualnych.
+   **Decyzja:** A jako cel nadrzędny, rozszerzone o odporność z (B).
+2. Dlaczego CTA powinno być w banerze "flying object"?
+   - (A) Baner jest wspólnym, natychmiast widocznym elementem na każdej podstronie.
+   - (B) Osadzony link w treści mógłby zginąć w długich sekcjach opisowych.
+   - (C) Umożliwia wykorzystanie istniejącej metafory zwiadowcy.
+   **Decyzja:** A zapewnia najwyższą widoczność, doprawiona narracyjną spójnością z (C).
+3. Dlaczego stosujemy ikonę w barwach Google?
+   - (A) Rozpoznawalny kształt przyspiesza identyfikację zasobu.
+   - (B) Kolorowy element równoważy stonowaną paletę i przyciąga wzrok.
+   - (C) Wspiera przyszłe testy automatyczne przez możliwość wykrycia atrybutu.
+   **Decyzja:** A jako walor UX, poszerzony o testowalność z (C).
+4. Dlaczego zachowujemy ten sam tryb otwierania (`target="_blank"`, `rel="noopener"`)?
+   - (A) Zapobiega utracie kontekstu strony podczas przeglądania plików.
+   - (B) Utrzymuje standard bezpieczeństwa dla linków zewnętrznych.
+   - (C) Ułatwia zespół organizacyjny powrót do repo po sprawdzeniu zasobów.
+   **Decyzja:** B jako wymóg bezpieczeństwa, połączony z wygodą z (A).
+5. Dlaczego potrzebny jest test automatyczny dla Google Drive?
+   - (A) Chroni przed przypadkowym usunięciem linku lub ikony.
+   - (B) Dokumentuje konwencję klas CSS dla banera.
+   - (C) Przygotowuje grunt pod przyszłe rozszerzenia (np. dodatkowe CTA).
+   **Decyzja:** A jako główny strażnik, z rozszerzeniem dokumentacyjnym z (B).
 
 ## 5xWhy — Responsywność i nastrój
 1. Dlaczego należy zmienić paletę i układ?
@@ -285,6 +313,38 @@
    - (B) Ułatwia audyt CTO persony.
    - (C) Buduje pamięć projektową (CONTEXT).
    **Decyzja:** A jako wiodące, uzupełnione o audytowalność z (B).
+
+# Notatki (Faza 4)
+- Strona "Organizacja" zyskała przycisk "Oceń pomysł" przy każdym wątku, rozwijający panel komentarza z komunikatami statusu.
+- Komentarze zapisują się w `localStorage`, co pozwala prowadzącym zachować uwagi między odświeżeniami strony podczas iteracji warsztatowych.
+- Panel respektuje bursztynową paletę projektu i układ mobilny, a test `tests/test_feedback_panel.py` blokuje regresje markupowe i stylowe.
+
+## 5xWhy — Panel ocen pomysłów
+1. Dlaczego dodajemy panel oceny do kart wątków?
+   - (A) By zebrać wrażenia w trakcie warsztatów planistycznych.
+   - (B) By ocenić priorytety mechanik podczas testów wewnętrznych.
+   - (C) By zapewnić notatnik prowadzących bezpośrednio na stronie.
+   **Decyzja:** C jako baza funkcjonalności, rozszerzona o warsztatowy kontekst z (A).
+2. Dlaczego zapis lokalny w `localStorage`?
+   - (A) Nie wymaga backendu ani dodatkowej infrastruktury.
+   - (B) Zapewnia natychmiastową synchronizację między wszystkimi uczestnikami.
+   - (C) Pozwala działać offline podczas testów gry.
+   **Decyzja:** A dla prostoty wdrożenia, z korzyścią pracy offline z (C).
+3. Dlaczego panel domyślnie pozostaje zwinięty?
+   - (A) Zachowuje czytelność i rytm kart nawet przy dużej liczbie wątków.
+   - (B) Minimalizuje koszty renderowania w przeglądarce.
+   - (C) Chroni przed przypadkową edycją tekstu przy przewijaniu.
+   **Decyzja:** A jako priorytet UX, wzbogacony o ochronę przed przypadkowym dotykiem z (C).
+4. Dlaczego potrzebujemy dedykowanych styli mobilnych?
+   - (A) Użytkownicy często korzystają z telefonu podczas przygotowań LARP.
+   - (B) Utrzymuje spójność wizualną w bursztynowej palecie repozytorium.
+   - (C) Ułatwia szybkie testy QA w pipeline'ie.
+   **Decyzja:** A jako kluczowe, z konsekwencją stylistyczną z (B).
+5. Dlaczego nowy test Pytest jest wymagany?
+   - (A) Chroni markup i klucze `localStorage` przed przypadkową regresją.
+   - (B) Działa jako podstawa pod przyszłą synchronizację eksportu komentarzy.
+   - (C) Zapewnia zgodność z wymaganiami CI i dokumentacją planu.
+   **Decyzja:** A jako fundament, rozszerzone o dyscyplinę CI z (C).
 
 ## 5xWhy — Baner Notebook LM
 1. Dlaczego dodajemy baner z odnośnikiem do Notebook LM?

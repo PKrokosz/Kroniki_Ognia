@@ -19,8 +19,14 @@
 - [ ] Zadanie 3: Zautomatyzować sprawdzanie wpisu custom domain przez API GitHub Pages — Test: `pytest tests/test_pages_domain_status.py::test_custom_domain_sync` (do zaprojektowania)
 ## Faza 3 — Integracja bazy wiedzy
 - [x] Zadanie 1: Dodać baner "flying object" prowadzący do Notebook LM — Test: `pytest tests/test_notebook_banner.py::test_notebook_banner_present_with_link`
+- [x] Zadanie 1b: Rozszerzyć baner o link do archiwum Google Drive i ikonę — Test: `pytest tests/test_notebook_banner.py::test_notebook_banner_includes_drive_archive_link`
 - [ ] Zadanie 2: Streścić kluczowe wnioski z Notebook LM na stronie i dodać test spójności — Test: do zdefiniowania (planowane `tests/test_notebook_summary.py`)
+- [ ] Zadanie 3: Przygotować health-check spójności zasobów Google Drive (API lub manualny workflow) — Test: do zaprojektowania (`tests/test_drive_inventory.py`)
 
+## Faza 4 — Pętle feedbacku
+- [x] Zadanie 1: Udostępnić panel "Oceń pomysł" z lokalnym zapisem komentarzy — Test: `pytest tests/test_feedback_panel.py::test_feedback_toggle_markup_present`
+- [x] Zadanie 1a: Zapewnić style i układ mobilny panelu komentarzy — Test: `pytest tests/test_feedback_panel.py::test_feedback_styles_defined`
+- [ ] Zadanie 2: Zaplanować synchronizację komentarzy między urządzeniami (eksport/import JSON) — Test: `pytest tests/test_feedback_panel.py::test_feedback_export_placeholder` (do implementacji)
 ## Faza 4 — Rejestr pomysłów
 - [x] Zadanie 1: Formularz "Dodaj pomysł" z walidacją i fetch — Test: ręczna weryfikacja + `pytest tests/test_idea_submission.py::test_submit_idea_persists`
 - [x] Zadanie 2: Backend Flask zapisujący do SQLite i pliku — Test: `pytest tests/test_idea_submission.py::test_submit_idea_persists`
