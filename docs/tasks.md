@@ -9,6 +9,7 @@
 - [x] Zadanie 3: Zaprojektować rozmyte, animowane tła z trzema obrazami na podstronę — Test: `pytest tests/test_ambient_backgrounds.py`
 - [ ] Zadanie 4: Zapewnić progresywne sterowanie prędkością warstw tła zależne od scrolla (`prefers-reduced-motion`, IntersectionObserver) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_scroll_speed_variant`)
 - [ ] Zadanie 5: Opracować tryb "akcentowy" zwiększający lub zmniejszający ekspozycję warstw w zależności od sekcji (np. CTA) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_section_accent_visibility`)
+- [x] Zadanie 6: Wprowadzić sekcję visual key z trzema progami narracyjnymi i testem — Test: `pytest tests/test_visual_key.py::test_visual_key_section_present`
 
 ## Faza 3 — Custom domain i hosting Pages
 - [x] Zadanie 1: Udokumentować ręczną konfigurację custom domain bez pliku `CNAME` — Test: `pytest tests/test_custom_domain.py::test_manual_custom_domain_documented`
