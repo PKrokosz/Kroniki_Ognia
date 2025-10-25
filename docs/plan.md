@@ -7,6 +7,7 @@
 
 ## Definicja ukończenia (DoD)
 - Lint (`ruff`), typecheck (`mypy`), test (`pytest`) zielone jako blokery merge'a.
+- Lint, typecheck, test: `ruff check .`, `mypy app.py`, `pytest` zielone; kolejne linty front-endowe zaplanujemy w następnych fazach.
 - Wszystkie strony korzystają ze wspólnego arkusza `assets/styles.css` i dzielonej nawigacji.
 - Istnieje `index.html` jako strona startowa GitHub Pages.
 - Dokumentacja (README, notes, tasks) odzwierciedla aktualny stan.
@@ -21,6 +22,7 @@
 - [Scope] Ujednolicenie palety kolorów na bardziej stonowaną, ponurą z zachowaniem czytelności tekstów.
 - [Scope] Dodanie lekkich efektów ambientowych (warstwa tła, pulsujące żarzenie) bez zmiany narracji.
 - [Scope] Warstwowe tła z galerii `img/` — trzy rozmyte, delikatnie przesuwające się obrazy na każdej podstronie.
+- [Scope] Sekcja visual key na landingu wykorzystująca fotografie z `img/` i prowadząca do kluczowych podstron.
 - [Non-Goals] Dynamiczne menu hamburger, pełne przebudowanie treści sekcji, nowe strony.
 
 ## Definicja ukończenia fazy 2 (DoD)
@@ -29,6 +31,7 @@
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
 - Ambientowe warstwy tła pozostają widoczne ponad innymi efektami (warstwy mają opacity ≥ 0.45, animacja dryfu zauważalna przy horyzontalnym ruchu).
 - Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present`, `tests/test_responsive_theme.py::test_ambient_effects_defined` oraz `tests/test_ambient_backgrounds.py` są zielone.
+- Akceptacyjne: `tests/test_visual_key.py::test_visual_key_section_present` potwierdza sekcję ekspozycji.
 
 ## Cel fazy 3 — Custom domain i hosting Pages
 - [Scope] Zapewnienie automatycznego testu kontrolującego brak pliku `CNAME` w repozytorium oraz kompletność dokumentacji ręcznej konfiguracji domeny.

@@ -4,6 +4,9 @@
 - [x] Zadanie 3: Skonfigurować pipeline dokumentacyjny i CI (`docs/*`, `.codex`, workflow) — Test: sprawdzenie obecności plików + `pytest`
 - [x] Zadanie 4: Rozszerzyć CI o `ruff` i `mypy` — Test: `act -j test` lub `yamllint .github/workflows/ci.yml` + `ruff check .`, `mypy .`
 - [ ] Zadanie 4a: Dodać lokalny workflow (np. `make lint`) agregujący `ruff`, `mypy`, `pytest` dla szybkich iteracji — Test: do zaprojektowania (`tests/test_cli_tasks.py::test_make_lint_runs_tools`)
+- [x] Zadanie 4: Rozszerzyć toolchain backendu o `ruff` i `mypy` — Test: `ruff check .`, `mypy app.py`
+- [x] Zadanie 4: Rozszerzyć `.gitignore` o standardowe artefakty środowiskowe — Test: `pytest` + `git status --short` bez nowych plików
+- [ ] Zadanie 5: Zautomatyzować kontrolę `.gitignore` w CI (skrypt walidujący obecność kluczowych wpisów) — Test: do zdefiniowania (`tests/test_gitignore_guard.py`)
 
 ## Faza 2 — Mobilna mroczna atmosfera
 - [x] Zadanie 1: Przeskalować nagłówek i karty pod ekrany < 600px — Test: `pytest tests/test_responsive_theme.py::test_mobile_media_queries_present`
@@ -11,11 +14,14 @@
 - [x] Zadanie 3: Zaprojektować rozmyte, animowane tła z trzema obrazami na podstronę — Test: `pytest tests/test_ambient_backgrounds.py`
 - [ ] Zadanie 4: Zapewnić progresywne sterowanie prędkością warstw tła zależne od scrolla (`prefers-reduced-motion`, IntersectionObserver) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_scroll_speed_variant`)
 - [ ] Zadanie 5: Opracować tryb "akcentowy" zwiększający lub zmniejszający ekspozycję warstw w zależności od sekcji (np. CTA) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_section_accent_visibility`)
+- [x] Zadanie 6: Wprowadzić sekcję visual key z trzema progami narracyjnymi i testem — Test: `pytest tests/test_visual_key.py::test_visual_key_section_present`
 
 ## Faza 3 — Custom domain i hosting Pages
 - [x] Zadanie 1: Udokumentować ręczną konfigurację custom domain bez pliku `CNAME` — Test: `pytest tests/test_custom_domain.py::test_manual_custom_domain_documented`
 - [x] Zadanie 1a: Zabezpieczyć repo przed przypadkowym dodaniem `CNAME` — Test: `pytest tests/test_custom_domain.py::test_cname_managed_via_github_settings`
 - [x] Zadanie 1b: Ustalić właściwy rekord `CNAME` na `pkr0kosz.github.io` (wraz z opcją `.com`) — Test: `pytest tests/test_custom_domain.py::test_dns_host_documented`
+- [x] Zadanie 4: Dodać `.nojekyll` i test weryfikujący statyczne serwowanie GitHub Pages — Test: `pytest tests/test_nojekyll.py::test_nojekyll_file_present`
+- [ ] Zadanie 4a (kontynuacja): Automatycznie monitorować artefakty Jekylla (np. `_site/`) w pipeline — Test: do zaprojektowania (`tests/test_nojekyll.py::test_nojekyll_guard_pipeline`)
 - [ ] Zadanie 2: Przygotować automatyczną weryfikację certyfikatu HTTPS — Test: `pytest tests/test_https_monitoring.py::test_certificate_expiry` (do implementacji)
 - [ ] Zadanie 3: Zautomatyzować sprawdzanie wpisu custom domain przez API GitHub Pages — Test: `pytest tests/test_pages_domain_status.py::test_custom_domain_sync` (do zaprojektowania)
 - [ ] Zadanie 2: Przygotować automatyczną weryfikację certyfikatu HTTPS — Test: `pytest tests/test_https_monitoring.py::test_certificate_expiry` (do implementacji)
@@ -42,3 +48,4 @@
 - [x] Zadanie 3: Dodać `scripts/smoke.sh` oraz sekcję README „Run with tunnel” — Test: `pytest tests/test_api.py::test_post_ideas_smoke` (CLI opisany w README)
 - [ ] Zadanie 4 (kontynuacja): Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: `pytest tests/test_tunnel_health.py::test_cron_monitoring` (do zdefiniowania)
 - [ ] Zadanie 5 (kontynuacja): Przygotować skrypt synchronizujący `config.json` pomiędzy katalogiem głównym a `public/` — Test: `pytest tests/test_config_json.py::test_sync_script` (do zaprojektowania)
+- [ ] Zadanie 6: Zintegrować `ruff check .` i `mypy app.py` w workflow CI (`.github/workflows/codex.yml`) — Test: pipeline uruchamia oba kroki i kończy się statusem green

@@ -20,6 +20,7 @@ Repo owner directives:
   i `.gitignore`, bez binarnych artefaktów baz danych.
 - `public/config.json` przechowuje `BACKEND_URL` tunelu backendu; brak tego pliku lub klucza traktujemy jako błąd krytyczny.
 - Katalog główny repozytorium musi zawierać bliźniaczy `config.json`; oba pliki pozostają w 100% zsynchronizowane i są chronione testami.
+- Katalog główny repozytorium musi zawierać pusty plik `.nojekyll`, a README dokumentuje, że dzięki niemu GitHub Pages nie uruchamia Jekylla; testy powinny to kontrolować.
 - `scripts/smoke.sh` jest kanonicznym narzędziem do sprawdzania tunelu `https://api-kroniki.<MOJA-DOMENA>` i musi odzwierciedlać aktualny kontrakt API.
 
 Documentation scope:
@@ -32,12 +33,14 @@ Coding standards:
 - Place shared styling in `assets/styles.css`; load via relative paths.
 - No binary assets; use text/SVG only.
 - Tests live under `tests/` and must be runnable with `pytest`.
+- Backend zmiany muszą utrzymać zielone `ruff check .` oraz `mypy app.py` przed commitem.
 - Maintain a subdued, ember-toned palette (earthy browns, muted golds) and reuse the ambient overlay/hero patterns when rozbudowywanie UI.
 - Zachowuj responsywne bloki @media <= 600px tak, by nawigacja przechodziła w układ kolumnowy; nowe komponenty muszą respektować mobilny padding.
 - Ambient backgrounds korzystają z kontenera `.ambient-background` z trzema warstwami `.ambient-layer--1..3` na każdej stronie. Każda strona wykorzystuje obrazy z `img/` (około trzy na widok); aktualizacje wymagają synchronizacji z testem `tests/test_ambient_backgrounds.py` i mapą w `assets/styles.css`. Zachowaj widoczne nasycenie (opacity warstw ≥ 0.45) i upewnij się, że znajdują się nad innymi efektami (`z-index` ≥ -1).
 - Panel komentarzy "Oceń pomysł" w `organizacja.html` musi pozostać domyślnie zwinięty, obsługiwać `localStorage` z czytelnym komunikatem statusu oraz być testowany w `tests/test_feedback_panel.py`.
 - Interaktywne komponenty front-endowe wymagają obsługi braku `localStorage` (fallback komunikatu) i aktualizacji dokumentacji w README oraz `docs/notes.md`.
 - Ambient backgrounds korzystają z kontenera `.ambient-background` z trzema warstwami `.ambient-layer--1..3` na każdej stronie. Każda strona wykorzystuje obrazy z `img/` (około trzy na widok); aktualizacje wymagają synchronizacji z testem `tests/test_ambient_backgrounds.py` i mapą w `assets/styles.css`.
+- Sekcja visual key „Próby Płomienia” na `index.html` utrzymuje trzy kafelki (`visual-key__tile--ember`, `--glow`, `--flame`) z obrazami `img/1.jpg`, `img/4.jpg`, `img/7.jpg`, CTA do `cechy.html`, `imersja_mechanika.html`, `draft_planu.html` oraz przycisk `data-visual-key-autoplay` respektujący `prefers-reduced-motion`. Zmiany wymagają aktualizacji `assets/visual-key.js`, styli i testu `tests/test_visual_key.py`.
 
 Commit/PR standards:
 - Use Conventional Commits.
