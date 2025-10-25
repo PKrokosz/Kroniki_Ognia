@@ -71,6 +71,7 @@
 - Test `tests/test_notebook_banner.py` kontroluje link, atrybuty bezpieczeństwa oraz komunikat narracyjny.
 - Baner respektuje preferencje ograniczonego ruchu i układ mobilny, dzięki czemu CTA pozostaje dostępne.
 - Baner uzupełniono o CTA do archiwum Google Drive z zasobami wspierającymi produkcję; kolorowa ikona sygnalizuje, że chodzi o repozytorium plików wizualnych.
+- Plik `.nojekyll` w katalogu głównym blokuje przetwarzanie Jekylla na GitHub Pages, dzięki czemu cała struktura repozytorium jest serwowana bezpośrednio jako statyczna witryna i test `tests/test_nojekyll.py` będzie szybko alarmował o brakach.
 
 ## 5xWhy — Dlaczego link do archiwum Google Drive
 1. Dlaczego dodajemy link do Google Drive?
@@ -400,6 +401,33 @@
    - (B) Aby zsynchronizować wiedzę z pipeline'em dokumentacyjnym.
    - (C) Aby przygotować kolejny test akceptacyjny dla integracji.
    **Decyzja:** B jako kierunek, z planem na streszczenie z (A).
+
+## 5xWhy — Dlaczego wymuszamy `.nojekyll`
+1. Dlaczego dodajemy plik `.nojekyll`?
+   - (A) Aby GitHub Pages nie uruchamiał Jekylla, który ignoruje katalogi zaczynające się od `_`.
+   - (B) Aby pipeline był kompatybilny z istniejącymi testami wykorzystującymi katalog `tests/` na froncie.
+   - (C) Aby uniknąć konfliktów z własnym generatorem statycznym w przyszłości.
+   **Decyzja:** A jako najpilniejsza potrzeba, wzmocniona świadomością kompatybilności z (B).
+2. Dlaczego musimy utrzymywać dokumentację o `.nojekyll`?
+   - (A) Nowi współtwórcy zrozumieją, że brak pliku to regresja w deployu.
+   - (B) Dokumentacja służy jako checklist przy audytach CTO.
+   - (C) README pomaga przy on-boardingu osób odpowiedzialnych za Pages.
+   **Decyzja:** A jako główna ochrona, doprawiona aspektem onboardingu z (C).
+3. Dlaczego potrzebny jest test automatyczny dla `.nojekyll`?
+   - (A) Ręczna kontrola łatwo przeoczy brak pliku po refaktorach.
+   - (B) Test może także sprawdzać, czy README tłumaczy decyzję.
+   - (C) Włączenie do CI pozwala szybko reagować na regresje hostingowe.
+   **Decyzja:** C jako strażnik CI, rozszerzony o dokumentacyjną kontrolę z (B).
+4. Dlaczego test ma pilnować również wzmianki w README?
+   - (A) Bez przypomnienia w dokumentacji decyzja mogłaby zostać cofnięta.
+   - (B) README jest najczęściej czytanym plikiem przez utrzymanie.
+   - (C) Chronimy spójność między wiedzą operacyjną a stanem repo.
+   **Decyzja:** C jako wymóg spójności, uzupełniony o popularność README z (B).
+5. Dlaczego planujemy dalszą automatyzację kontroli artefaktów Jekylla?
+   - (A) GitHub może ponownie włączyć Jekylla przy zmianie ustawień projektu.
+   - (B) Monitoring `/_site` wykryje przypadkowe wdrożenia generatora.
+   - (C) Alert w pipeline pozwoli reagować zanim trafi to do produkcji.
+   **Decyzja:** C jako główny cel operacyjny, wzbogacony o obserwację artefaktów z (B).
 
 # Notatki (Faza 4)
 - Strona główna otrzymuje formularz "Dodaj pomysł" z natychmiastowym feedbackiem i dostępnością `aria-live`.

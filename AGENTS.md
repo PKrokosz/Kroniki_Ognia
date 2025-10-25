@@ -19,6 +19,7 @@ Repo owner directives:
   i `.gitignore`, bez binarnych artefaktów baz danych.
 - `public/config.json` przechowuje `BACKEND_URL` tunelu backendu; brak tego pliku lub klucza traktujemy jako błąd krytyczny.
 - Katalog główny repozytorium musi zawierać bliźniaczy `config.json`; oba pliki pozostają w 100% zsynchronizowane i są chronione testami.
+- Katalog główny repozytorium musi zawierać pusty plik `.nojekyll`, a README dokumentuje, że dzięki niemu GitHub Pages nie uruchamia Jekylla; testy powinny to kontrolować.
 - `scripts/smoke.sh` jest kanonicznym narzędziem do sprawdzania tunelu `https://api-kroniki.<MOJA-DOMENA>` i musi odzwierciedlać aktualny kontrakt API.
 
 Documentation scope:
