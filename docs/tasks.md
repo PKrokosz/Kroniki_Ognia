@@ -6,6 +6,8 @@
 ## Faza 2 — Mobilna mroczna atmosfera
 - [x] Zadanie 1: Przeskalować nagłówek i karty pod ekrany < 600px — Test: `pytest tests/test_responsive_theme.py::test_mobile_media_queries_present`
 - [x] Zadanie 2: Przyciemnić paletę i dodać ambientowe efekty — Test: `pytest tests/test_responsive_theme.py::test_ambient_effects_defined`
+- [x] Zadanie 3: Zaprojektować rozmyte, animowane tła z trzema obrazami na podstronę — Test: `pytest tests/test_ambient_backgrounds.py`
+- [ ] Zadanie 4: Zapewnić progresywne sterowanie prędkością warstw tła zależne od scrolla (`prefers-reduced-motion`, IntersectionObserver) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_scroll_speed_variant`)
 
 ## Faza 3 — Custom domain i hosting Pages
 - [x] Zadanie 1: Udokumentować ręczną konfigurację custom domain bez pliku `CNAME` — Test: `pytest tests/test_custom_domain.py::test_manual_custom_domain_documented`

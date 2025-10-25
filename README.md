@@ -34,12 +34,12 @@ pytest
 ```
 
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
 - Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
-- Oceń nową, stonowaną paletę i subtelny efekt pulsującego tła w kontekście narracji projektu.
+- Oceń nową, stonowaną paletę, subtelny efekt pulsującego tła i wielowarstwowe galerie obrazów przesuwające się horyzontalnie.
 - Kliknij baner Notebook LM i sprawdź, czy otwiera się właściwy notebook z bazą wiedzy brainstormu.
 - Uruchom backend (`flask --app app run`), wprowadź pomysł w sekcji „Dodaj pomysł” i sprawdź, że otrzymasz potwierdzenie, a w katalogu `data/` pojawiły się wpisy w SQLite i `ideas.txt`.
 
@@ -61,6 +61,7 @@ Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mo
 ## Aktualizacja fazy 2
 - Paleta kolorów została przygaszona i oparta na barwach ziemistych; akcenty złamane bursztynem nadają bardziej ponury ton.
 - Dodano ambientową warstwę tła (`body::before`) oraz delikatny efekt świetlny w sekcji hero (`.page-hero::after`).
+- Każda podstrona posiada trzywarstwowe, rozmyte galerie obrazów z katalogu `img/`, które płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
 - Wprowadzono dedykowany blok `@media (max-width: 600px)` poprawiający skalowanie strony na smartfonach.
 
 ## Aktualizacja fazy 3
