@@ -115,6 +115,43 @@
         <p class="muted-text">Repozytorium jest gotowe do hostingu na GitHub Pages — wystarczy skierować publikację na gałąź z plikami statycznymi.</p>
       </section>
 
+      <section class="content-section visual-key" aria-labelledby="visual-key-title">
+        <h2 id="visual-key-title" class="section-title">Próby Płomienia</h2>
+        <p class="section-intro-text">
+          Trzy progi inicjacyjne prowadzą od pierwszej iskry po finałowe płomienie zakonu. Każda karta łączy fotografie archiwalne z repozytorium i kieruje do pełnych opracowań.
+        </p>
+        <div class="visual-key__grid" role="list">
+          <figure class="visual-key__tile visual-key__tile--ember" role="listitem">
+            <img src="img/1.jpg" alt="Kamienny korytarz oświetlony pierwszą iskrą" />
+            <figcaption>
+              <h3>Iskra</h3>
+              <p>Wejście do klasztoru, motto zakonu i pierwsze światło w mroku.</p>
+              <a class="badge-outline" href="cechy.html">Zanurz się w cechach świata</a>
+            </figcaption>
+          </figure>
+          <figure class="visual-key__tile visual-key__tile--glow" role="listitem">
+            <img src="img/4.jpg" alt="Ognisko i zgromadzeni akolici dzielący opowieści" />
+            <figcaption>
+              <h3>Żar</h3>
+              <p>Rytuały, pieśni i codzienność magów, które rozgrzewają wspólnotę.</p>
+              <a class="badge-outline" href="imersja_mechanika.html">Poznaj narzędzia</a>
+            </figcaption>
+          </figure>
+          <figure class="visual-key__tile visual-key__tile--flame" role="listitem">
+            <img src="img/7.jpg" alt="Finałowy rytuał z płonącymi zniczami" />
+            <figcaption>
+              <h3>Płomień</h3>
+              <p>Finałowe próby i dramaturgia dnia spinające całą opowieść.</p>
+              <a class="badge-outline" href="draft_planu.html">Zobacz plan dnia</a>
+            </figcaption>
+          </figure>
+        </div>
+        <button class="visual-key__autoplay" type="button" aria-pressed="false" data-visual-key-autoplay="true">
+          Odtwórz sekwencję
+        </button>
+        <p class="visual-key__status" role="status" aria-live="polite"></p>
+      </section>
+
       <section class="content-section idea-submit">
         <h2 class="section-title">Dodaj pomysł</h2>
         <p class="section-intro-text">
@@ -166,5 +203,7 @@
   </footer>
   <script type="module" src="./assets/js/backend-config.js"></script>
   <script type="module" src="./assets/idea-form.js"></script>
+  <script src="assets/visual-key.js" defer></script>
+  <script src="assets/idea-form.js" defer></script>
 </body>
 </html>

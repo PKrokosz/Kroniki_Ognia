@@ -7,6 +7,8 @@ Statyczna witryna dokumentująca projekt LARP "Kroniki Ognia". Repozytorium zawi
 - `cechy.html`, `draft_planu.html`, `imersja_mechanika.html`, `organizacja.html` — podstrony tematyczne.
 - `assets/styles.css` — wspólny arkusz stylów.
 - `assets/js/backend-config.js` — moduł konfigurujący formularze pod adres tunelu backendu.
+- `.nojekyll` — wymusza statyczne serwowanie plików bez ingerencji Jekylla na GitHub Pages.
+- `assets/visual-key.js` — interakcje sekcji visual key na landingu.
 - `docs/` — planowanie faz, zadania, notatki, ADR.
 - `.codex/` — presety ról Codex.
 - `tests/` — testy automatyczne (pytest).
@@ -22,6 +24,9 @@ python -m http.server 8000
 Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego. Wspólny moduł `assets/js/backend-config.js` odczytuje `config.json` i przypisuje docelowy adres każdemu formularzowi oznaczonemu `data-api`.
 
 Payload ma schemat `{"title": str, "content": str, "tags": [str]?}`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`.
+`POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB oraz waliduje, że przesłane JSON-y są poprawnymi obiektami. W razie błędu zwraca komunikat w JSON-ie wraz z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
+
+Endpoint `GET /api/health` służy jako prosty health-check backendu i zwraca `{"status": "ok"}` z kodem `200`.
 
 ```bash
 pip install -r requirements.txt
@@ -30,6 +35,7 @@ flask --app app run
 
 > Domyślnie dane trafiają do `data/ideas.sqlite3` i `data/ideas.txt`. Ścieżkę można nadpisać zmienną `IDEAS_DATA_DIR`.
 > Endpoint `POST /api/ideas` posiada limit 10 zgłoszeń na minutę z jednego adresu IP oraz nagłówki CORS dla GitHub Pages i tunelu.
+> Endpoint `GET /api/health` ujawnia status storage (istnienie bazy i dziennika) wykorzystywany w smoke teście tunelu.
 
 ## Run with tunnel
 
@@ -54,19 +60,47 @@ Po wdrożeniu tunelu backend Flask powinien być osiągalny pod podanym adresem.
 
 Skrypt wysyła testowy POST i wypisuje odpowiedź JSON.
 
+## Hosting GitHub Pages bez Jekylla
+
+- Plik `.nojekyll` w katalogu głównym zapobiega próbom uruchamiania silnika Jekyll na statycznej witrynie.
+- Dzięki temu GitHub Pages serwuje wszystkie zasoby (np. katalog `assets/` i `tests/`) dokładnie tak, jak są w repozytorium.
+- Test `tests/test_nojekyll.py` pilnuje obecności pliku i wzmianki w README, aby utrzymać spójność dokumentacji.
+
 ## Testy
 ```bash
 pip install -r requirements.txt
+ruff check .
+mypy .
 pytest
 ```
 
+Testy i statyczne kontrole sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`), zgodność plików konfiguracyjnych (`tests/test_config_json.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `ruff` i `mypy` pilnują standardów kodu Python.
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`). `tests/test_navigation.py::test_backend_config_script_present_on_form_pages` pilnuje dołączania modułu konfiguracji backendu wszędzie tam, gdzie pojawia się formularz.
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`), zgodność plików konfiguracyjnych (`tests/test_config_json.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Test `tests/test_visual_key.py` pilnuje sekcji ekspozycji „Próby Płomienia”, sprawdzając obecność kafelków, poprawne linki oraz powiązane obrazy `img/1.jpg`, `img/4.jpg`, `img/7.jpg`.
 Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a dodatkowe testy kontrolują endpoint health-check oraz walidację nagłówków, limit 5 KB i poprawność JSON-u dla zgłoszeń pomysłów.
+Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `GET /api/health` raportuje gotowość storage.
 Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`.
+`tests/test_nojekyll.py` zabezpiecza obecność pliku `.nojekyll` i opis w README, aby hosting GitHub Pages pozostał statyczny.
+
+## Kontrola jakości kodu
+
+Nowe narzędzia w `requirements.txt` poszerzają lokalne sprawdzanie jakości:
+
+```bash
+pip install -r requirements.txt  # instaluje m.in. ruff, mypy i paczki stubów
+ruff check .                     # szybki lint Pythona (CLI przechodzi bez błędów)
+mypy app.py                      # statyczne typowanie backendu Flask
+```
+
+- `ruff>=0.6.0` utrzymuje konwencje stylu i zgłosi regresję, jeśli backend przestanie być zgodny z PEP 8.
+- `mypy>=1.8.0` działa bez dodatkowej konfiguracji; brakujące stuby dla bibliotek (np. Flask-Cors, Requests) dopisaliśmy jako `types-Flask-Cors` oraz `types-requests`.
+- Instalacja wymaga środowiska wirtualnego (`python -m venv .venv && source .venv/bin/activate`), aby uniknąć ostrzeżeń `pip` o pracy jako użytkownik `root`.
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
@@ -75,6 +109,7 @@ Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, ż
 - Oceń nową, stonowaną paletę, subtelny efekt pulsującego tła i wielowarstwowe galerie obrazów przesuwające się horyzontalnie.
 - Kliknij baner Notebook LM i sprawdź, czy otwiera się właściwy notebook z bazą wiedzy brainstormu.
 - Uruchom backend (`flask --app app run`), wprowadź pomysł w sekcji „Dodaj pomysł” i sprawdź, że otrzymasz potwierdzenie, a w katalogu `data/` pojawiły się wpisy w SQLite i `ideas.txt`.
+- Przejdź przez sekcję visual key i potwierdź, że hover/focus wyróżnia kafelki oraz że przycisk „Odtwórz sekwencję” działa, komunikując status (lub blokadę przy aktywnym `prefers-reduced-motion`).
 
 ## Konfiguracja domeny `www.larpkronikiognia.pl`
 1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium nie przechowuje pliku `CNAME`; GitHub Pages zapisze go automatycznie w gałęzi serwującej stronę.
@@ -91,6 +126,11 @@ Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, ż
 5. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.
 6. **Weryfikacja:** sprawdź poprawność przez `dig www.larpkronikiognia.pl CNAME` oraz `curl -I https://www.larpkronikiognia.pl` — oba polecenia powinny wskazywać na GitHub Pages i zwracać status 200. Repozytorium nie przechowuje pliku `CNAME`, więc po każdej zmianie domeny potwierdź w ustawieniach Pages, że wpis został zapisany. Dla domeny `.com` powtórz kontrolę (`dig www.larpkronikiognia.com CNAME`).
 
+## Sekcja visual key „Próby Płomienia”
+- Landing otrzymał sekcję visual key z trzema kafelkami narracyjnymi prowadzącymi do kluczowych podstron repozytorium.
+- Każdy kafelek korzysta z fotografii `img/1.jpg`, `img/4.jpg`, `img/7.jpg` i udostępnia CTA do eksploracji świata, narzędzi oraz planu dnia.
+- Przycisk „Odtwórz sekwencję” umożliwia automatyczne przejście przez kafelki, respektując `prefers-reduced-motion` i komunikując status przez `aria-live`.
+
 ## Aktualizacja fazy 2
 - Paleta kolorów została przygaszona i oparta na barwach ziemistych; akcenty złamane bursztynem nadają bardziej ponury ton.
 - Dodano ambientową warstwę tła (`body::before`) oraz delikatny efekt świetlny w sekcji hero (`.page-hero::after`).
@@ -99,6 +139,7 @@ Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, ż
 - Wprowadzono dedykowany blok `@media (max-width: 600px)` poprawiający skalowanie strony na smartfonach.
 
 ## Aktualizacja fazy 3
+- Dodano plik `.nojekyll`, aby GitHub Pages nie stosował przetwarzania Jekyll i pozostawił strukturę katalogów nienaruszoną; test `tests/test_nojekyll.py` monitoruje ten stan.
 - Pojawił się baner "flying object" kierujący do Notebook LM z bazą wiedzy po burzy mózgów, spójny na wszystkich podstronach.
 - Animowana ikona zwiadowcy zachowuje klimat ognia, a preferencje ograniczonego ruchu wyłączają animację.
 - Ten sam zwiadowca prowadzi teraz także do archiwum Google Drive z zasobami wizualnymi; ikonę w barwach Google umieściliśmy przy CTA.
@@ -122,3 +163,4 @@ Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, ż
 - Dodać automatyczny linting HTML/CSS (np. HTMLHint, Stylelint) i włączyć do CI.
 - Przygotować komponentowe podejście (np. Eleventy) dla dalszej rozbudowy.
 - Zaprojektować widok prezentujący zgłoszone pomysły wraz z moderacją i eksportem.
+- Rozszerzyć `/api/health` o szczegóły tunelu (np. echo adresu `BACKEND_URL`) i zautomatyzowany test porównujący konfiguracje.
