@@ -105,6 +105,40 @@
 - Plan i tasks opisują nowe zadania: zabezpieczenie przed przypadkowym dodaniem `CNAME` oraz przyszłe monitorowanie certyfikatu HTTPS i statusu domeny.
 - Skorygowano instrukcję DNS tak, by jasno wskazywała na docelowy host GitHub Pages `pkr0kosz.github.io` i ewentualną domenę lustrzaną `.com`.
 
+# Notatki (Faza 5)
+- Front wczytuje `BACKEND_URL` z `public/config.json`, dzięki czemu GitHub Pages może wskazywać na tunel `https://api-kroniki.<MOJA-DOMENA>` bez przebudowy frontu.
+- Formularz otrzymał pola na tytuł, treść i opcjonalne tagi; JS ustawia `form.action` po załadowaniu konfiguracji.
+- Backend Flask wymusza schemat `{title, content, tags?}`, zapisuje tagi w JSON oraz loguje wpisy z timestampem. CORS ogranicza pochodzenie do GitHub Pages i tunelu, a Flask-Limiter blokuje flood do 10/min.
+- `tests/test_api.py` oraz zaktualizowane `tests/test_idea_submission.py` pilnują kontraktu odpowiedzi `{"id": ..., "status": "ok"}` oraz poprawnego utrwalenia danych.
+- README dokumentuje tryb tunelowania i skrypt `scripts/smoke.sh`, który wykonuje POST do publicznego endpointu.
+
+## 5xWhy — Konfiguracja tunelu backendu
+1. Dlaczego front powinien ładować URL backendu z `config.json`?
+   - (A) Pozwala przełączać środowiska (lokalne/tunel) bez rekompilacji.
+   - (B) Ułatwia nietechnicznym osobom zmianę adresu bez dotykania JS.
+   - (C) Chroni przed wyciekami, bo nie commitujemy prywatnych adresów w kodzie.
+   **Decyzja:** A jako główny cel elastyczności, rozszerzony o prosty onboarding z (B).
+2. Dlaczego ograniczamy CORS do trzech hostów?
+   - (A) Minimalizujemy powierzchnię ataku XHR.
+   - (B) Jasno sygnalizujemy oczekiwany ruch z Pages/tunelu.
+   - (C) Przygotowujemy się pod ewentualne środowisko stagingowe.
+   **Decyzja:** A jako wiodący aspekt bezpieczeństwa, wzmocniony obserwacją ruchu z (B).
+3. Dlaczego warto dodać rate limit 10/min?
+   - (A) Chroni tunel przed floodem podczas eventu.
+   - (B) Stabilizuje działanie SQLite na słabszych maszynach.
+   - (C) Zapobiega przypadkowym pętlom w testach.
+   **Decyzja:** A jako tarcza operacyjna, doprawiona minimalizacją obciążenia z (B).
+4. Dlaczego zachowujemy kompatybilność z polem `idea`?
+   - (A) Istniejące zgłoszenia mogą nadal używać starej wersji formularza.
+   - (B) Ułatwia rollback bez migracji.
+   - (C) Pozwala importować historyczne wpisy tekstowe.
+   **Decyzja:** A jako ciągłość usługi, z bonusem migracyjnym z (C).
+5. Dlaczego smoke test w pytest i bashu to konieczność?
+   - (A) Pytest zapewnia regresję w CI.
+   - (B) Bash pozwala szybko sprawdzić tunel po wdrożeniu.
+   - (C) Dublet testów zwiększa zaufanie architekta.
+   **Decyzja:** A jako fundament w pipeline, rozszerzony o operacyjny komfort z (B).
+
 ## 5xWhy — Custom domain i hosting
 1. Dlaczego potrzebujemy własnej domeny na GitHub Pages?
    - (A) Buduje wiarygodność marki LARP poza kontekstem GitHub.
@@ -251,6 +285,38 @@
    - (B) Ułatwia audyt CTO persony.
    - (C) Buduje pamięć projektową (CONTEXT).
    **Decyzja:** A jako wiodące, uzupełnione o audytowalność z (B).
+
+# Notatki (Faza 4)
+- Strona "Organizacja" zyskała przycisk "Oceń pomysł" przy każdym wątku, rozwijający panel komentarza z komunikatami statusu.
+- Komentarze zapisują się w `localStorage`, co pozwala prowadzącym zachować uwagi między odświeżeniami strony podczas iteracji warsztatowych.
+- Panel respektuje bursztynową paletę projektu i układ mobilny, a test `tests/test_feedback_panel.py` blokuje regresje markupowe i stylowe.
+
+## 5xWhy — Panel ocen pomysłów
+1. Dlaczego dodajemy panel oceny do kart wątków?
+   - (A) By zebrać wrażenia w trakcie warsztatów planistycznych.
+   - (B) By ocenić priorytety mechanik podczas testów wewnętrznych.
+   - (C) By zapewnić notatnik prowadzących bezpośrednio na stronie.
+   **Decyzja:** C jako baza funkcjonalności, rozszerzona o warsztatowy kontekst z (A).
+2. Dlaczego zapis lokalny w `localStorage`?
+   - (A) Nie wymaga backendu ani dodatkowej infrastruktury.
+   - (B) Zapewnia natychmiastową synchronizację między wszystkimi uczestnikami.
+   - (C) Pozwala działać offline podczas testów gry.
+   **Decyzja:** A dla prostoty wdrożenia, z korzyścią pracy offline z (C).
+3. Dlaczego panel domyślnie pozostaje zwinięty?
+   - (A) Zachowuje czytelność i rytm kart nawet przy dużej liczbie wątków.
+   - (B) Minimalizuje koszty renderowania w przeglądarce.
+   - (C) Chroni przed przypadkową edycją tekstu przy przewijaniu.
+   **Decyzja:** A jako priorytet UX, wzbogacony o ochronę przed przypadkowym dotykiem z (C).
+4. Dlaczego potrzebujemy dedykowanych styli mobilnych?
+   - (A) Użytkownicy często korzystają z telefonu podczas przygotowań LARP.
+   - (B) Utrzymuje spójność wizualną w bursztynowej palecie repozytorium.
+   - (C) Ułatwia szybkie testy QA w pipeline'ie.
+   **Decyzja:** A jako kluczowe, z konsekwencją stylistyczną z (B).
+5. Dlaczego nowy test Pytest jest wymagany?
+   - (A) Chroni markup i klucze `localStorage` przed przypadkową regresją.
+   - (B) Działa jako podstawa pod przyszłą synchronizację eksportu komentarzy.
+   - (C) Zapewnia zgodność z wymaganiami CI i dokumentacją planu.
+   **Decyzja:** A jako fundament, rozszerzone o dyscyplinę CI z (C).
 
 ## 5xWhy — Baner Notebook LM
 1. Dlaczego dodajemy baner z odnośnikiem do Notebook LM?

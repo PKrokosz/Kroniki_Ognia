@@ -122,18 +122,38 @@
           dalszej kuracji.
         </p>
         <form id="idea-form" class="idea-form" novalidate>
+          <label class="idea-form__label" for="idea-title">Nadaj tytuł pomysłowi</label>
+          <input
+            id="idea-title"
+            name="title"
+            class="idea-form__input"
+            type="text"
+            placeholder="Np. Rytuał oczyszczenia przy gasnących żarach"
+            required
+          />
           <label class="idea-form__label" for="idea-text">Opisz swój pomysł</label>
           <textarea
             id="idea-text"
-            name="idea"
+            name="content"
             class="idea-form__textarea"
             rows="4"
             placeholder="Np. nocny rytuał oczyszczenia z wykorzystaniem popiołu z głównego ogniska..."
             required
           ></textarea>
+          <label class="idea-form__label" for="idea-tags">Słowa kluczowe (opcjonalne)</label>
+          <input
+            id="idea-tags"
+            name="tags"
+            class="idea-form__input"
+            type="text"
+            placeholder="Np. rytuał, popiół, oczyszczenie"
+            aria-describedby="idea-tags-hint"
+          />
           <div class="idea-form__actions">
             <button type="submit" class="badge-outline idea-form__submit">Zapisz pomysł</button>
-            <p class="idea-form__hint">Pomysły trafiają do archiwum tylko dla zespołu mistrzów gry.</p>
+            <p id="idea-tags-hint" class="idea-form__hint">
+              Pomysły trafiają do archiwum tylko dla zespołu mistrzów gry. Oddziel słowa kluczowe przecinkami.
+            </p>
           </div>
         </form>
         <p id="idea-feedback" class="idea-form__feedback" role="status" aria-live="polite"></p>

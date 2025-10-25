@@ -16,29 +16,38 @@ def test_submit_idea_persists(tmp_path):
     app = create_app(tmp_path)
     client = app.test_client()
 
-    response = client.post("/api/ideas", json={"idea": "Testowy pomysł o rytuale"})
+    response = client.post(
+        "/api/ideas",
+        json={
+            "title": "Testowy tytuł",
+            "content": "Testowy pomysł o rytuale",
+            "tags": ["rytuał", "ognisko"],
+        },
+    )
 
     assert response.status_code == 201
     payload = response.get_json()
     assert payload
-    assert payload["idea"] == "Testowy pomysł o rytuale"
-    assert "Dziękujemy" in payload["message"]
+    assert payload["status"] == "ok"
+    assert payload["id"]
 
     log_path = tmp_path / "ideas.txt"
-    assert "Testowy pomysł o rytuale" in _read_log(log_path)
+    log_contents = _read_log(log_path)
+    assert "Testowy tytuł" in log_contents
+    assert "rytuał, ognisko" in log_contents
 
     db_path = tmp_path / "ideas.sqlite3"
     assert db_path.exists()
     with sqlite3.connect(db_path) as connection:
-        rows = connection.execute("SELECT idea FROM ideas").fetchall()
-    assert rows == [("Testowy pomysł o rytuale",)]
+        rows = connection.execute("SELECT title, content, tags FROM ideas").fetchall()
+    assert rows == [("Testowy tytuł", "Testowy pomysł o rytuale", '["rytuał", "ognisko"]')]
 
 
 def test_submit_idea_requires_text(tmp_path):
     app = create_app(tmp_path)
     client = app.test_client()
 
-    response = client.post("/api/ideas", json={"idea": "   "})
+    response = client.post("/api/ideas", json={"title": "Bez treści", "content": "   "})
 
     assert response.status_code == 400
     payload = response.get_json()
