@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analiza Koncepcji LARP: Zakon Ognia</title>
+    <!-- Ładowanie Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Używamy Inter jako czytelnego sans-serif, ale dostosowujemy stylem, by przypominał Roboto --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Dla nagłówków użyjemy szeryfowej alternatywy z Google Fonts, np. Lora lub Playfair Display, aby dać "gotycki" charakter --><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. PALETA KOLORÓW */
+        :root {
+            --color-bazalt: #1A1A1A;     /* Tło Strony */
+            --color-pergamin: #D4D4D4;   /* Tekst Główny */
+            --color-karmazyn: #B30000;   /* Stary kolor (Żar), teraz do usunięcia lub zmiany */
+            --color-zloto: #FFCC00;      /* Główny Akcent (Płomień/Wola) */
+            --color-popiol: #333333;     /* Tło Komponentów */
+            --color-border-karmazyn: #800000; /* Ciemniejszy karmazyn do ram */
+        }
+
+        /* Ustawienie domyślnej czcionki i tła */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bazalt); 
+            color: var(--color-pergamin);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 2. TYPOGRAFIA NAGŁÓWKÓW (Surowa, Gotycka) */
+        .header-font {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-zloto); /* Zmiana na złoty */
+            text-transform: uppercase;
+        }
+        
+        /* 3. LAYOUT I KOMPONENTY */
+
+        /* Nagłówek (Kontrast i Moc) */
+        .hero-section {
+            background-color: #2e2e2e; /* Ciemniejszy od bazaltu */
+            border-bottom: 4px solid var(--color-zloto); /* Zmiana na złoty */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Akcent Złocisty dla tytułów sekcji (zastępuje karmazyn) */
+        .accent-zloto { /* Nowa klasa */
+            color: var(--color-zloto);
+        }
+        
+        /* Styl dla bloku treści (Popiół Cienia) */
+        .card-popiol {
+            background-color: var(--color-popiol); 
+            /* Złoty akcent u góry, imitujący stronice manuskryptu */
+            border-top: 3px solid var(--color-zloto); /* Zmiana na złoty */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Kolor akcentu dla źródeł (mniej rzucający się w oczy) */
+        .source-text {
+            color: #8c8c8c; /* Ciemny, wyblakły pergamin */
+        }
+        
+        /* Efekt hover (Złocisty Płomień) dla kart i elementów interaktywnych */
+        .card-popiol:hover {
+            border-top: 3px solid var(--color-zloto); 
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+        }
+
+        /* Styl dla ikon w nagłówku - Płomień */
+        .icon-flame {
+            color: var(--color-zloto);
+        }
+
+        /* Styl dla sekcji w stopce/granicy */
+        .footer-border {
+            border-top: 1px solid var(--color-popiol);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <header class="hero-section text-center py-16 px-4">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 header-font" style="letter-spacing: 0.15em;">
+            ANALIZA KONCEPCJI PROJEKTOWYCH
+        </h1>
+        <p class="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto">
+            LARP: ZAKON OGNIA — ARCHIWUM WĄTKÓW
+        </p>
+        <div class="mt-8 flex justify-center space-x-4 text-3xl icon-flame">
+            <span title="Organizacja">⚙️</span>
+            <span title="Fabuła">📜</span>
+            <span title="Świat">🌍</span>
+            <span title="Klasztor">⛪</span>
+            <span title="Osobiste">👤</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-8 lg:p-12">
+
+        <!-- Funkcja do generowania sekcji i kart --><script>
+            // Dane w formacie JS do łatwego renderowania
+            const sectionsData = [
+                {
+                    id: "organizacyjne",
+                    title: "I. WĄTKI ORGANIZACYJNE",
+                    icon: "⚙️",
+                    description: "Wątki te dotyczą logistyki, struktury gry, mechanik oraz zarządzania przestrzenią i czasem, które wpływają na doświadczenie gracza.",
+                    threads: [
+                        { wątek: "Start LARPa ze snu", opis: "Koncepcja rozpoczęcia gry poprzez „wejście we śnienie” — gracze zasypiają off-game i budzą się już w świecie gry. Wymaga wyreżyserowanego poranka jako liturgii przejścia.", źródła: "[2-6]" },
+                        { wątek: "Rytm dnia i organizacja zajęć", opis: "Ustalenie struktury dnia: śniadanie, dwa bloki zajęć rano, obiad, dwa bloki po południu, kolacja, modlitwa. Dzień regulowany dźwiękiem dzwonu.", źródła: "[7-9]" },
+                        { wątek: "Podział zajęć na wykłady i ćwiczenia", opis: "Wykłady (teoria magii, teologia) mogą być wspólne dla wszystkich (ok. 30 graczy), a ćwiczenia (praktyczne, atrakcyjne) powinny odbywać się w mniejszych, kontrolowanych grupach, sugerowana wielkość to 12 osób na grupę ćwiczeniową.", źródła: "[10-12]" },
+                        { wątek: "System kar w klasztorze (Oczyszczenia)", opis: "Wprowadzenie systemu dyscypliny opartego na „Oczyszczeniach” (np. Oczyszczenie Popiołem, Ciszą) zamiast tradycyjnych kar.", źródła: "[13-15]" },
+                        { wątek: "Mechanizm Prestiżu", opis: "Prestiż jako waluta społeczna i magiczna, napędzająca relacje i konflikty. Magowie ryzykują utratę prestiżu (wypalenie płomienia) w publicznych konfrontacjach.", źródła: "[15-17]" },
+                        { wątek: "Rytuały Świec i dostępu", opis: "Światło świec jako symboliczny i praktyczny klucz do sekretów, wiedzy i dostępu do ukrytych miejsc.", źródła: "[7, 18]" },
+                        { wątek: "Zasady gry nocnej i skradania", opis: "Cisza nocna (sugerowane 23:00) z „godziną skradania” (np. 23:00–00:00), po której NPC schodzą z gry, ale gra graczy może trwać w pokojach.", źródła: "[7, 19-21]" },
+                        { wątek: "System zwojów NFC i kradzieży", opis: "Wprowadzenie zasad, że przedmioty lokacyjne (księgi, młoty) można tylko kopiować/przepisywać na miejscu, ale nie wolno ich wynosić.", źródła: "[22, 23]" },
+                        { wątek: "Karty postaci jako dzienniki", opis: "Karty postaci jako fizyczne artefakty — zeszyty/notatniki nowicjusza, zawierające wpisy fabularne, notatki z lekcji, symbole, a także mechaniczne dane w ukrytej kieszeni.", źródła: "[24-27]" },
+                    ]
+                },
+                {
+                    id: "fabularne",
+                    title: "II. WĄTKI FABULARNE",
+                    icon: "📜",
+                    description: "Te wątki stanowią główną oś narracyjną sezonu (trzy epizody) i kluczowe punkty zwrotne.",
+                    threads: [
+                        { wątek: "Oś sezonu (Trzy Epizody)", opis: "Cała fabuła rozpisana jest na trzy edycje: Epizod I – Rysa (Życie klasztoru, narastanie konfliktu zewnętrznego), Epizod II – Rozłam/Powstanie Bariery (eksperyment, chaos i katastrofa), Epizod III – Nowy Porządek (życie wewnątrz bariery, rozliczenia).", źródła: "[2, 28-31]" },
+                        { wątek: "Planowanie i błąd konstrukcyjny Bariery", opis: "Niepowodzenie Bariery nie jest przypadkowe, lecz wynika z błędów w planowaniu i konstruowaniu zaklęcia, które było ukryte w lekcjach i schematach. Fabuła ma skupiać się na procesie tworzenia (konkurencji o to, kto włoży więcej wkładu), a nie na finalnym efekcie.", źródła: "[32, 33]" },
+                        { wątek: "Obwinianie Magów Wody", opis: "Po niekontrolowanym rozroście Bariery, część Magów Ognia obwinia za to Magów Wody, którzy mogli pomagać w tworzeniu zaklęcia.", źródła: "[33, 35]" },
+                        { wątek: "Incydent Polnej Bestii w piwnicach", opis: "Scena przerywająca codzienny rytuał (np. w trakcie posiłku) — nagłe wtargnięcie posłańca informującego o „Polnej Bestii” w piwnicach. Jest to moment inicjacyjny i test reakcji wspólnoty na kryzys.", źródła: "[2, 36-38]" },
+                        { wątek: "Wątek śledczy w winiarni", opis: "Po rutynowej inwentaryzacji w winiarni, coś znika (np. rytualne wino lub artefakt), co prowadzi do śledztwa, testu lojalności i potencjalnie do oskarżeń między nowicjuszami.", źródła: "[39-42]" },
+                        { wątek: "Moralne dylematy", opis: "System decyzji, w których nie ma „dobrego wyjścia”, a gracze muszą wybierać między „jednym złym a drugim złym” (np. wydać uciekiniera lokalnym władzom, co obniża reputację u ludu, czy ukryć, ryzykując gniew władzy).", źródła: "[24, 43, 44]" },
+                        { wątek: "Konflikt o żółtą czapkę", opis: "Miasto upomina się o insygnia władzy sądowniczej (żółtą czapkę), które klasztor tradycyjnie przetrzymywał. Stanowi to zarzewie konfliktu o władzę prawną między klasztorem a świeckim sędzią.", źródła: "[45-47]" },
+                        { wątek: "Astrologia Ognia i Omenistyka", opis: "Obserwacja nieba i płomieni jako nauka o rytmie materii i poszukiwanie wzorców historycznych i omenów (Omenistyka).", źródła: "[15, 48-50]" },
+                    ]
+                },
+                {
+                    id: "swiat",
+                    title: "III. ZARYS ŚWIATA",
+                    icon: "🌍",
+                    description: "Dotyczy tła politycznego, ideologicznego i społecznego, które jest poza murami klasztoru, ale bezpośrednio wpływa na grę.",
+                    threads: [
+                        { wątek: "Konflikt miasto–farma–klasztor", opis: "Narastający konflikt ekonomiczny i polityczny: Miasto chce zbierać podatki, ale nie daje ochrony Farmerom. Farmerzy (Onar) nie chcą płacić, odmawiając dostaw. Klasztor staje się kluczowym graczem politycznym.", źródła: "[51-54]" },
+                        { wątek: "Relacje z Magami Wody", opis: "Magowie Wody są gośćmi w klasztorze, korzystają z zasobów (biblioteka, laboratorium), ale ich obecność rodzi napięcia i jest postrzegana przez konserwatystów jako herezja.", źródła: "[24, 55-57]" },
+                        { wątek: "Frakcje w Zakonie Ognia (Schizma)", opis: "Zakon Ognia dzieli się na trzy główne ideologie: Khorinis (ogień jako wiedza, laboratorium), Nordmar (ogień jako sąd, surowy dogmat) i Stolica (ogień jako prawo i narzędzie władzy). Konflikt tych doktryn napędza fabułę.", źródła: "[15, 58-62]" },
+                        { wątek: "Wielki Sąd i funkcja sędziowska", opis: "Klasztor pełni funkcje sądownicze, co jest punktem zapalnym w sporach z miastem. Planowany jest Wielki Sąd (rytuał) jako kulminacyjny akt rozstrzygania sporów na zewnątrz.", źródła: "[45, 63, 64]" },
+                        { wątek: "Wieści ze świata zewnętrznego", opis: "Klasztor jest węzłem informacyjnym. Wieści z miasta (zamieszki, urzędnicy, kupcy, skazańcy, pogłoski o orkach używających ognia) wprowadzają nowe wątki i zagrożenia.", źródła: "[65-67]" },
+                        { wątek: "Rola Paradynów", opis: "Paradyni przybywają z rozkazami od króla, ich obecność potęguje chaos z powodu konfliktu ze Strażą Miejską. Stanowią polityczny „języczek uwagi”.", źródła: "[45, 68, 69]" },
+                    ]
+                },
+                {
+                    id: "klasztor",
+                    title: "IV. ZARYS KLASZTORU",
+                    icon: "⛪",
+                    description: "Obejmuje wewnętrzną strukturę, kulturę, architekturę i codzienne praktyki (rytuały, nauka).",
+                    threads: [
+                        { wątek: "Rada Trzech Arcymagów", opis: "Centralna struktura duchowa, gdzie Arcymagowie (Żaru, Płomienia, Popiołów) reprezentują trzy aksjomaty (Oczyszczenie, Wola, Pamięć) i determinują ścieżki nowicjuszy.", źródła: "[24, 70-72]" },
+                        { wątek: "Architektura Klasztoru jako fabularna mapa", opis: "Przestrzenie klasztorne mają funkcję praktyczną i symboliczną (Krużganki, Refektarz, Skryptorium/Biblioteka, Kapitularz, Kaplica, Winiarnia/Spiżarnia) i są wykorzystywane do konkretnych wątków.", źródła: "[73-76]" },
+                        { wątek: "Kancelaria Ognia", opis: "Sektor, w którym nowicjusze wspierają magów w pracy biurokratycznej, politycznej i sądowniczej (segregacja korespondencji, protokołowanie rozpraw, pieczętowanie listów).", źródła: "[77-79]" },
+                        { wątek: "Konserwacja artefaktów", opis: "Rytualna praktyka podtrzymywania „pamięci” artefaktów (berła, insygnia ognia) poprzez oczyszczanie i recytację formuł. Magowie z Kolegium Zachowania.", źródła: "[39, 80-82]" },
+                        { wątek: "Sektory życia codziennego", opis: "Podział na dziedziny (Alchemia, Winiarnia, Biblioteka, Ogród, Kuźnia), gdzie nowicjusze uczą się przez praktyczne uczestnictwo (asystowanie magom), a nie formalne lekcje.", źródła: "[39, 83-85]" },
+                        { wątek: "Kultura drobnych gestów i palenia świec", opis: "Codzienny rytuał polegający na podtrzymywaniu płomienia — mag widzący gasnącą świecę ma obowiązek ją rozpalić, co symbolizuje utrzymywanie ognia ducha.", źródła: "[86, 87]" },
+                        { wątek: "Warsztat run z gliny", opis: "Praktyczne zajęcia polegające na formowaniu, barwieniu i wypalaniu run w piecu, łączące sztukę z materializacją intencji.", źródła: "[39, 88, 89]" },
+                        { wątek: "Rytuał Ciszy i posiłki", opis: "Wspólne posiłki w Refektarzu są momentem rytualnym, często odbywają się w ciszy, podczas której magowie obserwują projekcję z mechanicznego astrolabium.", źródła: "[9, 90, 91]" },
+                        { wątek: "Lustro Pokutne i Medytacja Odbicia", opis: "Wykorzystanie luster/zwierciadeł (np. Lustro Pokutne w kaplicy) do rytuałów prawdy, medytacji i oczyszczenia z win. Może odbijać nie tylko twarze, ale i dawnych mistrzów.", źródła: "[92-94]" },
+                        { wątek: "Funkcja Kronikarska", opis: "Odbudowywanie i uzupełnianie Kroniki Płomienia poprzez zadania polegające na poszukiwaniu zaginionych fragmentów (dokumenty, runy, świadectwa) ukrytych w różnych lokacjach.", źródła: "[2, 95-97]" },
+                    ]
+                },
+                {
+                    id: "osobiste",
+                    title: "V. WĄTKI OSOBISTE",
+                    icon: "👤",
+                    description: "Wątki te koncentrują się na indywidualnym dramacie, celach, pochodzeniu i relacjach między graczami i NPC.",
+                    threads: [
+                        { wątek: "Dynamika Xardasa", opis: "Xardas jako oś fabularna: od wizjonera badającego magię bariery (Ep. I), przez oskarżonego o utratę kontroli (Ep. II), po heretyka przekazującego wskazówki przez symbole i sny (Ep. III).", źródła: "[98-101]" },
+                        { wątek: "Nowicjusz z farmy", opis: "Postać, która musi wybierać między lojalnością wobec klasztoru a wsparciem swojej rodziny z Farmy w konflikcie z Miastem.", źródła: "[102, 103]" },
+                        { wątek: "Postać oczekująca na Sąd Ognia", opis: "Archetyp „człowieka zawieszonego”, który żyje w rytmie klasztoru, oczekując na sąd. W międzyczasie musi pracować, zbierać pozytywne świadectwa i dowody na swoją obronę.", źródła: "[104-106]" },
+                        { wątek: "Nowicjusz, który „słyszy gwiazdy”", opis: "Uczeń, który interpretuje dane astrologiczne przez słuch i wrażliwość, a nie przez obliczenia, co czyni go podejrzanym o mistycyzm i herezję.", źródła: "[49]" },
+                        { wątek: "Motyw Zemsty/Oczyszczenia Winy", opis: "Nowicjusz, który przyszedł do klasztoru z poczucia żalu lub aby się na kimś zemścić, a jego dalsze losy zależą od tego, czy spodoba mu się życie klasztorne.", źródła: "[107, 108]" },
+                        { wątek: "Brat Krystian (NPC)", opis: "Dawny strażnik, który przysiągł nie używać ostrej broni. Uczy nowicjuszy walki kijem, medytacji w ruchu oraz rzemiosła (winiarstwo, suszenie kiełbas), łącząc duchowość z codziennością.", źródła: "[109-112]" },
+                        { wątek: "Starszy Nowicjusz, który zgasł", opis: "Postać, która nie przeszła Próby Ognia i dąży do ucieczki z klasztoru. Jego plan (np. ucieczka statkiem z kobietą) jest udaremniony przez blokadę morską wynikającą z konfliktu z orkami.", źródła: "[113, 114]" },
+                        { wątek: "Konflikt celibatu i misji", opis: "Wątek dotyczący relacji osobistych magów/braci, w którym klasztor wymaga poświęcenia dla misji, a niektórzy uciekają się do tajnych związków.", źródła: "[115, 116]" },
+                    ]
+                }
+            ];
+
+            // Funkcja do renderowania kart (przyjazna dla urządzeń mobilnych)
+            function renderCard(thread) {
+                return `
+                    <div class="card-popiol p-6 rounded-lg shadow-xl hover:shadow-2xl transition duration-300">
+                        <h3 class="text-xl font-bold mb-3 header-font text-xl" style="color: var(--color-zloto);">${thread.wątek}</h3>
+                        <p class="mb-4 text-sm">${thread.opis}</p>
+                        <div class="text-xs source-text pt-2 border-t" style="border-color: #555;">
+                            Źródła: ${thread.źródła}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Funkcja do renderowania całej sekcji
+            function renderSection(section) {
+                const cardsHtml = section.threads.map(renderCard).join('');
+                return `
+                    <section id="${section.id}" class="mb-16 pt-8">
+                        <h2 class="text-3xl sm:text-4xl font-extrabold mb-6 header-font flex items-center accent-zloto border-b pb-2" style="border-color: var(--color-zloto); letter-spacing: 0.1em;">
+                            <span class="mr-3 text-4xl icon-flame">${section.icon}</span> ${section.title}
+                        </h2>
+                        <p class="text-gray-400 mb-8 max-w-4xl text-sm">${section.description}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            ${cardsHtml}
+                        </div>
+                    </section>
+                `;
+            }
+
+            // Renderowanie wszystkich sekcji do main
+            document.addEventListener('DOMContentLoaded', () => {
+                const mainContainer = document.querySelector('main');
+                const htmlContent = sectionsData.map(renderSection).join('');
+                mainContainer.innerHTML += htmlContent;
+            });
+        </script>
+
+    </main>
+
+    <footer class="text-center py-8 px-4 mt-12 text-gray-500 footer-border">
+        <p class="text-xs text-gray-600">Opracowanie na podstawie Burzy Mózgów - Zakon Ognia | Prezentacja wygenerowana przez Gemini</p>
+    </footer>
+
+</body>
+</html>
