@@ -64,6 +64,33 @@
    - (C) Daje szybki feedback w CI.
    **Decyzja:** C jako natychmiastowy feedback, rozszerzony o ochronę jakości z (A).
 
+## 5xWhy — Standaryzacja kart i rozmytych teł (2024-09)
+1. Dlaczego karty rozchodziły się przy zmianie szerokości okna?
+   - (A) Siatka korzystała ze sztywnej liczby kolumn niezależnie od viewportu.
+   - (B) Dodatkowe klasy utilitarne (np. `lg:grid-cols-2`) nie miały wsparcia w arkuszu stylów.
+   - (C) Długie słowa w narracji rozszerzały kontenery ponad przewidzianą szerokość.
+   **Decyzja:** A jako główny problem konstrukcyjny, uzupełniony o kontrolę zawijania z (C).
+2. Dlaczego przechodzimy na `repeat(auto-fit, minmax(...))` sterowany zmienną `--card-min-width`?
+   - (A) Auto-fit automatycznie dopasowuje liczbę kolumn do dostępnej przestrzeni bez łamania layoutu.
+   - (B) Zmienna pozwala skalować szerokość w zależności od sekcji (2/3/4 kolumny) bez duplikowania reguł.
+   - (C) Rozwiązanie jest kompatybilne z istniejącym testem mobile i nie wymaga refaktoringu HTML.
+   **Decyzja:** A jako fundament responsywności, rozszerzony o parametryzację z (B).
+3. Dlaczego wymuszamy `overflow-wrap:anywhere` i `hyphens:auto` na treściach kart?
+   - (A) Polskie słowa i nazwy rytuałów bywają długie i powodowały horyzontalne przewijanie.
+   - (B) Hyphenation zachowuje rytm tekstu, co wspiera klimat narracyjny.
+   - (C) Ułatwia to zachowanie równych wysokości kafelków przy mieszanych typach treści.
+   **Decyzja:** A jako ochrona layoutu, doprawiona klimatem z (B).
+4. Dlaczego obrazy visual key stały się rozmytym tłem wypełniającym kafelek?
+   - (A) Warstwa tła utrzymuje klimat „żaru” niezależnie od wysokości tekstu.
+   - (B) Rozmycie pozwala czytelnie nałożyć figcaption bez dodatkowych blendów.
+   - (C) Zmniejsza to zależność od manualnego kadrowania JPG w `img/`.
+   **Decyzja:** A jako kluczowe doświadczenie wizualne, wzmocnione czytelnością z (B).
+5. Dlaczego dodajemy testy pilnujące auto-fit i rozmytych tł?
+   - (A) Bez testów łatwo powrócić do sztywnych kolumn przy kolejnej iteracji.
+   - (B) Testy kodują nowe kontrakty CTO persony i blokują regresje responsywności.
+   - (C) Automatyczny strażnik skraca feedback podczas review i CI.
+   **Decyzja:** B jako forma kontraktu, rozszerzona o szybki feedback z (C).
+
 # Notatki (Faza 3)
 - Baner „flying object” prowadzi do Notebook LM i archiwum Google Drive; animacja respektuje `prefers-reduced-motion`.
 - Test `tests/test_notebook_banner.py` kontroluje linki, atrybuty bezpieczeństwa i klasę CTA Google Drive.

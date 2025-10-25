@@ -27,6 +27,7 @@
 - `pytest` przechodzi z testami responsywności oraz ambientu.
 - Na urządzeniach mobilnych nawigacja układa się w kolumnę, a karty mają zmniejszone paddingi.
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
+- Siatki kart wykorzystują auto-fit z `--card-min-width`, a sekcja visual key renderuje zdjęcia jako rozmyte tła zapewniające czytelność tekstu.
 - Ambientowe warstwy tła mają opacity ≥ 0.45 i `z-index` ≥ -1, co chroni test `tests/test_ambient_backgrounds.py::test_ambient_layers_meet_visibility_thresholds`.
 - Akceptacja: `tests/test_responsive_theme.py`, `tests/test_ambient_backgrounds.py`, `tests/test_visual_key.py`.
 
