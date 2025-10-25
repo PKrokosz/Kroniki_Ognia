@@ -254,3 +254,35 @@
    - (B) Aby zsynchronizować wiedzę z pipeline'em dokumentacyjnym.
    - (C) Aby przygotować kolejny test akceptacyjny dla integracji.
    **Decyzja:** B jako kierunek, z planem na streszczenie z (A).
+
+# Notatki (Faza 4)
+- Strona główna otrzymuje formularz "Dodaj pomysł" z natychmiastowym feedbackiem i dostępnością `aria-live`.
+- Backend Flask (`app.py`) utrwala zgłoszenia w SQLite i równoległym dzienniku tekstowym do dalszej kuracji narracji.
+- Test `tests/test_idea_submission.py` pilnuje, że request kończy się kodem 201 i zapisuje dane w obu warstwach storage.
+
+## 5xWhy — Rejestr pomysłów
+1. Dlaczego potrzebujemy formularza "Dodaj pomysł"?
+   - (A) Aby uczestnicy mogli szybko przekazać inspiracje bezpośrednio z witryny.
+   - (B) By zebrać materiał do dalszej kuracji narracyjnej.
+   - (C) By zademonstrować interaktywne MVP poza statycznym HTML.
+   **Decyzja:** C jako sygnał MVP, wzmocniony o pozyskiwanie inspiracji z (A).
+2. Dlaczego zapisujemy dane w bazie SQLite?
+   - (A) Zapewnia transakcyjną trwałość i możliwość późniejszego raportowania.
+   - (B) Ułatwia migrację do innych systemów danych.
+   - (C) Umożliwia testom automatycznym walidację struktury danych.
+   **Decyzja:** A jako fundament, uzupełniony o testowalność z (C).
+3. Dlaczego równolegle tworzymy plik tekstowy?
+   - (A) Kuratorzy narracji mogą szybko przejrzeć pomysły bez narzędzi SQL.
+   - (B) Zapewnia backup w razie uszkodzenia bazy.
+   - (C) Pozwala zasilić warsztaty fabularne wydrukiem.
+   **Decyzja:** A jako główna wartość, rozszerzona o backup z (B).
+4. Dlaczego formularz ma `aria-live` i jasny feedback?
+   - (A) Dostępność to wymóg dla MVP.
+   - (B) Minimalizuje frustrację użytkownika w razie błędów sieci.
+   - (C) Ułatwia testy ręczne i automatyczne.
+   **Decyzja:** A jako zobowiązanie dostępności, z komunikacją błędów z (B).
+5. Dlaczego backend korzysta z Flask?
+   - (A) Lekka integracja z istniejącym Pythonowym toolsetem repo.
+   - (B) Zapewnia prosty testowy klient do `pytest`.
+   - (C) Przygotowuje grunt pod ewentualną rozbudowę API.
+   **Decyzja:** B dla kompatybilności testów, z elastycznością rozbudowy z (C).

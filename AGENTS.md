@@ -12,6 +12,11 @@ Repo owner directives:
 - Custom domain `www.larpkronikiognia.pl` konfigurujemy w ustawieniach GitHub Pages; repozytorium nie przechowuje pliku `CNAME`.
 - Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME`, brak pliku w repo i wskazuje host `pkr0kosz.github.io` (plus ewentualną domenę `.com`).
 - Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME` i brak pliku w repo.
+- Formularze interaktywne muszą komunikować status użytkownikowi (`aria-live`) i korzystać z fetch do backendu działającego na
+  tym samym hostie. Endpoints HTTP obsługuje `app.py`; dbamy o JSON-owe odpowiedzi i kody statusów (201 dla sukcesu,
+  400 dla walidacji).
+- Storage dla nowych funkcji trafia do katalogu `data/` (tworzonego dynamicznie). Repozytorium śledzi jedynie pliki konfiguracyjne
+  i `.gitignore`, bez binarnych artefaktów baz danych.
 
 Documentation scope:
 - `docs/` contains phase plans, notes, ADRs; keep them synchronized with repository state.
