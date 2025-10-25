@@ -80,6 +80,7 @@
 - [Scope] Wymuszenie limitu 10/min na `POST /api/ideas` (Flask-Limiter) oraz kontrola CORS.
 - [Scope] Zapewnienie health-checka JSON raportującego gotowość storage.
 - [Scope] Dodanie prostego klucza API oraz forwarding do scenariusza n8n bez blokowania UX.
+- [Scope] Forwarding publikuje lokalny JSON (`pomysł`) na webhook `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50` z możliwością nadpisania adresem produkcyjnym.
 - [Non-Goals] Pełna autoryzacja żądań, zarządzanie tajnymi tokenami, publikacja listy pomysłów w UI.
 
 ## Definicja ukończenia fazy 5 (DoD)
@@ -90,6 +91,7 @@
 - CORS i rate limit skonfigurowane w `app.py`; ADR/notes zawierają analizę 5xWhy tunelu.
 - Health-check i walidacja JSON są chronione testami (`tests/test_api.py`).
 - Test `tests/test_api.py::test_post_ideas_forwards_to_n8n` pilnuje forwarding do n8n oraz wymogu `X-API-Key`.
+- Payload forwardingowy zawiera równoległy blok `pomysł` z polami `tytuł`, `treść`, `tagi`, co odzwierciedla wymagania integracji n8n.
 
 ## Cel fazy 6 — Kuracja treści kafelków
 - [Scope] Udostępnić edycję tekstów kafelków przez zakładki po prawej stronie oraz pamięć w `localStorage`.

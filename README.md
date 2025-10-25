@@ -33,8 +33,8 @@ Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dz
 
 - Każde wywołanie `POST /api/ideas` musi przekazać nagłówek `X-API-Key` (domyślnie `dev-key`). Wersję produkcyjną skonfigurujesz przez zmienną środowiskową `API_KEY`.
 - Formularz front-endowy pobiera wartość klucza z atrybutu `data-api-key` (fallback do `dev-key`) i dołącza ją automatycznie w `assets/idea-form.js`.
-- Ustaw zmienne środowiskowe `N8N_WEBHOOK_URL` oraz `N8N_TOKEN`, aby backend asynchronicznie przekazywał dane do scenariusza n8n. W przypadku niedostępności webhooku żądanie użytkownika kończy się powodzeniem, a forwarding próbuje ponownie w tle bez blokowania UX.
-- Payload do n8n zawiera `event_id` (unikalny klucz idempotencji), dane zgłoszenia oraz metadane klienta (`ip`, `User-Agent`).
+- Backend domyślnie wysyła każde zgłoszenie na webhook `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`. W środowisku produkcyjnym nadpisz go zmienną `N8N_WEBHOOK_URL`; nagłówek autoryzacji `Bearer` jest dołączany tylko wtedy, gdy ustawisz `N8N_TOKEN`.
+- Payload do n8n zawiera `event_id` (unikalny klucz idempotencji), dane zgłoszenia oraz metadane klienta (`ip`, `User-Agent`). Dla kompatybilności z lokalnym scenariuszem dodano również sekcję `pomysł` z polskimi polami (`tytuł`, `treść`, `tagi`).
 
 ```bash
 pip install -r requirements.txt
