@@ -121,7 +121,7 @@
           Masz iskierkę fabularną, mechanikę rytuału albo scenę do dopisania? Zostaw ją tutaj — zwiadowcy archiwum zapiszą ją do
           dalszej kuracji.
         </p>
-        <form id="idea-form" class="idea-form" novalidate>
+        <form id="idea-form" class="idea-form" data-api="ideas" novalidate>
           <label class="idea-form__label" for="idea-title">Nadaj tytuł pomysłowi</label>
           <input
             id="idea-title"
@@ -164,6 +164,7 @@
   <footer class="site-footer">
     Kroniki Ognia • Statyczna dokumentacja projektu — przygotowane do publikacji na GitHub Pages.
   </footer>
-  <script src="assets/idea-form.js" defer></script>
+  <script type="module" src="./assets/js/backend-config.js"></script>
+  <script type="module" src="./assets/idea-form.js"></script>
 </body>
 </html>

@@ -15,6 +15,8 @@ Repo owner directives:
 - Formularze interaktywne muszą komunikować status użytkownikowi (`aria-live`) i korzystać z fetch do backendu działającego na
   tym samym hostie. Endpoints HTTP obsługuje `app.py`; dbamy o JSON-owe odpowiedzi i kody statusów (201 dla sukcesu,
   400 dla walidacji).
+- Formularze integrujące backend muszą ładować moduł `assets/js/backend-config.js`, oznaczać endpoint `data-api` i polegać na
+  `wireBackendForms` do ustawienia `form.action`.
 - Storage dla nowych funkcji trafia do katalogu `data/` (tworzonego dynamicznie). Repozytorium śledzi jedynie pliki konfiguracyjne
   i `.gitignore`, bez binarnych artefaktów baz danych.
 - `public/config.json` przechowuje `BACKEND_URL` tunelu backendu; brak tego pliku lub klucza traktujemy jako błąd krytyczny.

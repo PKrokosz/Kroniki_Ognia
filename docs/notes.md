@@ -140,6 +140,8 @@
 - Backend Flask wymusza schemat `{title, content, tags?}`, zapisuje tagi w JSON oraz loguje wpisy z timestampem. CORS ogranicza pochodzenie do GitHub Pages i tunelu, a Flask-Limiter blokuje flood do 10/min.
 - `tests/test_api.py` oraz zaktualizowane `tests/test_idea_submission.py` pilnują kontraktu odpowiedzi `{"id": ..., "status": "ok"}` oraz poprawnego utrwalenia danych.
 - README dokumentuje tryb tunelowania i skrypt `scripts/smoke.sh`, który wykonuje POST do publicznego endpointu.
+- Moduł `assets/js/backend-config.js` centralizuje pobieranie `BACKEND_URL` i przypisuje akcje formularzy oznaczonych `data-api`, a `assets/idea-form.js` korzysta z gotowego `form.action` bez powielania fetch.
+- `tests/test_navigation.py::test_backend_config_script_present_on_form_pages` pilnuje, by każda strona z formularzem ładowała moduł konfiguracji backendu.
 
 ## 5xWhy — Konfiguracja tunelu backendu
 1. Dlaczego front powinien ładować URL backendu z `config.json`?
@@ -194,6 +196,33 @@
    - (B) Historyczne dokumenty i ADR-y odwołują się do tej lokalizacji.
    - (C) Umożliwia reużycie w alternatywnych bundlerach.
    **Decyzja:** B dla ciągłości dokumentacji, wzbogacone o elastyczność narzędzi z (C).
+
+## 5xWhy — Moduł konfiguracji formularzy
+1. Dlaczego wynosimy obsługę `config.json` do osobnego modułu?
+   - (A) Centralizacja eliminuje powielanie fetch i warunków błędów.
+   - (B) Ułatwia mockowanie w testach front-endowych.
+   - (C) Przygotowuje repo na wiele formularzy (np. zgłoszenia uczestników).
+   **Decyzja:** A jako fundament niezawodności, poszerzony o możliwość dalszej rozbudowy z (C).
+2. Dlaczego moduł eksportuje zarówno `getBackendUrl`, jak i `wireBackendForms`?
+   - (A) `getBackendUrl` przydaje się w komponentach wymagających jedynie URL-a.
+   - (B) `wireBackendForms` pozwala na automatyczne ustawienie `action` po `data-api`.
+   - (C) Dwa eksporty ułatwiają testowanie i ewentualne lazy-loading innych komponentów.
+   **Decyzja:** B jako główny driver ergonomii formularzy, uzupełniony elastycznością integracji z (C).
+3. Dlaczego moduł sam wywołuje `wireBackendForms` po załadowaniu?
+   - (A) Gwarantuje gotowe `form.action` zanim użytkownik kliknie „Wyślij”.
+   - (B) Zdejmuje z implementerów obowiązek pamiętania o manualnym init.
+   - (C) Utrzymuje spójność z komponentami osadzanymi na stronach statycznych bez bundlera.
+   **Decyzja:** A jako strażnik UX, rozszerzony o automatyzację wdrożenia z (B).
+4. Dlaczego wprowadzamy atrybut `data-api` do formularzy?
+   - (A) Pozwala mapować endpointy bez twardego kodowania w JS.
+   - (B) Ułatwia audyt markup w testach HTML.
+   - (C) Pozwala dokumentalistom śledzić integracje bez czytania kodu JS.
+   **Decyzja:** A jako najszybszy sposób utrzymania kontraktu, z kontrolnym aspektem testów z (B).
+5. Dlaczego dodaliśmy test sprawdzający obecność modułu na stronach z formularzem?
+   - (A) Chroni przed przypadkowym usunięciem `<script type="module">` podczas refaktoru.
+   - (B) Zapewnia, że kolejne formularze odziedziczą konfigurację backendu.
+   - (C) Wspiera CTO personę w audycie front-endu.
+   **Decyzja:** A jako pierwsza linia obrony przed regresją, wzbogacona o pewność skalowania z (B).
 
 ## 5xWhy — Custom domain i hosting
 1. Dlaczego potrzebujemy własnej domeny na GitHub Pages?

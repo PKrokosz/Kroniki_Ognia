@@ -6,6 +6,7 @@ Statyczna witryna dokumentująca projekt LARP "Kroniki Ognia". Repozytorium zawi
 - `index.html` — landing page GitHub Pages.
 - `cechy.html`, `draft_planu.html`, `imersja_mechanika.html`, `organizacja.html` — podstrony tematyczne.
 - `assets/styles.css` — wspólny arkusz stylów.
+- `assets/js/backend-config.js` — moduł konfigurujący formularze pod adres tunelu backendu.
 - `docs/` — planowanie faz, zadania, notatki, ADR.
 - `.codex/` — presety ról Codex.
 - `tests/` — testy automatyczne (pytest).
@@ -18,7 +19,7 @@ python -m http.server 8000
 ```
 
 ## Backend formularza „Dodaj pomysł”
-Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego.
+Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego. Wspólny moduł `assets/js/backend-config.js` odczytuje `config.json` i przypisuje docelowy adres każdemu formularzowi oznaczonemu `data-api`.
 
 Payload ma schemat `{"title": str, "content": str, "tags": [str]?}`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`.
 
@@ -60,7 +61,7 @@ pytest
 ```
 
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`). `tests/test_navigation.py::test_backend_config_script_present_on_form_pages` pilnuje dołączania modułu konfiguracji backendu wszędzie tam, gdzie pojawia się formularz.
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`), zgodność plików konfiguracyjnych (`tests/test_config_json.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
@@ -107,6 +108,11 @@ Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, ż
 - Sekcja "Organizacja" oferuje panel komentarza przy każdym wątku — rozwijany przyciskiem "Oceń pomysł" i zapisujący notatki w `localStorage`.
 - Styl panelu wpisuje się w bursztynową paletę repozytorium i respektuje układ mobilny.
 - Test `tests/test_feedback_panel.py` pilnuje obecności znaczników danych oraz styli komponentu.
+
+## Aktualizacja fazy 5
+- Moduł `assets/js/backend-config.js` scala pobieranie `BACKEND_URL` i przypisuje akcje wszystkim formularzom oznaczonym `data-api`.
+- `assets/idea-form.js` korzysta z modułu współdzielonego cache i skupia się wyłącznie na walidacji oraz komunikatach dla użytkownika.
+- `tests/test_navigation.py::test_backend_config_script_present_on_form_pages` zabezpiecza dołączanie modułu na stronach z formularzami.
 
 ## Status fazy
 - Plan fazy 1 i zadania: `docs/plan.md`, `docs/tasks.md`.
