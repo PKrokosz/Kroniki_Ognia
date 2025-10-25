@@ -49,14 +49,27 @@
 - [Scope] Udostępnić szybkie przejście do Notebook LM jako źródła prawdy dla wiedzy z burzy mózgów.
 - [Scope] Zachować narracyjny klimat poprzez motyw "flying object" i animowanego zwiadowcę.
 - [Scope] Zapewnić dostępność CTA (prefers-reduced-motion, mobilny układ) oraz automatyczną weryfikację testami.
+- [Scope] Rozszerzyć baner o dodatkowe CTA do archiwum Google Drive, zachowując wspólną stylistykę i bezpieczeństwo linków.
 - [Non-Goals] Embedowanie pełnego Notebook LM, synchronizacja treści w czasie rzeczywistym.
 
 ## Definicja ukończenia fazy 3 (DoD)
 - `pytest` obejmuje test `tests/test_notebook_banner.py::test_notebook_banner_present_with_link` i przechodzi zielono.
+- `pytest` obejmuje test `tests/test_notebook_banner.py::test_notebook_banner_includes_drive_archive_link` potwierdzający CTA do Google Drive.
 - Baner Notebook LM jest widoczny i funkcjonalny na każdej podstronie repo.
 - Dokumentacja (README, notes) opisuje nowe CTA i wskazuje sposób ręcznej weryfikacji.
 - Akceptacyjne: kliknięcie banera otwiera wskazany notebook, a motyw "flying object" jest zachowany w tekście.
 
+## Cel fazy 4 — Pętle feedbacku uczestników
+- [Scope] Umożliwić komentowanie każdego wątku na stronie "Organizacja" poprzez lekki panel z przyciskiem "Oceń pomysł".
+- [Scope] Zabezpieczyć doświadczenie mobilne i estetykę panelu w ramach istniejącej palety.
+- [Scope] Wprowadzić testy regresyjne chroniące strukturę danych, styl i integrację z `localStorage`.
+- [Non-Goals] Współdzielenie komentarzy między urządzeniami, moderacja online, backend.
+
+## Definicja ukończenia fazy 4 (DoD)
+- `pytest tests/test_feedback_panel.py` przechodzi i potwierdza obecność komponentu.
+- Panel komentarzy domyślnie jest zwinięty, obsługuje `localStorage` i komunikaty statusu.
+- README oraz notatki dokumentują sposób użycia panelu i testy.
+- Akceptacyjne: ręczne otwarcie panelu pozwala zapisać komentarz, który utrzymuje się po odświeżeniu przeglądarki.
 ## Cel fazy 4 — Rejestr pomysłów uczestników
 - [Scope] Udostępnić na stronie głównej formularz "Dodaj pomysł" z walidacją i informacją zwrotną.
 - [Scope] Zapisać zgłoszenia w trwałej bazie danych oraz równoległym pliku tekstowym do audytu narracyjnego.
@@ -68,3 +81,16 @@
 - Formularz na stronie głównej przekazuje komunikat powodzenia/błędu z użyciem `aria-live` i korzysta z fetch.
 - README, notes oraz ADR dokumentują architekturę formularza i kroki uruchomienia backendu.
 - Akceptacyjne: ręczne złożenie pomysłu zapisuje rekord w SQLite oraz dopisuje linię w `data/ideas.txt`.
+
+## Cel fazy 5 — Tunelowany backend Pages ↔ Flask
+- [Scope] Konfiguracja frontu do wczytywania `BACKEND_URL` z `public/config.json` i ustawiania `form.action` po stronie klienta.
+- [Scope] Zapewnienie nagłówków CORS tylko dla hostów GitHub Pages i tunelu `https://api-kroniki.<MOJA-DOMENA>`.
+- [Scope] Dodanie smoke testów i skryptu CLI do walidacji tunelu (pytest + `scripts/smoke.sh`).
+- [Scope] Ustanowienie limitu `10/min` na `POST /api/ideas` (Flask-Limiter) z dokumentacją w README.
+- [Non-Goals] Pełna autoryzacja żądań, zarządzanie tajnymi tokenami, publikacja listy pomysłów w UI.
+
+## Definicja ukończenia fazy 5 (DoD)
+- `pytest` obejmuje smoke `tests/test_api.py` oraz zaktualizowane testy kontraktowe.
+- `config.json` jest serwowany zarówno z katalogu głównego, jak i z `public/`, zawiera produkcyjny adres tunelu bez końcowego ukośnika i jest udokumentowany w README.
+- Skrypt `scripts/smoke.sh` przyjmuje URL tunelu i zwraca odpowiedź JSON; README opisuje jego użycie.
+- CORS i rate limit są skonfigurowane w `app.py`, a ADR/notes zawierają analizę 5xWhy dla tunelu.
