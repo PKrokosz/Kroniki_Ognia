@@ -46,6 +46,10 @@
 - [x] Zadanie 1c: Udostępnić `config.json` w katalogu głównym repozytorium dla hostingu pod `/Kroniki_Ognia/` — Test: `pytest tests/test_config_json.py::test_root_and_public_configs_match`
 - [x] Zadanie 2: Dostosować backend do schematu `{title, content, tags}` z CORS i rate limitem 10/min — Test: `pytest tests/test_idea_submission.py::test_submit_idea_persists`
 - [x] Zadanie 3: Dodać `scripts/smoke.sh` oraz sekcję README „Run with tunnel” — Test: `pytest tests/test_api.py::test_post_ideas_smoke` (CLI opisany w README)
+- [x] Zadanie 6: Wydzielić moduł `assets/js/backend-config.js` i zapewnić test kontroli `<script type="module">` — Test: `pytest tests/test_navigation.py::test_backend_config_script_present_on_form_pages`
+- [ ] Zadanie 4 (kontynuacja): Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: `pytest tests/test_tunnel_health.py::test_cron_monitoring` (do zdefiniowania)
+- [ ] Zadanie 5 (kontynuacja): Przygotować skrypt synchronizujący `config.json` pomiędzy katalogiem głównym a `public/` — Test: `pytest tests/test_config_json.py::test_sync_script` (do zaprojektowania)
+- [ ] Zadanie 7 (kontynuacja): Zasymulować w testach front-endowych niedostępność `config.json` i wymusić komunikat fallback w UI — Test: `pytest tests/test_navigation.py::test_backend_config_error_state` (do implementacji)
 - [x] Zadanie 3b: Dodać `GET /api/health` i test zdrowia backendu — Test: `pytest tests/test_api.py::test_health_endpoint`
 - [x] Zadanie 4: Utwardzić walidację JSON (`Content-Type`, limit 5 KB, błąd parsowania) — Test: `pytest tests/test_api.py::test_post_ideas_rejects_non_json_content_type` + pozostałe warianty
 - [x] Zadanie 1d: Udostępnić endpoint `/api/health` raportujący storage i test JSON — Test: `pytest tests/test_api.py::test_health_ok`

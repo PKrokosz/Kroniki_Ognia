@@ -26,6 +26,7 @@ class NavParser(HTMLParser):
         self.current_href: str | None = None
         self.links: list[tuple[str, str]] = []
         self.stylesheet_linked = False
+        self.module_scripts: list[str | None] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]):
         attrs_dict = dict(attrs)
@@ -35,6 +36,8 @@ class NavParser(HTMLParser):
             self.in_nav = True
         if self.in_nav and tag == "a":
             self.current_href = attrs_dict.get("href")
+        if tag == "script" and attrs_dict.get("type") == "module":
+            self.module_scripts.append(attrs_dict.get("src"))
 
     def handle_endtag(self, tag: str):
         if tag == "nav" and self.in_nav:
@@ -57,3 +60,16 @@ def test_navigation_links_consistent():
         assert parser.links == EXPECTED_LINKS, (
             f"Niespójna nawigacja w {html_file.name}: {parser.links}"
         )
+
+
+def test_backend_config_script_present_on_form_pages():
+    for html_file in HTML_FILES:
+        content = html_file.read_text(encoding="utf-8")
+        if "<form" not in content:
+            continue
+
+        parser = NavParser()
+        parser.feed(content)
+        assert (
+            "./assets/js/backend-config.js" in parser.module_scripts
+        ), f"Brak modułu backend-config na stronie {html_file.name}"

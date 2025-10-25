@@ -1,28 +1,6 @@
-let backendUrlPromise;
+import { wireBackendForms } from './js/backend-config.js';
 
-function resolveConfigPath() {
-  const basePath = window.location.pathname.replace(/\/[^/]*$/, '/');
-  return `${basePath}config.json`;
-}
-
-async function getBackendUrl() {
-  if (!backendUrlPromise) {
-    backendUrlPromise = fetch(resolveConfigPath(), { cache: 'no-store' })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to load config.json: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((cfg) => {
-        if (!cfg.BACKEND_URL) {
-          throw new Error('Missing BACKEND_URL in config.json');
-        }
-        return cfg.BACKEND_URL;
-      });
-  }
-  return backendUrlPromise;
-}
+const backendReady = wireBackendForms();
 
 (function () {
   const form = document.getElementById('idea-form');
@@ -42,11 +20,16 @@ async function getBackendUrl() {
     feedback.setAttribute('data-status', type);
   };
 
-  const ensureBackendUrl = async () => {
+  const ensureBackendReady = async () => {
     try {
-      const api = await getBackendUrl();
-      form.action = `${api}/api/ideas`;
-      return api;
+      await backendReady;
+      if (!form.action) {
+        throw new Error('Missing form action after backend wiring.');
+      }
+      if (form.dataset.backendReady === 'error') {
+        throw new Error('Backend configuration failed.');
+      }
+      return form.action;
     } catch (error) {
       console.error('Unable to load backend URL', error);
       setFeedback(
@@ -57,10 +40,11 @@ async function getBackendUrl() {
     }
   };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    ensureBackendUrl().catch(() => {
-      /* feedback already handled */
-    });
+  backendReady.catch(() => {
+    setFeedback(
+      'Nie udało się pobrać konfiguracji backendu. Skontaktuj się z organizatorami.',
+      'error',
+    );
   });
 
   form.addEventListener('submit', async (event) => {
@@ -94,9 +78,16 @@ async function getBackendUrl() {
     submitButton?.setAttribute('disabled', 'true');
     setFeedback('Zapisuję pomysł w archiwum…', 'pending');
 
+    let actionUrl;
     try {
-      const api = await ensureBackendUrl();
-      const response = await fetch(`${api}/api/ideas`, {
+      actionUrl = await ensureBackendReady();
+    } catch (error) {
+      submitButton?.removeAttribute('disabled');
+      return;
+    }
+
+    try {
+      const response = await fetch(actionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,9 +112,6 @@ async function getBackendUrl() {
       titleInput.focus();
     } catch (error) {
       console.error('Idea submission failed', error);
-      if (error.message?.includes('config')) {
-        return;
-      }
       setFeedback('Wystąpił błąd sieci. Sprawdź połączenie i spróbuj ponownie.', 'error');
     } finally {
       submitButton?.removeAttribute('disabled');
