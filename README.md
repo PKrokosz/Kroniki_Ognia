@@ -1,32 +1,32 @@
 # Kroniki Ognia — Strona Projektowa
 
-Statyczna witryna dokumentująca projekt LARP "Kroniki Ognia". Repozytorium zawiera stronę główną oraz szczegółowe podstrony z analizą fabularną i organizacyjną.
+Statyczna witryna dokumentująca projekt LARP "Kroniki Ognia". Repozytorium gromadzi stronę główną i podstrony tematyczne wraz z backendem Flask obsługującym formularz zgłaszania pomysłów.
 
 ## Struktura
 - `index.html` — landing page GitHub Pages.
 - `cechy.html`, `draft_planu.html`, `imersja_mechanika.html`, `organizacja.html` — podstrony tematyczne.
-- `assets/styles.css` — wspólny arkusz stylów.
+- `assets/styles.css` — wspólny arkusz stylów oraz definicje ambientowych teł.
 - `assets/js/backend-config.js` — moduł konfigurujący formularze pod adres tunelu backendu.
-- `.nojekyll` — wymusza statyczne serwowanie plików bez ingerencji Jekylla na GitHub Pages.
-- `assets/visual-key.js` — interakcje sekcji visual key na landingu.
-- `docs/` — planowanie faz, zadania, notatki, ADR.
+- `assets/idea-form.js` — walidacja formularza „Dodaj pomysł” i komunikaty dla użytkownika.
+- `assets/visual-key.js` — interakcje sekcji visual key „Próby Płomienia”.
+- `docs/` — planowanie faz, zadania, notatki i ADR-y.
 - `.codex/` — presety ról Codex.
 - `tests/` — testy automatyczne (pytest).
+- `.nojekyll` — wymusza statyczne serwowanie plików bez ingerencji Jekylla na GitHub Pages.
 
 ## Uruchomienie lokalne
-Strony to statyczne pliki HTML. Wystarczy otworzyć dowolny plik w przeglądarce lub użyć prostego serwera:
+Strony to statyczne pliki HTML. Wystarczy otworzyć plik w przeglądarce lub użyć prostego serwera:
 
 ```bash
 python -m http.server 8000
 ```
 
 ## Backend formularza „Dodaj pomysł”
-Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego. Wspólny moduł `assets/js/backend-config.js` odczytuje `config.json` i przypisuje docelowy adres każdemu formularzowi oznaczonemu `data-api`.
+Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego. Moduł `assets/js/backend-config.js` odczytuje `config.json` i przypisuje docelowy adres każdemu formularzowi oznaczonemu `data-api`.
 
-Payload ma schemat `{"title": str, "content": str, "tags": [str]?}`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`.
-`POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB oraz waliduje, że przesłane JSON-y są poprawnymi obiektami. W razie błędu zwraca komunikat w JSON-ie wraz z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
+Payload ma schemat `{ "title": str, "content": str, "tags": [str]? }`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`. Endpoint `POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB i waliduje poprawność JSON-u. W razie błędu zwraca komunikat JSON z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
 
-Endpoint `GET /api/health` służy jako prosty health-check backendu i zwraca `{"status": "ok"}` z kodem `200`.
+Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dziennik tekstowy). Limit 10 zgłoszeń na minutę chroni przed floodem, a CORS dopuszcza wyłącznie `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com`.
 
 ```bash
 pip install -r requirements.txt
@@ -34,12 +34,9 @@ flask --app app run
 ```
 
 > Domyślnie dane trafiają do `data/ideas.sqlite3` i `data/ideas.txt`. Ścieżkę można nadpisać zmienną `IDEAS_DATA_DIR`.
-> Endpoint `POST /api/ideas` posiada limit 10 zgłoszeń na minutę z jednego adresu IP oraz nagłówki CORS dla GitHub Pages i tunelu.
-> Endpoint `GET /api/health` ujawnia status storage (istnienie bazy i dziennika) wykorzystywany w smoke teście tunelu.
 
 ## Run with tunnel
-
-Statyczny front na GitHub Pages ładuje adres backendu z `config.json` serwowanego wraz z witryną (osiągalnego zarówno pod `/config.json`, jak i `/Kroniki_Ognia/config.json`). Plik `public/config.json` pozostaje referencją do utrzymania konfiguracji w repozytorium i musi pozostawać zsynchronizowany.
+Statyczny front na GitHub Pages ładuje adres backendu z `config.json` serwowanego wraz z witryną (osiągalnego zarówno pod `/config.json`, jak i `/Kroniki_Ognia/config.json`). Plik `public/config.json` pozostaje referencją w repozytorium i musi być zsynchronizowany.
 
 ```json
 {
@@ -49,7 +46,7 @@ Statyczny front na GitHub Pages ładuje adres backendu z `config.json` serwowane
 
 > co robi: wskazuje publiczny adres tunelu bez końcowego ukośnika. Obie kopie `config.json` należy aktualizować jednocześnie, aby testy nie zablokowały wdrożenia.
 
-Po wdrożeniu tunelu backend Flask powinien być osiągalny pod podanym adresem. Formularz ustawi `form.action` oraz wywoła `fetch` na `${BACKEND_URL}/api/ideas`.
+Po wdrożeniu tunelu front ustawi `form.action` na `${BACKEND_URL}/api/ideas` i wyśle `fetch` do backendu.
 
 ### Smoke test tunelu
 
@@ -61,106 +58,99 @@ Po wdrożeniu tunelu backend Flask powinien być osiągalny pod podanym adresem.
 Skrypt wysyła testowy POST i wypisuje odpowiedź JSON.
 
 ## Hosting GitHub Pages bez Jekylla
-
-- Plik `.nojekyll` w katalogu głównym zapobiega próbom uruchamiania silnika Jekyll na statycznej witrynie.
-- Dzięki temu GitHub Pages serwuje wszystkie zasoby (np. katalog `assets/` i `tests/`) dokładnie tak, jak są w repozytorium.
-- Test `tests/test_nojekyll.py` pilnuje obecności pliku i wzmianki w README, aby utrzymać spójność dokumentacji.
+- Plik `.nojekyll` w katalogu głównym zapobiega uruchamianiu silnika Jekyll.
+- Dzięki temu GitHub Pages serwuje wszystkie zasoby (np. katalog `assets/` i `tests/`) dokładnie tak, jak w repozytorium.
+- Test `tests/test_nojekyll.py` pilnuje obecności pliku i wzmianki w README.
 
 ## Testy
 ```bash
 pip install -r requirements.txt
 ruff check .
-mypy .
+mypy app.py
 pytest
 ```
 
-Testy i statyczne kontrole sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`), zgodność plików konfiguracyjnych (`tests/test_config_json.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
-Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `ruff` i `mypy` pilnują standardów kodu Python.
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`). `tests/test_navigation.py::test_backend_config_script_present_on_form_pages` pilnuje dołączania modułu konfiguracji backendu wszędzie tam, gdzie pojawia się formularz.
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`), zgodność plików konfiguracyjnych (`tests/test_config_json.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
-Test `tests/test_visual_key.py` pilnuje sekcji ekspozycji „Próby Płomienia”, sprawdzając obecność kafelków, poprawne linki oraz powiązane obrazy `img/1.jpg`, `img/4.jpg`, `img/7.jpg`.
-Testy kontrolują integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz nowego panelu komentarzy przy wątkach (`tests/test_feedback_panel.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
-Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a dodatkowe testy kontrolują endpoint health-check oraz walidację nagłówków, limit 5 KB i poprawność JSON-u dla zgłoszeń pomysłów.
-Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `GET /api/health` raportuje gotowość storage.
-Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`.
-`tests/test_nojekyll.py` zabezpiecza obecność pliku `.nojekyll` i opis w README, aby hosting GitHub Pages pozostał statyczny.
+Pakiet testów obejmuje:
+- `tests/test_navigation.py` — spójność nawigacji i modułu konfiguracji backendu.
+- `tests/test_responsive_theme.py` — media queries dla mobile oraz ambientowe efekty.
+- `tests/test_ambient_backgrounds.py` — mapowanie zdjęć JPG, animację `prefers-reduced-motion` oraz widoczność warstw (opacity ≥ 0.45, `z-index` ≥ -1).
+- `tests/test_visual_key.py` — sekcję visual key z obrazami `img/1.jpg`, `img/4.jpg`, `img/7.jpg`.
+- `tests/test_notebook_banner.py` — baner „flying object” z linkami do Notebook LM i Google Drive.
+- `tests/test_config_json.py` — synchronizację `config.json` w katalogu głównym i `public/`.
+- `tests/test_idea_submission.py` i `tests/test_api.py` — zapis zgłoszeń, limity oraz health-check.
+- `tests/test_feedback_panel.py` — panel „Oceń pomysł” i obsługę `localStorage`.
+- `tests/test_custom_domain.py` — dokumentację custom domain i brak pliku `CNAME`.
+- `tests/test_documentation.py` — unikalność nagłówków w README, aby uniknąć duplikatów sekcji.
 
 ## Kontrola jakości kodu
 
-Nowe narzędzia w `requirements.txt` poszerzają lokalne sprawdzanie jakości:
+Nowe narzędzia w `requirements.txt` umożliwiają lokalne uruchomienie lintów i statycznej analizy:
 
 ```bash
 pip install -r requirements.txt  # instaluje m.in. ruff, mypy i paczki stubów
-ruff check .                     # szybki lint Pythona (CLI przechodzi bez błędów)
+ruff check .                     # szybki lint Pythona
 mypy app.py                      # statyczne typowanie backendu Flask
 ```
 
-- `ruff>=0.6.0` utrzymuje konwencje stylu i zgłosi regresję, jeśli backend przestanie być zgodny z PEP 8.
-- `mypy>=1.8.0` działa bez dodatkowej konfiguracji; brakujące stuby dla bibliotek (np. Flask-Cors, Requests) dopisaliśmy jako `types-Flask-Cors` oraz `types-requests`.
-- Instalacja wymaga środowiska wirtualnego (`python -m venv .venv && source .venv/bin/activate`), aby uniknąć ostrzeżeń `pip` o pracy jako użytkownik `root`.
+Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` przy każdym pull requeście.
 
-## Akceptacja ręczna
-- Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
-- Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
-- Oceń nową, stonowaną paletę, subtelny efekt pulsującego tła i wielowarstwowe galerie obrazów przesuwające się horyzontalnie. Sprawdź, czy warstwy tła są widoczne, delikatnie świecą i wolno dryfują na szerokość.
-- Oceń nową, stonowaną paletę, subtelny efekt pulsującego tła i wielowarstwowe galerie obrazów przesuwające się horyzontalnie.
-- Kliknij baner Notebook LM i sprawdź, czy otwiera się właściwy notebook z bazą wiedzy brainstormu.
-- Uruchom backend (`flask --app app run`), wprowadź pomysł w sekcji „Dodaj pomysł” i sprawdź, że otrzymasz potwierdzenie, a w katalogu `data/` pojawiły się wpisy w SQLite i `ideas.txt`.
-- Przejdź przez sekcję visual key i potwierdź, że hover/focus wyróżnia kafelki oraz że przycisk „Odtwórz sekwencję” działa, komunikując status (lub blokadę przy aktywnym `prefers-reduced-motion`).
+## Aktualne usprawnienia
+### Ambient i warstwa wizualna
+- Podniesiono widoczność animowanych teł: `opacity` warstw osiąga ≥ 0.45, a filtr `saturate(1.35) brightness(1.12)` eksponuje fotografie z `img/`.
+- `ambient-background` posiada `z-index: -1`, dzięki czemu dryfujące warstwy znajdują się ponad innymi efektami tła i są weryfikowane testem `tests/test_ambient_backgrounds.py::test_ambient_layers_meet_visibility_thresholds`.
 
-## Konfiguracja domeny `www.larpkronikiognia.pl`
-1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium nie przechowuje pliku `CNAME`; GitHub Pages zapisze go automatycznie w gałęzi serwującej stronę.
-2. **Rekordy DNS dla poddomeny:** w panelu operatora domeny dodaj rekord `CNAME` dla hosta `www`, wskazujący na adres GitHub Pages organizacji/profilu (np. `larpkronikiognia.github.io`). Wartość możesz potwierdzić w ustawieniach Pages.
-3. **Rekordy dla domeny głównej:** aby `larpkronikiognia.pl` przekierowywała na `www`, dodaj rekordy `A` na adresy `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (zalecane przez GitHub) lub skorzystaj z `ALIAS/ANAME`, jeśli dostawca je udostępnia.
-4. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.
-5. **Weryfikacja:** sprawdź poprawność przez `dig www.larpkronikiognia.pl CNAME` oraz `curl -I https://www.larpkronikiognia.pl` — oba polecenia powinny wskazywać na GitHub Pages i zwracać status 200. Repozytorium nie przechowuje pliku `CNAME`, więc po każdej zmianie domeny potwierdź w ustawieniach Pages, że wpis został zapisany.
+### Higiena dokumentacji
+- Zredukowano duplikaty w README, planie, zadaniach, notatkach i CONTEXT — nagłówki są unikalne i odzwierciedlają aktualny stan repozytorium.
+- Dodano test `tests/test_documentation.py`, który blokuje ponowne pojawienie się zduplikowanych nagłówków README.
 
-## Konfiguracja domeny `www.larpkronikiognia.pl`
-1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium nie przechowuje pliku `CNAME`; GitHub Pages zapisze go automatycznie w gałęzi serwującej stronę.
-2. **Rekordy DNS dla poddomeny:** w panelu operatora domeny dodaj rekord `CNAME` dla hosta `www`, wskazujący na właściwy adres GitHub Pages profilu `pkr0kosz.github.io`. GitHub wymaga dokładnie takiej wartości; alternatywne warianty (`larpkronikiognia.github.io`) spowodują błąd weryfikacji jak na zrzucie ekranu w Issues.
-3. **Opcjonalna domena lustrzana:** jeżeli posiadasz także `www.larpkronikiognia.com`, dodaj identyczny rekord `CNAME` na `pkr0kosz.github.io` i ustaw przekierowanie 301 z `.com` do `.pl`, aby uniknąć duplikacji treści.
-4. **Rekordy dla domeny głównej:** aby `larpkronikiognia.pl` przekierowywała na `www`, dodaj rekordy `A` na adresy `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (zalecane przez GitHub) lub skorzystaj z `ALIAS/ANAME`, jeśli dostawca je udostępnia.
-5. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.
-6. **Weryfikacja:** sprawdź poprawność przez `dig www.larpkronikiognia.pl CNAME` oraz `curl -I https://www.larpkronikiognia.pl` — oba polecenia powinny wskazywać na GitHub Pages i zwracać status 200. Repozytorium nie przechowuje pliku `CNAME`, więc po każdej zmianie domeny potwierdź w ustawieniach Pages, że wpis został zapisany. Dla domeny `.com` powtórz kontrolę (`dig www.larpkronikiognia.com CNAME`).
+### Infrastruktura CI
+- Workflow `codex.yml` wykonuje `ruff check .`, `mypy app.py` i `pytest`, aby spełnić wymagania CTO persony dotyczące lintów oraz analizy typów.
 
-## Sekcja visual key „Próby Płomienia”
-- Landing otrzymał sekcję visual key z trzema kafelkami narracyjnymi prowadzącymi do kluczowych podstron repozytorium.
-- Każdy kafelek korzysta z fotografii `img/1.jpg`, `img/4.jpg`, `img/7.jpg` i udostępnia CTA do eksploracji świata, narzędzi oraz planu dnia.
-- Przycisk „Odtwórz sekwencję” umożliwia automatyczne przejście przez kafelki, respektując `prefers-reduced-motion` i komunikując status przez `aria-live`.
+## Aktualizacja fazy 1
+- Ujednolicona nawigacja i styl wszystkich stron HTML; test `tests/test_navigation.py` pilnuje spójności.
+- Przygotowano `index.html` jako landing page dla GitHub Pages.
+- Ustanowiono dokumentację procesową (AGENTS, CONTEXT, plan, zadania, notatki) i workflow CI.
 
 ## Aktualizacja fazy 2
-- Paleta kolorów została przygaszona i oparta na barwach ziemistych; akcenty złamane bursztynem nadają bardziej ponury ton.
-- Dodano ambientową warstwę tła (`body::before`) oraz delikatny efekt świetlny w sekcji hero (`.page-hero::after`).
-- Każda podstrona posiada trzywarstwowe, rozmyte galerie obrazów z katalogu `img/`, które płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`. Warstwy mają wzmocnioną ekspozycję (większa jasność i saturacja), aby animacja była zauważalna, lecz nadal subtelna.
-- Każda podstrona posiada trzywarstwowe, rozmyte galerie obrazów z katalogu `img/`, które płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
-- Wprowadzono dedykowany blok `@media (max-width: 600px)` poprawiający skalowanie strony na smartfonach.
+- Paleta została przygaszona, a ambientowe efekty rozszerzono o trzywarstwowe tła z katalogu `img/`.
+- Blok `@media (max-width: 600px)` zapewnia komfortową nawigację na urządzeniach mobilnych.
+- Sekcja visual key „Próby Płomienia” łączy narrację z obrazami `img/1.jpg`, `img/4.jpg`, `img/7.jpg` i udostępnia przycisk autoodtwarzania respektujący `prefers-reduced-motion`.
 
 ## Aktualizacja fazy 3
-- Dodano plik `.nojekyll`, aby GitHub Pages nie stosował przetwarzania Jekyll i pozostawił strukturę katalogów nienaruszoną; test `tests/test_nojekyll.py` monitoruje ten stan.
-- Pojawił się baner "flying object" kierujący do Notebook LM z bazą wiedzy po burzy mózgów, spójny na wszystkich podstronach.
-- Animowana ikona zwiadowcy zachowuje klimat ognia, a preferencje ograniczonego ruchu wyłączają animację.
-- Ten sam zwiadowca prowadzi teraz także do archiwum Google Drive z zasobami wizualnymi; ikonę w barwach Google umieściliśmy przy CTA.
-- Test `tests/test_notebook_banner.py` pilnuje obecności linków (Notebook LM oraz Google Drive), etykiety ARIA, klas stylujących i zabezpieczeń `rel="noopener"`.
+- Dodano baner „flying object” prowadzący do Notebook LM i archiwum Google Drive; test `tests/test_notebook_banner.py` pilnuje ikon i linków.
+- W repo znajduje się `.nojekyll`, a README dokumentuje jego rolę.
+- Dokumentacja custom domain wskazuje host `pkr0kosz.github.io`, ręczną konfigurację w ustawieniach Pages oraz brak pliku `CNAME` w repo.
 
 ## Aktualizacja fazy 4
-- Sekcja "Organizacja" oferuje panel komentarza przy każdym wątku — rozwijany przyciskiem "Oceń pomysł" i zapisujący notatki w `localStorage`.
-- Styl panelu wpisuje się w bursztynową paletę repozytorium i respektuje układ mobilny.
-- Test `tests/test_feedback_panel.py` pilnuje obecności znaczników danych oraz styli komponentu.
+- Strona „Organizacja” oferuje panel komentarza „Oceń pomysł” zapisujący notatki w `localStorage`.
+- Landing posiada formularz „Dodaj pomysł” z walidacją i fetch; backend zapisuje dane do SQLite i pliku tekstowego.
 
 ## Aktualizacja fazy 5
-- Moduł `assets/js/backend-config.js` scala pobieranie `BACKEND_URL` i przypisuje akcje wszystkim formularzom oznaczonym `data-api`.
-- `assets/idea-form.js` korzysta z modułu współdzielonego cache i skupia się wyłącznie na walidacji oraz komunikatach dla użytkownika.
-- `tests/test_navigation.py::test_backend_config_script_present_on_form_pages` zabezpiecza dołączanie modułu na stronach z formularzami.
+- Moduł `assets/js/backend-config.js` scala pobieranie `BACKEND_URL` i przypisuje akcje formularzom oznaczonym `data-api`.
+- Skrypt `scripts/smoke.sh` pomaga szybko zweryfikować tunel produkcyjny.
+- Endpoint `/api/health` raportuje gotowość storage i jest chroniony testem `tests/test_api.py::test_health_ok`.
+
+## Akceptacja ręczna
+- Otwórz `index.html` i sprawdź, że wszystkie linki prowadzą do właściwych stron.
+- Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych.
+- Oceń stonowaną paletę, pulsujące tło oraz trzywarstwowe galerie obrazów — powinny być wyraźnie widoczne i dryfować horyzontalnie.
+- Kliknij baner Notebook LM oraz CTA Google Drive, aby upewnić się, że otwierają właściwe zasoby.
+- Uruchom backend (`flask --app app run`), wprowadź pomysł w sekcji „Dodaj pomysł” i sprawdź, że otrzymasz potwierdzenie oraz nowe wpisy w katalogu `data/`.
+- Przejdź przez sekcję visual key i potwierdź, że kafelki reagują na focus/hover, a przycisk „Odtwórz sekwencję” komunikuje status.
+
+## Konfiguracja domeny `www.larpkronikiognia.pl`
+1. **GitHub Pages:** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium nie przechowuje pliku `CNAME`; GitHub utworzy go automatycznie w gałęzi serwującej stronę.
+2. **Rekordy DNS:** dodaj rekord `CNAME` dla hosta `www`, wskazujący na `pkr0kosz.github.io`. Opcjonalnie skonfiguruj domenę lustrzaną `www.larpkronikiognia.com` z przekierowaniem 301 na `.pl`.
+3. **Domena główna:** aby `larpkronikiognia.pl` kierowała na `www`, dodaj rekordy `A` na adresy `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` lub użyj `ALIAS/ANAME`.
+4. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.
+5. **Weryfikacja:** sprawdź konfigurację poleceniami `dig www.larpkronikiognia.pl CNAME` oraz `curl -I https://www.larpkronikiognia.pl`. Dla domeny `.com` powtórz `dig www.larpkronikiognia.com CNAME`.
+
+## Sekcja visual key „Próby Płomienia”
+- Trzy kafelki narracyjne prowadzą do kluczowych podstron repozytorium.
+- Każdy kafelek wykorzystuje fotografie `img/1.jpg`, `img/4.jpg`, `img/7.jpg` i CTA zachęcające do eksploracji świata, narzędzi i planu dnia.
+- Przycisk „Odtwórz sekwencję” respektuje `prefers-reduced-motion` i komunikuje status przez `aria-live`.
 
 ## Status fazy
-- Plan fazy 1 i zadania: `docs/plan.md`, `docs/tasks.md`.
+- Plan i zadania: `docs/plan.md`, `docs/tasks.md`.
 - Bieżące notatki: `docs/notes.md`.
-
-## Kolejne kroki (propozycja)
-- Dodać automatyczny linting HTML/CSS (np. HTMLHint, Stylelint) i włączyć do CI.
-- Przygotować komponentowe podejście (np. Eleventy) dla dalszej rozbudowy.
-- Zaprojektować widok prezentujący zgłoszone pomysły wraz z moderacją i eksportem.
-- Rozszerzyć `/api/health` o szczegóły tunelu (np. echo adresu `BACKEND_URL`) i zautomatyzowany test porównujący konfiguracje.
+- Decyzje architektoniczne: `docs/adr/`.

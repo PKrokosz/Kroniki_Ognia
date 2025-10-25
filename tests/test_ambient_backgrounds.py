@@ -104,3 +104,27 @@ def test_reduced_motion_disables_layer_animation():
     assert ".ambient-layer" in snippet, (
         "Blok prefers-reduced-motion nie wyłącza animacji warstw ambient"
     )
+
+
+def test_ambient_layers_meet_visibility_thresholds():
+    css = (REPO_ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+    background_block = re.search(r"\.ambient-background\s*{[^}]*}", css, flags=re.DOTALL)
+    assert background_block, "Brak reguły .ambient-background"
+    z_index_match = re.search(r"z-index:\s*(-?\d+)", background_block.group(0))
+    assert z_index_match, "Brak z-index dla .ambient-background"
+    assert int(z_index_match.group(1)) >= -1, "ambient-background powinien mieć z-index ≥ -1"
+
+    selectors = [
+        r"\.ambient-layer\s*{[^}]*}",
+        r"\.ambient-layer:nth-child\(2\)\s*{[^}]*}",
+        r"\.ambient-layer:nth-child\(3\)\s*{[^}]*}",
+    ]
+    for selector in selectors:
+        block = re.search(selector, css, flags=re.DOTALL)
+        assert block, f"Brak reguły dopasowanej do {selector}"
+        opacity_match = re.search(r"opacity:\s*([0-9.]+)", block.group(0))
+        assert opacity_match, f"Brak opacity w regule {selector}"
+        opacity_value = float(opacity_match.group(1))
+        assert opacity_value >= 0.45, (
+            f"Warstwa ambient w {selector} ma zbyt niską przezroczystość ({opacity_value})"
+        )

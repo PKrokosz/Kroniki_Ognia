@@ -1,10 +1,6 @@
 from __future__ import annotations
 
 import json
-from typing import Any
-
-from flask.testing import FlaskClient
-
 import pytest
 
 from app import app
@@ -14,7 +10,12 @@ def test_health_endpoint():
     client = app.test_client()
     response = client.get("/api/health")
     assert response.status_code == 200
-    assert response.get_json() == {"status": "ok"}
+    payload = response.get_json()
+    assert payload and payload.get("status") == "ok"
+    storage = payload.get("storage")
+    assert storage, "Oczekiwano sekcji storage w odpowiedzi health-check"
+    assert storage.get("database_exists") is True
+    assert storage.get("log_exists") is True
 
 
 def test_post_ideas_smoke():
