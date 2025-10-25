@@ -101,6 +101,23 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
     def root() -> Response:
         return flask_app.send_static_file("index.html")
 
+    @flask_app.get("/api/health")
+    def health() -> Response:
+        data_dir_path = _resolve_data_dir(flask_app)
+        db_path = data_dir_path / "ideas.sqlite3"
+        text_log = data_dir_path / "ideas.txt"
+
+        return jsonify(
+            {
+                "status": "ok",
+                "storage": {
+                    "data_dir": str(data_dir_path),
+                    "database_exists": db_path.exists(),
+                    "log_exists": text_log.exists(),
+                },
+            }
+        )
+
     @flask_app.post("/api/ideas")
     @limiter.limit("10 per minute")
     def submit_idea() -> tuple[Response, int] | Response:
