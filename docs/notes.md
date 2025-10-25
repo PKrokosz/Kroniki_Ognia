@@ -140,6 +140,8 @@
 - Backend Flask wymusza schemat `{title, content, tags?}`, zapisuje tagi w JSON oraz loguje wpisy z timestampem. CORS ogranicza pochodzenie do GitHub Pages i tunelu, a Flask-Limiter blokuje flood do 10/min.
 - `tests/test_api.py` oraz zaktualizowane `tests/test_idea_submission.py` pilnują kontraktu odpowiedzi `{"id": ..., "status": "ok"}` oraz poprawnego utrwalenia danych.
 - README dokumentuje tryb tunelowania i skrypt `scripts/smoke.sh`, który wykonuje POST do publicznego endpointu.
+- Backend posiada `GET /api/health`, aby monitoring tunelu miał lekki punkt kontrolny.
+- Walidacja `POST /api/ideas` wymusza `Content-Type: application/json`, limit 5 KB oraz prawidłowe struktury JSON.
 
 ## 5xWhy — Konfiguracja tunelu backendu
 1. Dlaczego front powinien ładować URL backendu z `config.json`?
@@ -167,6 +169,33 @@
    - (B) Bash pozwala szybko sprawdzić tunel po wdrożeniu.
    - (C) Dublet testów zwiększa zaufanie architekta.
    **Decyzja:** A jako fundament w pipeline, rozszerzony o operacyjny komfort z (B).
+
+## 5xWhy — Health-check i utwardzenie JSON
+1. Dlaczego dodajemy `GET /api/health`?
+   - (A) Aby monitoring HTTP mógł szybko wykryć awarię.
+   - (B) Aby operatorzy mieli prostą sondę ręczną.
+   - (C) Aby przygotować się na przyszłe autoskalowanie.
+   **Decyzja:** A jako klucz operacyjny, wzmocniony ergonomią ręczną z (B).
+2. Dlaczego wymuszamy `Content-Type: application/json`?
+   - (A) Eliminujemy przyjmowanie formularzy bez CSRF.
+   - (B) Redukujemy niejednoznaczność logów serwera.
+   - (C) Uszczelniamy kontrakt API w dokumentacji.
+   **Decyzja:** C jako najważniejsza jasność kontraktu, wsparta bezpieczeństwem z (A).
+3. Dlaczego limit 5 KB na payload?
+   - (A) Chroni SQLite przed bardzo dużymi wpisami.
+   - (B) Zapobiega próbkom binarnym trafiającym do API.
+   - (C) Ułatwia ręczny audyt logów tekstowych.
+   **Decyzja:** B jako tarcza przeciw binarnym nadużyciom, z dodatkiem stabilności z (A).
+4. Dlaczego odrzucamy struktury inne niż obiekt?
+   - (A) Formularz frontu zawsze wysyła obiekt.
+   - (B) Ułatwia rozszerzanie schematu o kolejne pola.
+   - (C) Upraszcza serializację do bazy.
+   **Decyzja:** B jako inwestycja w przyszłe pola, wzmocniona wykrywaniem błędów klienta z (A).
+5. Dlaczego komunikaty błędów zwracamy w JSON-ie?
+   - (A) Klient `fetch` może je łatwo sparsować.
+   - (B) Zachowujemy jednolitość odpowiedzi backendu.
+   - (C) Automatyczne testy czytają komunikaty bez dodatkowego parsowania.
+   **Decyzja:** A jako najlepsze DX, wsparte spójnością z (B).
 
 ## 5xWhy — Podwójny `config.json`
 1. Dlaczego potrzebujemy kopii `config.json` w katalogu głównym?
