@@ -144,19 +144,34 @@
             ];
 
             // Funkcja do renderowania kart (przyjazna dla urządzeń mobilnych)
-            function renderCard(thread) {
+            function renderCard(section, thread, index) {
+                const cardKey = `${section.id}-${index}`;
+                const panelId = `rate-panel-${cardKey}`;
+                const noteId = `rate-note-${cardKey}`;
                 return `
-                    <div class="plan-card">
+                    <div class="plan-card" data-thread-key="${cardKey}">
                         <h3>${thread.wątek}</h3>
                         <p>${thread.opis}</p>
                         <div class="source-text">Źródła: ${thread.źródła}</div>
+                        <button class="rate-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" title="Oceń i skomentuj ten pomysł">
+                            ⭐ Oceń pomysł
+                        </button>
+                        <div class="rate-panel" id="${panelId}" hidden>
+                            <label class="rate-label" for="${noteId}">Twój komentarz dla strażników ognia</label>
+                            <textarea id="${noteId}" rows="4" placeholder="Zapisz wrażenia lub usprawnienia..." aria-describedby="${panelId}-status"></textarea>
+                            <div class="rate-actions">
+                                <button class="rate-save" type="button" data-action="save">Zachowaj komentarz</button>
+                                <button class="rate-clear" type="button" data-action="clear">Wyczyść</button>
+                            </div>
+                            <p class="rate-status" id="${panelId}-status" role="status" aria-live="polite"></p>
+                        </div>
                     </div>
                 `;
             }
 
             // Funkcja do renderowania całej sekcji
             function renderSection(section) {
-                const cardsHtml = section.threads.map(renderCard).join('');
+                const cardsHtml = section.threads.map((thread, index) => renderCard(section, thread, index)).join('');
                 return `
                     <section id="${section.id}" class="content-section">
                         <h2 class="section-title"><span class="section-icon">${section.icon}</span> ${section.title}</h2>
@@ -168,11 +183,102 @@
                 `;
             }
 
+            function getFeedbackStorage() {
+                try {
+                    if (typeof window !== 'undefined' && 'localStorage' in window) {
+                        const testKey = '__organizacja_feedback__';
+                        window.localStorage.setItem(testKey, '1');
+                        window.localStorage.removeItem(testKey);
+                        return window.localStorage;
+                    }
+                } catch (error) {
+                    console.warn('Local storage unavailable for komentarze wątków.', error);
+                }
+                return null;
+            }
+
+            function initRatingPanels() {
+                const storage = getFeedbackStorage();
+                const cards = document.querySelectorAll('.plan-card[data-thread-key]');
+                cards.forEach((card) => {
+                    const threadKey = card.getAttribute('data-thread-key');
+                    if (!threadKey) {
+                        return;
+                    }
+                    const toggle = card.querySelector('.rate-toggle');
+                    const panel = card.querySelector('.rate-panel');
+                    const textarea = card.querySelector('textarea');
+                    const saveButton = card.querySelector('.rate-save');
+                    const clearButton = card.querySelector('.rate-clear');
+                    const status = card.querySelector('.rate-status');
+                    const storageKey = `organizacja-feedback:${threadKey}`;
+
+                    if (storage && textarea) {
+                        const storedValue = storage.getItem(storageKey);
+                        if (storedValue) {
+                            textarea.value = storedValue;
+                            if (status) {
+                                status.textContent = 'Komentarz zapisany lokalnie.';
+                            }
+                        }
+                    }
+
+                    if (toggle && panel && textarea) {
+                        toggle.addEventListener('click', () => {
+                            const isHidden = panel.hasAttribute('hidden');
+                            if (isHidden) {
+                                panel.removeAttribute('hidden');
+                                toggle.setAttribute('aria-expanded', 'true');
+                                textarea.focus();
+                            } else {
+                                panel.setAttribute('hidden', '');
+                                toggle.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    }
+
+                    if (saveButton && textarea) {
+                        saveButton.addEventListener('click', () => {
+                            if (!status) {
+                                return;
+                            }
+                            const value = textarea.value.trim();
+                            if (storage) {
+                                if (value) {
+                                    storage.setItem(storageKey, value);
+                                    status.textContent = 'Zapisano komentarz dla tego wątku.';
+                                } else {
+                                    storage.removeItem(storageKey);
+                                    status.textContent = 'Usunięto pusty komentarz.';
+                                }
+                            } else {
+                                status.textContent = 'Twoja przeglądarka blokuje zapisywanie komentarzy.';
+                            }
+                        });
+                    }
+
+                    if (clearButton) {
+                        clearButton.addEventListener('click', () => {
+                            if (textarea) {
+                                textarea.value = '';
+                            }
+                            if (storage) {
+                                storage.removeItem(storageKey);
+                            }
+                            if (status) {
+                                status.textContent = 'Komentarz wyczyszczony.';
+                            }
+                        });
+                    }
+                });
+            }
+
             // Renderowanie wszystkich sekcji do main
             document.addEventListener('DOMContentLoaded', () => {
                 const mainContainer = document.getElementById('sections-root');
                 const htmlContent = sectionsData.map(renderSection).join('');
                 mainContainer.innerHTML = htmlContent;
+                initRatingPanels();
             });
         </script>
 

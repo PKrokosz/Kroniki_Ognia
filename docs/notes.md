@@ -258,6 +258,38 @@
    - (C) Buduje pamięć projektową (CONTEXT).
    **Decyzja:** A jako wiodące, uzupełnione o audytowalność z (B).
 
+# Notatki (Faza 4)
+- Strona "Organizacja" zyskała przycisk "Oceń pomysł" przy każdym wątku, rozwijający panel komentarza z komunikatami statusu.
+- Komentarze zapisują się w `localStorage`, co pozwala prowadzącym zachować uwagi między odświeżeniami strony podczas iteracji warsztatowych.
+- Panel respektuje bursztynową paletę projektu i układ mobilny, a test `tests/test_feedback_panel.py` blokuje regresje markupowe i stylowe.
+
+## 5xWhy — Panel ocen pomysłów
+1. Dlaczego dodajemy panel oceny do kart wątków?
+   - (A) By zebrać wrażenia w trakcie warsztatów planistycznych.
+   - (B) By ocenić priorytety mechanik podczas testów wewnętrznych.
+   - (C) By zapewnić notatnik prowadzących bezpośrednio na stronie.
+   **Decyzja:** C jako baza funkcjonalności, rozszerzona o warsztatowy kontekst z (A).
+2. Dlaczego zapis lokalny w `localStorage`?
+   - (A) Nie wymaga backendu ani dodatkowej infrastruktury.
+   - (B) Zapewnia natychmiastową synchronizację między wszystkimi uczestnikami.
+   - (C) Pozwala działać offline podczas testów gry.
+   **Decyzja:** A dla prostoty wdrożenia, z korzyścią pracy offline z (C).
+3. Dlaczego panel domyślnie pozostaje zwinięty?
+   - (A) Zachowuje czytelność i rytm kart nawet przy dużej liczbie wątków.
+   - (B) Minimalizuje koszty renderowania w przeglądarce.
+   - (C) Chroni przed przypadkową edycją tekstu przy przewijaniu.
+   **Decyzja:** A jako priorytet UX, wzbogacony o ochronę przed przypadkowym dotykiem z (C).
+4. Dlaczego potrzebujemy dedykowanych styli mobilnych?
+   - (A) Użytkownicy często korzystają z telefonu podczas przygotowań LARP.
+   - (B) Utrzymuje spójność wizualną w bursztynowej palecie repozytorium.
+   - (C) Ułatwia szybkie testy QA w pipeline'ie.
+   **Decyzja:** A jako kluczowe, z konsekwencją stylistyczną z (B).
+5. Dlaczego nowy test Pytest jest wymagany?
+   - (A) Chroni markup i klucze `localStorage` przed przypadkową regresją.
+   - (B) Działa jako podstawa pod przyszłą synchronizację eksportu komentarzy.
+   - (C) Zapewnia zgodność z wymaganiami CI i dokumentacją planu.
+   **Decyzja:** A jako fundament, rozszerzone o dyscyplinę CI z (C).
+
 ## 5xWhy — Baner Notebook LM
 1. Dlaczego dodajemy baner z odnośnikiem do Notebook LM?
    - (A) By użytkownicy szybko trafili do pełnej bazy wiedzy po burzy mózgów.
