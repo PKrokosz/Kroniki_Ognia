@@ -27,3 +27,16 @@
 - Na urządzeniach mobilnych nawigacja układa się w kolumnę, a karty mają zmniejszone paddingi.
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
 - Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present` oraz `tests/test_responsive_theme.py::test_ambient_effects_defined` są zielone.
+
+## Cel fazy 3 — Custom domain i hosting Pages
+- [Scope] Zapewnienie automatycznego testu kontrolującego brak pliku `CNAME` w repozytorium oraz kompletność dokumentacji ręcznej konfiguracji domeny.
+- [Scope] Udokumentowanie kroków DNS oraz procedury weryfikacji i audytu w README/dokumentacji, z jednoznacznym wskazaniem hosta `pkr0kosz.github.io`.
+- [Scope] Dodanie procesu weryfikacji domeny organizacji GitHub poprzez rekord TXT `_gh-SilesianGames-o.www.larpkronikiognia.pl` z kodem `6224e5ae12` i nadzorem propagacji.
+- [Scope] Przygotowanie checklisty do monitorowania dostępności i certyfikatu HTTPS (kontynuacja w kolejnych zadaniach).
+- [Non-Goals] Automatyczne narzędzia monitoringu uptime, wdrożenia CD poza GitHub Pages, zakup certyfikatów zewnętrznych.
+
+## Definicja ukończenia fazy 3 (DoD)
+- `pytest` obejmuje test `tests/test_custom_domain.py` potwierdzający brak śledzonego pliku `CNAME` i obecność dokumentacji.
+- README opisuje kroki konfiguracji DNS, jednoznacznie wskazuje host `pkr0kosz.github.io`, oraz obejmuje weryfikację TXT `_gh-SilesianGames-o.www.larpkronikiognia.pl` z kodem `6224e5ae12`; `docs/notes.md` zawiera log 5xWhy dla decyzji o przeniesieniu `CNAME` do ustawień Pages.
+- `docs/tasks.md` zawiera checklistę z ukończonym zadaniem dokumentacji custom domain i planem dalszych kroków dla monitoringu.
+- Akceptacyjne: ręczna weryfikacja `dig`/`curl` odnotowana w README.
