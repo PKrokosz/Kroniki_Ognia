@@ -6,7 +6,7 @@
 - [Non-Goals] Nowa zawartość fabularna, rozbudowane funkcje JS poza nawigacją.
 
 ## Definicja ukończenia (DoD)
-- Lint, typecheck, test: `pytest` zielony, dodatkowe linty TBD w kolejnych fazach.
+- Lint, typecheck, test: `ruff check .`, `mypy app.py`, `pytest` zielone; kolejne linty front-endowe zaplanujemy w następnych fazach.
 - Wszystkie strony korzystają ze wspólnego arkusza `assets/styles.css` i dzielonej nawigacji.
 - Istnieje `index.html` jako strona startowa GitHub Pages.
 - Dokumentacja (README, notes, tasks) odzwierciedla aktualny stan.

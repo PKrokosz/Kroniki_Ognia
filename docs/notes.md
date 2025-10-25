@@ -433,6 +433,43 @@
    - (C) Przygotowuje grunt pod ewentualną rozbudowę API.
    **Decyzja:** B dla kompatybilności testów, z elastycznością rozbudowy z (C).
 
+# Notatki (Faza 5)
+- Toolchain deweloperski został rozszerzony o `ruff` i `mypy`, a brakujące stuby (`types-Flask-Cors`, `types-requests`) pozwalają uruchomić statyczną analizę bez błędów importu.
+- Po instalacji `pip install -r requirements.txt` można lokalnie sprawdzić: `ruff check .`, `mypy app.py`, `pytest` — komplet narzędzi potrzebny przed wdrożeniem tunelu backendu.
+
+## 5xWhy — Dlaczego dodajemy linting i typowanie backendu
+1. Dlaczego do requirements trafia `ruff`?
+   - (A) Żeby pilnować stylu i błędów logicznych w lekkim CLI.
+   - (B) Żeby przygotować grunt pod automatyczne lintowanie w CI.
+   - (C) Żeby przyspieszyć code review między agentami.
+   **Decyzja:** B jako inwestycja w pipeline, z natychmiastową korzyścią szybkości z (C).
+2. Dlaczego `mypy` uruchamiamy na `app.py` już teraz?
+   - (A) Backend gromadzi coraz więcej logiki i warto ją weryfikować typami.
+   - (B) Statyczna analiza wyłapuje brakujące importy i edge-case'y JSON.
+   - (C) Przygotowuje programistów na rozbudowę API o kolejne endpointy.
+   **Decyzja:** A jako główny cel jakości, rozszerzony o wczesną detekcję błędów z (B).
+3. Dlaczego dokładamy stuby `types-Flask-Cors` i `types-requests`?
+   - (A) Bez nich `mypy` zatrzymuje się na brakujących typach.
+   - (B) Stuby dokumentują kontrakt bibliotek trzecich i ułatwiają nawigację.
+   - (C) W przyszłości ułatwią przejście na bardziej restrykcyjne ustawienia `mypy`.
+   **Decyzja:** A jako konieczny krok, doprawiony dokumentacyjnością z (B).
+4. Dlaczego dokumentujemy komendy w README?
+   - (A) Nowi agenci muszą znać kolejność uruchamiania narzędzi przed pracą nad backendem.
+   - (B) README pełni rolę checklisty akceptacyjnej i nie może pomijać nowych blokad jakościowych.
+   - (C) Pozwala szybko zareagować, gdy `pip` ostrzega o pracy jako `root`.
+   **Decyzja:** B jako główny driver, rozszerzony o bezpieczeństwo środowiska z (C).
+5. Dlaczego aktualizujemy `docs/tasks.md`?
+   - (A) Checklisty muszą odzwierciedlać obowiązkowe kroki QA.
+   - (B) Ułatwia monitorowanie, czy ruff/mypy zostały uruchomione w każdej fazie.
+   - (C) Przygotowuje nas pod integrację narzędzi w CI.
+   **Decyzja:** A jako wymóg procesowy, z perspektywą CI z (C).
+
+## Raport agenta — Kontrola jakości backendu
+- **Co zostało zrobione:** Narzędzia `ruff` i `mypy` zostały włączone do codziennego zestawu QA, a brakujące stuby umożliwiają pełne przejście analizy statycznej.
+- **Dlaczego (z czego zrezygnowano):** Odłożono konfigurację zaawansowanych pluginów (np. strict optional w `mypy`) na późniejszą fazę, aby najpierw ustabilizować podstawowy lint.
+- **Cel funkcji i stan pipeline'u:** Zapewnić szybkie wychwytywanie regresji w backendzie przed wdrożeniem tunelu; pipeline ma teraz komplet komend `ruff`, `mypy`, `pytest` jako wymóg DoD.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo przybliża się do produkcyjnego MVP dzięki szczelniejszej kontroli jakości; kolejnym krokiem będzie włączenie tych komend do workflow CI oraz rozszerzenie statycznej analizy na katalog `tests/`.
+
 ## Raport agenta — Ambientowe tła
 - **Co zostało zrobione:** Każda podstrona otrzymała trzywarstwowe, rozmyte tło z galerii zdjęć, które powoli przesuwa się horyzontalnie, utrzymując klimat płonącego klasztoru.
 - **Dlaczego (z czego zrezygnowano):** Odłożono dynamiczne sterowanie prędkością w oparciu o scroll JS, aby zachować lekkość implementacji i kompatybilność z hostingiem statycznym.

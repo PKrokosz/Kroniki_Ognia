@@ -67,6 +67,20 @@ Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mo
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`.
 
+## Kontrola jakości kodu
+
+Nowe narzędzia w `requirements.txt` poszerzają lokalne sprawdzanie jakości:
+
+```bash
+pip install -r requirements.txt  # instaluje m.in. ruff, mypy i paczki stubów
+ruff check .                     # szybki lint Pythona (CLI przechodzi bez błędów)
+mypy app.py                      # statyczne typowanie backendu Flask
+```
+
+- `ruff>=0.6.0` utrzymuje konwencje stylu i zgłosi regresję, jeśli backend przestanie być zgodny z PEP 8.
+- `mypy>=1.8.0` działa bez dodatkowej konfiguracji; brakujące stuby dla bibliotek (np. Flask-Cors, Requests) dopisaliśmy jako `types-Flask-Cors` oraz `types-requests`.
+- Instalacja wymaga środowiska wirtualnego (`python -m venv .venv && source .venv/bin/activate`), aby uniknąć ostrzeżeń `pip` o pracy jako użytkownik `root`.
+
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
 - Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
