@@ -20,12 +20,38 @@ python -m http.server 8000
 ## Backend formularza „Dodaj pomysł”
 Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego.
 
+Payload ma schemat `{"title": str, "content": str, "tags": [str]?}`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`.
+
 ```bash
 pip install -r requirements.txt
 flask --app app run
 ```
 
 > Domyślnie dane trafiają do `data/ideas.sqlite3` i `data/ideas.txt`. Ścieżkę można nadpisać zmienną `IDEAS_DATA_DIR`.
+> Endpoint `POST /api/ideas` posiada limit 10 zgłoszeń na minutę z jednego adresu IP oraz nagłówki CORS dla GitHub Pages i tunelu.
+
+## Run with tunnel
+
+Statyczny front na GitHub Pages ładuje adres backendu z `public/config.json`.
+
+```json
+{
+  "BACKEND_URL": "https://api-kroniki.<MOJA-DOMENA>"
+}
+```
+
+> co robi: wskazuje publiczny adres tunelu bez końcowego ukośnika.
+
+Po wdrożeniu tunelu backend Flask powinien być osiągalny pod podanym adresem. Formularz ustawi `form.action` oraz wywoła `fetch` na `${BACKEND_URL}/api/ideas`.
+
+### Smoke test tunelu
+
+```bash
+# co robi: smoke z publicznego URL (tunnel)
+./scripts/smoke.sh https://api-kroniki.<MOJA-DOMENA>
+```
+
+Skrypt wysyła testowy POST i wypisuje odpowiedź JSON.
 
 ## Testy
 ```bash
@@ -35,6 +61,7 @@ pytest
 
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`), trójwarstwowe tła wykorzystujące zdjęcia z katalogu `img/` (`tests/test_ambient_backgrounds.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
+Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, że `POST /api/ideas` zwraca `{ "status": "ok" }`.
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
