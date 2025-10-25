@@ -28,7 +28,8 @@ class IdeaPayload(TypedDict, total=False):
     idea: str | None
 
 
-N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", "")
+DEFAULT_N8N_WEBHOOK = "http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50"
+N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", DEFAULT_N8N_WEBHOOK)
 N8N_TOKEN = os.getenv("N8N_TOKEN", "")
 API_KEY = os.getenv("API_KEY", "dev-key")
 
@@ -38,8 +39,9 @@ def _forward_to_n8n_async(payload: dict[str, Any]) -> None:
         try:
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {N8N_TOKEN}",
             }
+            if N8N_TOKEN:
+                headers["Authorization"] = f"Bearer {N8N_TOKEN}"
             requests.post(
                 N8N_WEBHOOK_URL,
                 json=payload,
@@ -242,6 +244,11 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
                     "title": title,
                     "content": content,
                     "tags": tags,
+                },
+                "pomysł": {
+                    "tytuł": title,
+                    "treść": content,
+                    "tagi": tags,
                 },
                 "client": {
                     "ip": client_ip,

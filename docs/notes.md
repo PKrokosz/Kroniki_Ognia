@@ -163,6 +163,7 @@
 - Endpoint `/api/health` raportuje gotowość storage i jest sprawdzany przez `tests/test_api.py`.
 - README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” z krokami konfiguracji tunelu.
 - `POST /api/ideas` wymaga nagłówka `X-API-Key` (domyślnie `dev-key`) i potrafi przekazać zdarzenie do n8n w tle.
+- Forwarding n8n ma domyślny adres developerski (`http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`) oraz alias payloadu `pomysł` dla lokalnych scenariuszy.
 - Workflow `ci.yml` uruchamia `pytest`, `ruff` i `mypy` przy każdym PR.
 - Test preflight CORS pilnuje, że nagłówek `X-API-Key` przechodzi z GitHub Pages na tunelowany backend.
 
@@ -219,6 +220,33 @@
    - (B) Testy end-to-end zachowują kompatybilność dzięki domyślnemu `dev-key`.
    - (C) CTA HTML pozostaje czyste — brak dodatkowych inputów w treści formularza.
    **Decyzja:** A jako wsparcie środowisk, rozszerzone kompatybilnością z (B).
+
+## 5xWhy — Dlaczego aliasujemy payload jako `pomysł`
+1. Dlaczego webhook potrzebuje sekcji `pomysł` obok `idea`?
+   - (A) Scenariusz n8n jest przygotowany pod polskie nazwy pól.
+   - (B) Alias upraszcza mapowanie danych w już istniejących node'ach n8n.
+   - (C) Zapobiega konieczności refaktoryzacji historycznych przepływów.
+   **Decyzja:** A jako zgodność z istniejącym scenariuszem, wzmocniona łatką migracyjną z (B).
+2. Dlaczego warto utrzymać jednocześnie sekcję `idea`?
+   - (A) Zapewnia kompatybilność z anglojęzycznymi integracjami (np. Discord, Slack).
+   - (B) Testy backendu już walidują strukturę `idea` i łatwo je rozbudować o alias.
+   - (C) Chroni przyszłe automatyzacje analityczne, które korzystają z wersji angielskiej.
+   **Decyzja:** C jako inwestycja w przyszłe integracje, rozszerzona testowalnością z (B).
+3. Dlaczego ustawiamy domyślny webhook developerski?
+   - (A) Przyspiesza konfigurację lokalną bez potrzeby eksportu zmiennych środowiskowych.
+   - (B) Pozwala testom manualnym od razu trafiać do n8n uruchomionego na maszynie developera.
+   - (C) Chroni przed zapomnieniem zmiennej `N8N_WEBHOOK_URL` podczas warsztatów.
+   **Decyzja:** A jako optymalizacja onboardingu, dopełniona wygodą z (B).
+4. Dlaczego nagłówek autoryzacji jest opcjonalny?
+   - (A) Lokalne instancje n8n często nie wymagają tokenu i odrzucałyby pusty header.
+   - (B) Pozwala łatwo przełączać środowiska bez restartu backendu.
+   - (C) Upraszcza debugowanie requestów HTTP.
+   **Decyzja:** A jako zgodność z lokalnym n8n, połączona z ergonomią z (C).
+5. Dlaczego test `test_post_ideas_forwards_to_n8n` powinien sprawdzać alias?
+   - (A) Chroni kontrakt integracji przy przyszłych refactorach.
+   - (B) Zmusza do utrzymania spójności między polską a angielską strukturą.
+   - (C) Zapobiega cichym regresjom podczas optymalizacji payloadu.
+   **Decyzja:** B jako gwarancja spójności, rozszerzona osłoną regresji z (C).
 
 ## 5xWhy — Dlaczego rozszerzamy CORS o nagłówek `X-API-Key`
 1. Dlaczego przeglądarka blokowała formularz mimo poprawnego klucza API?

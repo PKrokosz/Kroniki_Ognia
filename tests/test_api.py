@@ -140,3 +140,5 @@ def test_post_ideas_forwards_to_n8n(monkeypatch):
     assert payload["idea"]["title"] == "Idea"
     assert payload["idea"]["tags"] == ["ognisko"]
     assert payload["source"] == "kroniki-ognia-form"
+    assert payload["pomysł"]["treść"] == "Treść"
+    assert payload["pomysł"]["tytuł"] == "Idea"
