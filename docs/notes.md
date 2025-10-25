@@ -11,6 +11,8 @@
 - Powstał zestaw testów `tests/test_responsive_theme.py` weryfikujących zarówno bloki @media, jak i obecność efektów graficznych.
 - Wdrożono wielowarstwowe, rozmyte tła z zasobów `img/` — trzy obrazy na podstronę płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
 - Wzmocniono ekspozycję ambientowych warstw: zwiększona jasność, saturacja i amplituda ruchu sprawiają, że galeria jest wyraźnie widoczna nawet pod nakładającymi się efektami.
+- Landing wzbogacono o sekcję visual key "Próby Płomienia" z trzema progami (Iskra, Żar, Płomień), wykorzystującą zdjęcia `img/1.jpg`, `img/4.jpg`, `img/7.jpg` oraz prowadzącą do kluczowych podstron.
+- Sekcja visual key otrzymała przycisk autoodtwarzania z respektowaniem `prefers-reduced-motion` i komunikatami statusu.
 
 ## 5xWhy — Wzmocnienie widoczności ambientu
 1. Dlaczego należy zwiększyć jasność i saturację warstw?
@@ -65,6 +67,33 @@
    - (B) Brak JS upraszcza utrzymanie na GitHub Pages.
    - (C) Pozwala zachować kompatybilność z dotychczasowymi testami.
    **Decyzja:** B jako gwarancja prostoty, uzupełniona o wydajność z (A).
+
+## 5xWhy — Sekcja visual key
+1. Dlaczego potrzebujemy sekcji visual key na landingu?
+   - (A) Aby pokazać klimat projektu przed formularzem "Dodaj pomysł".
+   - (B) Aby wykorzystać istniejące zdjęcia `img/` jako natychmiastowe odwołania.
+   - (C) Aby zaoferować mistrzom gry szybki pitch treści podstron.
+   **Decyzja:** A jako główny impuls, wzmocniony biblioteką zdjęć z (B).
+2. Dlaczego sekcja powinna mieć trzy progi narracyjne?
+   - (A) Tryptyk odzwierciedla strukturę repozytorium (świat, narzędzia, plan).
+   - (B) Trzy kroki ułatwiają prowadzenie prezentacji live.
+   - (C) Parzysta liczba kafelków trudniej buduje dramaturgię.
+   **Decyzja:** A jako fundament, uzupełniony o rytm prezentacji z (B).
+3. Dlaczego zastosowaliśmy tryb autoodtwarzania zamiast slidera?
+   - (A) Autoodtwarzanie można włączyć lub pominąć — nie wymusza ruchu.
+   - (B) Slider wymagałby dodatkowej paginacji i kontroli focusu.
+   - (C) Przycisk łatwiej testować i respektuje dostępność.
+   **Decyzja:** A zapewnia kontrolę użytkownikowi, wzmocniona prostotą testów z (C).
+4. Dlaczego status sekcji jest komunikowany przez `aria-live`?
+   - (A) Osoby niewidzące muszą wiedzieć, czy autoodtwarzanie działa.
+   - (B) Pozwala raportować blokadę przy `prefers-reduced-motion`.
+   - (C) Wspiera QA przy sprawdzaniu zachowania przycisku.
+   **Decyzja:** A jako wymóg dostępności, rozszerzony o klarowne komunikaty z (B).
+5. Dlaczego obrazy pochodzą z `img/1.jpg`, `img/4.jpg`, `img/7.jpg`?
+   - (A) Otwierają i zamykają istniejące ambienty, zachowując spójność.
+   - (B) Unikamy duplikacji plików i dbamy o testy, które już pilnują katalogu.
+   - (C) Ten zestaw pokrywa drogę od wprowadzenia po finał dnia.
+   **Decyzja:** C jako narracyjny łuk, wsparte przez spójność zasobów z (A).
 
 # Notatki (Faza 3)
 - Dodano wspólny baner "flying object" prowadzący do Notebook LM z bazą wiedzy brainstormu; zachowuje klimat projektu dzięki animowanej ikonie zwiadowcy.
