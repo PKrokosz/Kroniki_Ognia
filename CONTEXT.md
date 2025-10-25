@@ -10,3 +10,4 @@
 Zasady:
 - Brak odwołań do historii czatu.
 - Aktualizacje repo muszą odzwierciedlać stan planu i zadań.
+- Paleta i ambient opisane w AGENTS.md są kanoniczne; `tests/test_responsive_theme.py` chroni responsywność i warstwę wizualną.

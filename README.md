@@ -23,11 +23,17 @@ pip install -r requirements.txt
 pytest
 ```
 
-Testy sprawdzają spójność nawigacji na wszystkich podstronach.
+Testy sprawdzają spójność nawigacji na wszystkich podstronach oraz obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`).
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
-- Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych.
+- Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
+- Oceń nową, stonowaną paletę i subtelny efekt pulsującego tła w kontekście narracji projektu.
+
+## Aktualizacja fazy 2
+- Paleta kolorów została przygaszona i oparta na barwach ziemistych; akcenty złamane bursztynem nadają bardziej ponury ton.
+- Dodano ambientową warstwę tła (`body::before`) oraz delikatny efekt świetlny w sekcji hero (`.page-hero::after`).
+- Wprowadzono dedykowany blok `@media (max-width: 600px)` poprawiający skalowanie strony na smartfonach.
 
 ## Status fazy
 - Plan fazy 1 i zadania: `docs/plan.md`, `docs/tasks.md`.

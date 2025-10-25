@@ -19,6 +19,8 @@ Coding standards:
 - Place shared styling in `assets/styles.css`; load via relative paths.
 - No binary assets; use text/SVG only.
 - Tests live under `tests/` and must be runnable with `pytest`.
+- Maintain a subdued, ember-toned palette (earthy browns, muted golds) and reuse the ambient overlay/hero patterns when rozbudowywanie UI.
+- Zachowuj responsywne bloki @media <= 600px tak, by nawigacja przechodziła w układ kolumnowy; nowe komponenty muszą respektować mobilny padding.
 
 Commit/PR standards:
 - Use Conventional Commits.
