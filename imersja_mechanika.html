@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imersja Klasztoru Magów Ognia</title>
+    <!-- Ładowanie Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Używamy Inter jako głównego fontu, a dla nagłówków klasycznego szeryfowego (serif) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
+        :root {
+            --primary-bg: #1A1A1A;
+            --secondary-bg: #333333;
+            --text-main: #D4D4D4;
+            --accent-primary: #B30000; /* Zostawiamy jako subtelny kontrast */
+            --accent-secondary: #FFCC00; /* Złocisty Płomień (NOWY GŁÓWNY AKCENT) */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+        }
+        h1, h2 {
+            font-family: 'Libre Baskerville', serif;
+            color: var(--accent-secondary); /* Zmienione na Złocisty Płomień */
+            text-transform: uppercase;
+        }
+        .section-card {
+            background-color: var(--secondary-bg);
+            border-left: 5px solid var(--accent-secondary); /* Zmienione na Złocisty Płomień */
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(255, 204, 0, 0.1); 
+        }
+        .arcana-script {
+            /* Symulacja fontu kaligraficznego */
+            font-family: 'Libre Baskerville', serif;
+            color: var(--accent-secondary); /* Zmienione na Złocisty Płomień */
+            cursor: pointer;
+            border-bottom: 1px dotted var(--accent-secondary);
+            transition: color 0.3s;
+        }
+        .arcana-script:hover {
+            color: var(--accent-primary); /* Subtelny Karmazynowy hover */
+        }
+        /* Efekt migotania płomienia dla nagłówka */
+        @keyframes flicker {
+            0%, 100% { text-shadow: 0 0 7px var(--accent-secondary); opacity: 1; }
+            50% { text-shadow: 0 0 10px var(--accent-secondary), 0 0 20px var(--accent-secondary); opacity: 0.8; }
+        }
+        .flame-title {
+            animation: flicker 4s infinite alternate;
+        }
+
+        /* Stylizacja tabel/kart dla responsywności */
+        .grid-container {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .tool-card {
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: 8px;
+            background-color: var(--secondary-bg);
+            border-top: 3px solid var(--accent-secondary); /* Zmienione na Złocisty Płomień */
+        }
+        .tool-name {
+            color: var(--accent-secondary);
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+        .tool-title {
+            color: var(--accent-secondary); /* Zmienione na Złocisty Płomień */
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--accent-secondary); /* Zmienione na Złocisty Płomień */
+        }
+        .section-intro {
+             border-bottom: 1px solid var(--secondary-bg);
+             padding-bottom: 1rem;
+             margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Hero Section/Tytuł Główny -->
+        <header class="text-center py-16 mb-12 border-b border-solid border-[#333333]">
+            <h1 class="text-3xl md:text-5xl tracking-widest flame-title">
+                Archiwum Klasztoru Ognia
+            </h1>
+            <p class="text-base md:text-xl mt-4 text-gray-400">
+                Imersja, Mechaniki i Rytm Dnia
+            </p>
+        </header>
+
+        <!-- Wprowadzenie -->
+        <section class="mb-16">
+            <p class="text-lg leading-relaxed text-center max-w-4xl mx-auto">
+                Aby stworzyć głębokie poczucie imersji i odzwierciedlić mikrokosmos Klasztoru Magów Ognia, kluczowe jest wykorzystanie zarówno fizycznych rekwizytów, jak i mechanik fabularnych i rytualnych, które nasycają codzienność symbolem i znaczeniem. Poniżej znajduje się spis narzędzi.
+            </p>
+        </section>
+
+        <!-- SEKCJA I: FIZYCZNE ARTEFAKTY I REKWIZYTY -->
+        <section class="mb-16">
+            <h2 class="text-2xl md:text-3xl mb-8 border-b-2 border-dashed border-gray-600 pb-2">
+                I. FIZYCZNE ARTEFAKTY I REKWIZYTY
+            </h2>
+            <p class="section-intro">IMERSJA ZMYSŁOWA I FABULARNA</p>
+
+            <div class="grid-container">
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Karty Postaci jako Dzienniki/Zeszyty</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Notatnik i Artefakt Fabularny</p>
+                    <p class="text-main">To fundamentalny rekwizyt. Fizyczny zeszyt (notatnik) jest zarówno kartą postaci, jak i artefaktem fabularnym. Zawiera notatki z poprzednich lekcji, cytaty mistrzów, a nawet symbole i runy. Dziennik wzmacnia narracyjną ciągłość i może służyć do zdobywania Prestiżu (Mistrzowie mogą podpisywać notatki jako dowód nauki). Na tylnej okładce/w kieszeni ukrywa się „rzecz techniczna” (np. poziom prestiżu, krąg magii).</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Świece Rytualne i Zwoje-Klucze</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Rytuał Rozdziału Płomieni</p>
+                    <p class="text-main">Ogień i światło to klucz do imersji. Świece są symbolem i mechanicznym kluczem. Muszą być wykonane własnoręcznie (np. na warsztatach woskowni). Roznoszenie świec może sygnalizować status i przekazywać zadania. Niektóre świece mogą mieć ukryty symbol (np. termiczny/UV), który po podgrzaniu jest wskazówką, a nawet chip NFC do otwierania skrytek i drzwi.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Zwoje NFC i Przedmioty Lokacyjne</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Otwieranie Magicznych Zamków</p>
+                    <p class="text-main">Zwoje z wbudowanym chipem NFC służą do otwierania magicznych zamków. Wprowadzenie reguły, że przedmiotów lokacyjnych (np. ksiąg w Bibliotece, młota w Kuźni) nie wolno wynosić fizycznie, zmusza graczy do przepisywania treści na miejscu. Przepisanie wymaga czasu (5–20 minut) i generuje napięcie (można zostać przyłapanym przez NPC).</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Formularze Kancelaryjne i Korespondencja</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Biurokracja Klasztoru Ognia</p>
+                    <p class="text-main">Klasztor działa jak biurokracja. Kancelaria Ognia jest wypełniona stosami listów, pieczęciami i raportami. Nowicjusze w ramach zajęć sortują „spam”, analizują korespondencję polityczną (rozpoznając herby i lokalne konflikty) oraz przygotowują dokumentację do przesłuchań i rozpraw. Daje to poczucie, że są w sercu machiny historii.</p>
+                </div>
+
+                 <div class="tool-card">
+                    <h3 class="tool-name">Materiały Warsztatowe</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Rzemiosło i Zmysłowa Imersja</p>
+                    <p class="text-main">Angażowanie graczy w rzemiosło. Warsztaty runiczne z gliny (formowanie, barwienie, wypalanie) są rytuałem materializacji woli. Kaligrafia i przygotowanie piór/atramentów to ćwiczenie duchowe. Aromat dymionej kiełbasy czy zapach wina z winiarni wzmacnia zmysłową imersję codzienności. </p>
+                </div>
+
+                <div class="tool-card">
+                    <h3 class="tool-name">Insygnia Sędziowskie</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Konflikt Władzy Sądowej</p>
+                    <p class="text-main">Fizyczne artefakty symbolizujące władzę i konflikt. Żółta Czapa (lub inne insygnia sędziowskie) może spoczywać w klasztorze, a miasto się o nie upomina, co generuje konflikt władzy sądowniczej między zakonem a świeckim sędzią.</p>
+                </div>
+
+                <div class="tool-card col-span-1 md:col-span-2">
+                    <h3 class="tool-name">Model Nieba / Astrolabium</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Astrologia Ognia i Omenistyka</p>
+                    <p class="text-main">Fizyczny prop służący do rytuałów Astrologii Ognia i Omenistyki. Model sfer z kulami, które odbijają światło świec jak planety, zawieszony nad stołem w Refektarzu. Służy do odczytywania układu sygnałów i proroctw w świetle.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEKCJA II: MECHANIKI I SYSTEMY FABULARNE -->
+        <section class="mb-16">
+            <h2 class="text-2xl md:text-3xl mb-8 border-b-2 border-dashed border-gray-600 pb-2">
+                II. MECHANIKI I SYSTEMY FABULARNE
+            </h2>
+            <p class="section-intro">IMERSJA SPOŁECZNA</p>
+
+            <div class="grid-container">
+                <div class="tool-card">
+                    <h3 class="tool-name">System Prestiżu i Ciepła (Żar)</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Waluta Społeczna</p>
+                    <p class="text-main">Prestiż (Żar) to społeczna waluta. Magowie mogą stracić prestiż, gdy publicznie konfrontują innych. Dla nowicjuszy działa mechanika „Ciepła” (przychylności mistrzów), którą mogą stracić lub zyskać. Reputacja (skalowana np. 0–5 lub –10 do +10) jest kluczowa: wpływa na dostęp do zajęć, archiwów i zasobów.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Wybory Moralne (Między Złym a Złym)</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Konsekwencje i Dylematy</p>
+                    <p class="text-main">Wprowadzenie wątków fabularnych, w których nie ma „dobrego” wyjścia. Każda decyzja (np. wydanie skazańczyni czy jej ukrycie, kradzież zboża) ma natychmiastowe i odroczone konsekwencje. Zdarza się Dylemat Kronikarza, który musi zdecydować, czy zniszczyć dowody, by chronić porządek.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Dziennik Zadań (Quest Card)</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Mechaniczne Nagradzanie Graczy</p>
+                    <p class="text-main">Małe, drukowane zadania do odhaczenia, które zmuszają do interakcji i eksploracji klasztoru (np. „Znajdź wpis o X”, „Uzupełnij brakujący wolumin”). Służy jako mechaniczne narzędzie nagradzania graczy.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Sąd Klasztorny (Sąd Ognia)</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Publiczne Rozprawy</p>
+                    <p class="text-main">Publiczne rozprawy i Sąd Ognia, gdzie gracze są sędziami, świadkami lub pisarzami protokołów. Możliwość spotkania „człowieka zawieszonego”, który oczekuje na sąd i próbuje zyskać pozytywną opinię graczy.</p>
+                </div>
+
+                <div class="tool-card">
+                    <h3 class="tool-name">Mikrosystemy Sektorowe</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Dzielnice Narracyjne</p>
+                    <p class="text-main">Podział klasztoru na sektory (Alchemia, Winiarnia, Biblioteka, Kuźnia, Kaplica). Każdy sektor to system przekazywania know-how i wtajemniczenia: nowicjusze uczą się praktyki (np. tłoczenia wina), a magowie — metafizycznego sensu (duch wina to duch pamięci).</p>
+                </div>
+
+                <div class="tool-card">
+                    <h3 class="tool-name">Konflikty Doktrynalne</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Aksjomaty Ognia</p>
+                    <p class="text-main">Uczestnictwo w sporach filozoficznych wynikających z różnic między trzema Aksjomatami Ognia (<span class="arcana-script" onmouseover="showSecret(this, 'Ogień Kontroli')" onmouseout="hideSecret(this)">Żar</span>, <span class="arcana-script" onmouseover="showSecret(this, 'Ogień Woli')" onmouseout="hideSecret(this)">Płomień</span>, <span class="arcana-script" onmouseover="showSecret(this, 'Ogień Pamięci')" onmouseout="hideSecret(this)">Popiół</span>). Nowicjusze wybierają doktrynę, która determinuje ich rytuały i to, jak są kuszeni przez scenariusz.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA III: RYTM I ARCHITEKTURA -->
+        <section class="mb-16">
+            <h2 class="text-2xl md:text-3xl mb-8 border-b-2 border-dashed border-gray-600 pb-2">
+                III. RYTM I ARCHITEKTURA
+            </h2>
+            <p class="section-intro">IMERSJA ATMOSFERYCZNA</p>
+
+            <div class="grid-container">
+                <div class="tool-card">
+                    <h3 class="tool-name">Rytuał Ciszy przy Posiłkach</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Refektarz i Godzina Obserwacji</p>
+                    <p class="text-main">Posiłki w Refektarzu są momentami rytualnymi i społecznymi. Magowie obserwują model nieba i tylko Ceremoniarz ogłasza Poranne Obowiązki. Wywoływanie nowicjuszy do konkretnych zadań nadaje wagę każdej chwili.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Godzina Skradania</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Cisza Nocna (23:00–00:00)</p>
+                    <p class="text-main">W nocy obowiązuje Cisza Nocna. Jednak w czasie (np. 23:00–00:00) można wprowadzić Godzinę Skradania, która jest idealna na intrygi, wkrady do Biblioteki lub Piwnic z winem. Po północy NPC schodzą z gry, ale gracze mogą kontynuować grę kameralną.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Dzwon i Rytm Dnia</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Ciągły Słyszalny Rytm</p>
+                    <p class="text-main">Ciągły, słyszalny rytm dzwonu, który wyznacza cykle modlitwy, pracy i nauki. Rytm klasztorny jest wprowadzany od samego początku, budząc graczy „ze snu”.</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3 class="tool-name">Obowiązek Podtrzymywania Płomienia</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Symbol Wiary i Zaniedbania</p>
+                    <p class="text-main">Magowie mają obowiązek zapalać gasnące świece (znak zaniedbania lub słabnięcia wiary). Ogień jest medium, a dbałość o jego ciągłość jest formą modlitwy.</p>
+                </div>
+
+                <div class="tool-card">
+                    <h3 class="tool-name">Kaplica i Zwierciadło</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Rytuały Odbicia i Sądy</p>
+                    <p class="text-main">W klasztorze istnieje Kaplica / Oratorium. Lustro może być używane do Rytuałów Odbicia lub Sądów, gdzie odbija się tylko płomień w miejscu oczu, jeśli mag się nie przyzna do winy.</p>
+                </div>
+
+                <div class="tool-card">
+                    <h3 class="tool-name">Omenistyka i Obserwacja Wzorców</h3>
+                    <p class="text-sm text-gray-400 mb-3">Źródło: Pseudonaukowe Badanie Ognia</p>
+                    <p class="text-main">Zamiast wróżbiarstwa, to pseudonaukowe badanie wzorców płomienia i historii. Magowie analizują kształt płomieni, sadzę, barwę ognia. Zajęcia te (np. Tablica Znaków) służą do snucia prognoz i podejmowania decyzji w obliczu kryzysu.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stopka -->
+        <footer class="text-center py-8 mt-12 border-t border-solid border-[#333333]">
+            <p class="text-sm text-gray-500">
+                &copy; Kancelaria Ognia. Wszystkie zapisy są w mocy Płomienia.
+            </p>
+            <div class="mt-2 text-xs">
+                <span class="text-[#B30000]">Żar Karmazynowy</span> | 
+                <span class="text-[#FFCC00]">Złocisty Płomień</span> | 
+                <span class="text-[#D4D4D4]">Pergamin</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript dla funkcji Immersyjnych (Sekretne Fragmenty) -->
+    <script>
+        /**
+         * Funkcja do wyświetlania sekretnego (ukrytego) tekstu
+         * @param {HTMLElement} element Element HTML, który ma zostać zmodyfikowany
+         * @param {string} secretText Ukryty tekst do wyświetlenia
+         */
+        function showSecret(element, secretText) {
+            // Zapisz oryginalny tekst, aby móc go przywrócić
+            if (!element.dataset.originalText) {
+                element.dataset.originalText = element.textContent;
+            }
+            element.textContent = secretText;
+        }
+
+        /**
+         * Funkcja do ukrywania sekretnego tekstu i przywracania oryginału
+         * @param {HTMLElement} element Element HTML, który ma zostać zmodyfikowany
+         */
+        function hideSecret(element) {
+            if (element.dataset.originalText) {
+                element.textContent = element.dataset.originalText;
+            }
+        }
+    </script>
+</body>
+</html>
