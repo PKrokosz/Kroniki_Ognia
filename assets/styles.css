@@ -171,6 +171,12 @@ body {
   text-align: left;
 }
 
+.notebook-banner__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .notebook-banner__icon {
   font-size: 1.75rem;
   animation: notebookGlide 9s ease-in-out infinite;
@@ -182,6 +188,13 @@ body {
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--color-text-muted);
+}
+
+.notebook-banner__cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
 .notebook-banner__link {
@@ -217,6 +230,21 @@ body {
   width: 16px;
   height: 16px;
   fill: currentColor;
+}
+
+.notebook-banner__link--drive {
+  background: rgba(66, 133, 244, 0.18);
+}
+
+.notebook-banner__link--drive:hover,
+.notebook-banner__link--drive:focus {
+  background: rgba(66, 133, 244, 0.3);
+}
+
+.notebook-banner__drive-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
 }
 
 @keyframes notebookGlide {
@@ -488,6 +516,10 @@ a:focus {
   .notebook-banner__inner {
     flex-direction: column;
     text-align: center;
+  }
+
+  .notebook-banner__cta-group {
+    justify-content: center;
   }
 
   .site-header .container {

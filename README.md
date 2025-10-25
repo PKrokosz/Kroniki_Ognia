@@ -96,7 +96,8 @@ Smoke `tests/test_api.py` używa wbudowanego klienta Flask, by upewnić się, ż
 ## Aktualizacja fazy 3
 - Pojawił się baner "flying object" kierujący do Notebook LM z bazą wiedzy po burzy mózgów, spójny na wszystkich podstronach.
 - Animowana ikona zwiadowcy zachowuje klimat ognia, a preferencje ograniczonego ruchu wyłączają animację.
-- Test `tests/test_notebook_banner.py` pilnuje obecności linku, etykiety ARIA oraz zabezpieczeń `rel="noopener"`.
+- Ten sam zwiadowca prowadzi teraz także do archiwum Google Drive z zasobami wizualnymi; ikonę w barwach Google umieściliśmy przy CTA.
+- Test `tests/test_notebook_banner.py` pilnuje obecności linków (Notebook LM oraz Google Drive), etykiety ARIA, klas stylujących i zabezpieczeń `rel="noopener"`.
 
 ## Aktualizacja fazy 4
 - Sekcja "Organizacja" oferuje panel komentarza przy każdym wątku — rozwijany przyciskiem "Oceń pomysł" i zapisujący notatki w `localStorage`.
