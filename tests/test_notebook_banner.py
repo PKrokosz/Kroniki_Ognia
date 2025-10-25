@@ -11,6 +11,7 @@ HTML_FILES = [
 ]
 
 NOTEBOOK_URL = "https://notebooklm.google.com/notebook/cf797fdc-a8c2-44eb-b933-5ca5a3216674"
+GOOGLE_DRIVE_URL = "https://drive.google.com/drive/folders/1ra1Qt97ojx5oc_De8R3ubHayC_gnKLRO?usp=sharing"
 ARIA_LABEL = "Notebook LM — baza wiedzy z brainstormu"
 
 
@@ -23,6 +24,7 @@ class BannerParser(HTMLParser):
         self.banner_aria_label: str | None = None
         self.links: list[dict[str, str | None]] = []
         self.banner_text: list[str] = []
+        self.drive_icon_present = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]):
         attrs_dict = dict(attrs)
@@ -41,8 +43,11 @@ class BannerParser(HTMLParser):
                         "href": attrs_dict.get("href"),
                         "target": attrs_dict.get("target"),
                         "rel": attrs_dict.get("rel"),
+                        "class_list": (attrs_dict.get("class") or "").split(),
                     }
                 )
+            if tag == "svg" and attrs_dict.get("data-icon") == "google-drive":
+                self.drive_icon_present = True
 
     def handle_endtag(self, tag: str):
         if self.in_banner:
@@ -75,3 +80,22 @@ def test_notebook_banner_present_with_link():
                 assert link.get("target") == "_blank", f"Link Notebook LM wymaga target=_blank w {html_file.name}"
                 rel = (link.get("rel") or "").split()
                 assert "noopener" in rel, f"Link Notebook LM wymaga rel=noopener w {html_file.name}"
+
+
+def test_notebook_banner_includes_drive_archive_link():
+    for html_file in HTML_FILES:
+        parser = BannerParser()
+        parser.feed(html_file.read_text(encoding="utf-8"))
+
+        drive_links = [link for link in parser.links if link.get("href") == GOOGLE_DRIVE_URL]
+        assert drive_links, f"Brak linku do archiwum Google Drive w {html_file.name}"
+        for drive_link in drive_links:
+            assert "notebook-banner__link--drive" in drive_link.get("class_list", []), (
+                f"Link do Google Drive wymaga klasy notebook-banner__link--drive w {html_file.name}"
+            )
+            assert drive_link.get("target") == "_blank", (
+                f"Link do Google Drive wymaga target=_blank w {html_file.name}"
+            )
+            rel = (drive_link.get("rel") or "").split()
+            assert "noopener" in rel, f"Link do Google Drive wymaga rel=noopener w {html_file.name}"
+        assert parser.drive_icon_present, f"Brak ikony Google Drive w banerze w {html_file.name}"
