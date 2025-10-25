@@ -23,12 +23,19 @@ pip install -r requirements.txt
 pytest
 ```
 
-Testy sprawdzają spójność nawigacji na wszystkich podstronach oraz obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`).
+Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także konfigurację domeny w pliku `CNAME` (`tests/test_custom_domain.py`).
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
 - Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
 - Oceń nową, stonowaną paletę i subtelny efekt pulsującego tła w kontekście narracji projektu.
+
+## Konfiguracja domeny `www.larpkronikiognia.pl`
+1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium przechowuje plik `CNAME` z tą wartością, dzięki czemu GitHub automatycznie konfiguruje certyfikat TLS.
+2. **Rekordy DNS dla poddomeny:** w panelu operatora domeny dodaj rekord `CNAME` dla hosta `www`, wskazujący na adres GitHub Pages organizacji/profilu (np. `larpkronikiognia.github.io`). Wartość możesz potwierdzić w ustawieniach Pages.
+3. **Rekordy dla domeny głównej:** aby `larpkronikiognia.pl` przekierowywała na `www`, dodaj rekordy `A` na adresy `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (zalecane przez GitHub) lub skorzystaj z `ALIAS/ANAME`, jeśli dostawca je udostępnia.
+4. **HTTPS:** po propagacji DNS (zwykle do 24h) wymuś opcję „Enforce HTTPS” w ustawieniach Pages.
+5. **Weryfikacja:** sprawdź poprawność przez `dig www.larpkronikiognia.pl CNAME` oraz `curl -I https://www.larpkronikiognia.pl` — oba polecenia powinny wskazywać na GitHub Pages i zwracać status 200.
 
 ## Aktualizacja fazy 2
 - Paleta kolorów została przygaszona i oparta na barwach ziemistych; akcenty złamane bursztynem nadają bardziej ponury ton.
