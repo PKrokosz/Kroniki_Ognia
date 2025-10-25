@@ -20,13 +20,14 @@
 - [Scope] Przygotowanie mobilnego skalowania nagłówka i kart, aby UX działał na ekranach < 600px.
 - [Scope] Ujednolicenie palety kolorów na bardziej stonowaną, ponurą z zachowaniem czytelności tekstów.
 - [Scope] Dodanie lekkich efektów ambientowych (warstwa tła, pulsujące żarzenie) bez zmiany narracji.
+- [Scope] Warstwowe tła z galerii `img/` — trzy rozmyte, delikatnie przesuwające się obrazy na każdej podstronie.
 - [Non-Goals] Dynamiczne menu hamburger, pełne przebudowanie treści sekcji, nowe strony.
 
 ## Definicja ukończenia fazy 2 (DoD)
 - `pytest` przechodzi z nowym testem responsywności.
 - Na urządzeniach mobilnych nawigacja układa się w kolumnę, a karty mają zmniejszone paddingi.
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
-- Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present` oraz `tests/test_responsive_theme.py::test_ambient_effects_defined` są zielone.
+- Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present`, `tests/test_responsive_theme.py::test_ambient_effects_defined` oraz `tests/test_ambient_backgrounds.py` są zielone.
 
 ## Cel fazy 3 — Custom domain i hosting Pages
 - [Scope] Zapewnienie automatycznego testu kontrolującego brak pliku `CNAME` w repozytorium oraz kompletność dokumentacji ręcznej konfiguracji domeny.
@@ -77,3 +78,16 @@
 - Formularz na stronie głównej przekazuje komunikat powodzenia/błędu z użyciem `aria-live` i korzysta z fetch.
 - README, notes oraz ADR dokumentują architekturę formularza i kroki uruchomienia backendu.
 - Akceptacyjne: ręczne złożenie pomysłu zapisuje rekord w SQLite oraz dopisuje linię w `data/ideas.txt`.
+
+## Cel fazy 5 — Tunelowany backend Pages ↔ Flask
+- [Scope] Konfiguracja frontu do wczytywania `BACKEND_URL` z `public/config.json` i ustawiania `form.action` po stronie klienta.
+- [Scope] Zapewnienie nagłówków CORS tylko dla hostów GitHub Pages i tunelu `https://api-kroniki.<MOJA-DOMENA>`.
+- [Scope] Dodanie smoke testów i skryptu CLI do walidacji tunelu (pytest + `scripts/smoke.sh`).
+- [Scope] Ustanowienie limitu `10/min` na `POST /api/ideas` (Flask-Limiter) z dokumentacją w README.
+- [Non-Goals] Pełna autoryzacja żądań, zarządzanie tajnymi tokenami, publikacja listy pomysłów w UI.
+
+## Definicja ukończenia fazy 5 (DoD)
+- `pytest` obejmuje smoke `tests/test_api.py` oraz zaktualizowane testy kontraktowe.
+- `public/config.json` zawiera produkcyjny adres tunelu bez końcowego ukośnika i jest udokumentowany w README.
+- Skrypt `scripts/smoke.sh` przyjmuje URL tunelu i zwraca odpowiedź JSON; README opisuje jego użycie.
+- CORS i rate limit są skonfigurowane w `app.py`, a ADR/notes zawierają analizę 5xWhy dla tunelu.

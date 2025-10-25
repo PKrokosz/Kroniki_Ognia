@@ -9,6 +9,34 @@
 - Paleta barw została przygaszona wokół barw ziemistych, dodano ambientową warstwę tła i animację pulsującą, zachowując czytelność tekstów.
 - Nawigacja na urządzeniach mobilnych przechodzi w układ kolumnowy, a karty otrzymują mniejsze paddingi, co poprawia ergonomię.
 - Powstał zestaw testów `tests/test_responsive_theme.py` weryfikujących zarówno bloki @media, jak i obecność efektów graficznych.
+- Wdrożono wielowarstwowe, rozmyte tła z zasobów `img/` — trzy obrazy na podstronę płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
+
+## 5xWhy — Ambientowe galerie tła
+1. Dlaczego dodajemy wielowarstwowe galerie tła?
+   - (A) Aby wizualnie zróżnicować każdą podstronę bez naruszania treści.
+   - (B) Aby wykorzystać istniejące zdjęcia z katalogu `img/` zamiast szukać nowych zasobów.
+   - (C) Aby wzmocnić immersję przez subtelny ruch.
+   **Decyzja:** C jako cel przewodni, wzbogacony o kuratorskie wykorzystanie istniejących zdjęć z (B).
+2. Dlaczego ruch tła powinien być delikatny i horyzontalny?
+   - (A) Horyzontalny dryf koresponduje z rozpościeraniem się płomieni na wietrze.
+   - (B) Pionowy ruch mógłby zakłócić czytelność sekcji tekstowych.
+   - (C) Delikatność pomaga uniknąć rozpraszania odbiorcy.
+   **Decyzja:** A jako motyw narracyjny, doprawiony o ograniczenie rozpraszania z (C).
+3. Dlaczego potrzebna jest automatyczna weryfikacja obrazów w CSS?
+   - (A) Zapobiega przypadkowemu usunięciu któregoś z plików `img/`.
+   - (B) Upewnia, że każda podstrona ma przypisane trzy warstwy.
+   - (C) Przygotowuje grunt pod dalszą automatyzację parametrów animacji.
+   **Decyzja:** B jako główny wymóg jakości, rozszerzony o kontrolę zasobów z (A).
+4. Dlaczego blok `prefers-reduced-motion` musi obejmować też tła?
+   - (A) Odbiorcy wrażliwi na ruch powinni móc bezpiecznie przeglądać repozytorium.
+   - (B) Spójność dostępności buduje zaufanie do całej witryny.
+   - (C) Ułatwia audyt CTO personie.
+   **Decyzja:** A jako wymóg dostępności, połączony ze spójnością marki z (B).
+5. Dlaczego animacje są oparte na czystym CSS zamiast JS?
+   - (A) CSS zapewnia niższy narzut wydajnościowy.
+   - (B) Brak JS upraszcza utrzymanie na GitHub Pages.
+   - (C) Pozwala zachować kompatybilność z dotychczasowymi testami.
+   **Decyzja:** B jako gwarancja prostoty, uzupełniona o wydajność z (A).
 
 # Notatki (Faza 3)
 - Dodano wspólny baner "flying object" prowadzący do Notebook LM z bazą wiedzy brainstormu; zachowuje klimat projektu dzięki animowanej ikonie zwiadowcy.
@@ -48,6 +76,40 @@
 - README oraz ADR #0002 aktualizują instrukcję DNS, dodając przypomnienie o potwierdzaniu zmian w interfejsie Pages.
 - Plan i tasks opisują nowe zadania: zabezpieczenie przed przypadkowym dodaniem `CNAME` oraz przyszłe monitorowanie certyfikatu HTTPS i statusu domeny.
 - Skorygowano instrukcję DNS tak, by jasno wskazywała na docelowy host GitHub Pages `pkr0kosz.github.io` i ewentualną domenę lustrzaną `.com`.
+
+# Notatki (Faza 5)
+- Front wczytuje `BACKEND_URL` z `public/config.json`, dzięki czemu GitHub Pages może wskazywać na tunel `https://api-kroniki.<MOJA-DOMENA>` bez przebudowy frontu.
+- Formularz otrzymał pola na tytuł, treść i opcjonalne tagi; JS ustawia `form.action` po załadowaniu konfiguracji.
+- Backend Flask wymusza schemat `{title, content, tags?}`, zapisuje tagi w JSON oraz loguje wpisy z timestampem. CORS ogranicza pochodzenie do GitHub Pages i tunelu, a Flask-Limiter blokuje flood do 10/min.
+- `tests/test_api.py` oraz zaktualizowane `tests/test_idea_submission.py` pilnują kontraktu odpowiedzi `{"id": ..., "status": "ok"}` oraz poprawnego utrwalenia danych.
+- README dokumentuje tryb tunelowania i skrypt `scripts/smoke.sh`, który wykonuje POST do publicznego endpointu.
+
+## 5xWhy — Konfiguracja tunelu backendu
+1. Dlaczego front powinien ładować URL backendu z `config.json`?
+   - (A) Pozwala przełączać środowiska (lokalne/tunel) bez rekompilacji.
+   - (B) Ułatwia nietechnicznym osobom zmianę adresu bez dotykania JS.
+   - (C) Chroni przed wyciekami, bo nie commitujemy prywatnych adresów w kodzie.
+   **Decyzja:** A jako główny cel elastyczności, rozszerzony o prosty onboarding z (B).
+2. Dlaczego ograniczamy CORS do trzech hostów?
+   - (A) Minimalizujemy powierzchnię ataku XHR.
+   - (B) Jasno sygnalizujemy oczekiwany ruch z Pages/tunelu.
+   - (C) Przygotowujemy się pod ewentualne środowisko stagingowe.
+   **Decyzja:** A jako wiodący aspekt bezpieczeństwa, wzmocniony obserwacją ruchu z (B).
+3. Dlaczego warto dodać rate limit 10/min?
+   - (A) Chroni tunel przed floodem podczas eventu.
+   - (B) Stabilizuje działanie SQLite na słabszych maszynach.
+   - (C) Zapobiega przypadkowym pętlom w testach.
+   **Decyzja:** A jako tarcza operacyjna, doprawiona minimalizacją obciążenia z (B).
+4. Dlaczego zachowujemy kompatybilność z polem `idea`?
+   - (A) Istniejące zgłoszenia mogą nadal używać starej wersji formularza.
+   - (B) Ułatwia rollback bez migracji.
+   - (C) Pozwala importować historyczne wpisy tekstowe.
+   **Decyzja:** A jako ciągłość usługi, z bonusem migracyjnym z (C).
+5. Dlaczego smoke test w pytest i bashu to konieczność?
+   - (A) Pytest zapewnia regresję w CI.
+   - (B) Bash pozwala szybko sprawdzić tunel po wdrożeniu.
+   - (C) Dublet testów zwiększa zaufanie architekta.
+   **Decyzja:** A jako fundament w pipeline, rozszerzony o operacyjny komfort z (B).
 
 ## 5xWhy — Custom domain i hosting
 1. Dlaczego potrzebujemy własnej domeny na GitHub Pages?
@@ -286,3 +348,9 @@
    - (B) Zapewnia prosty testowy klient do `pytest`.
    - (C) Przygotowuje grunt pod ewentualną rozbudowę API.
    **Decyzja:** B dla kompatybilności testów, z elastycznością rozbudowy z (C).
+
+## Raport agenta — Ambientowe tła
+- **Co zostało zrobione:** Każda podstrona otrzymała trzywarstwowe, rozmyte tło z galerii zdjęć, które powoli przesuwa się horyzontalnie, utrzymując klimat płonącego klasztoru.
+- **Dlaczego (z czego zrezygnowano):** Odłożono dynamiczne sterowanie prędkością w oparciu o scroll JS, aby zachować lekkość implementacji i kompatybilność z hostingiem statycznym.
+- **Cel funkcji i stan pipeline'u:** Warstwa wizualna ma pogłębić immersję bez utraty dostępności; pipeline jest zabezpieczony nowym testem `tests/test_ambient_backgrounds.py`, a kontynuacją jest zaplanowanie sterowania ruchem w `docs/tasks.md`.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo zmierza ku pełnemu doświadczeniu LARP (wizualia + interakcje). Następny krok to dostosowanie prędkości tła do scrolla i przygotowanie narzędzi do dalszego rozszerzania ambientu.
