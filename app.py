@@ -7,8 +7,6 @@ import uuid
 from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
-
 from flask import Flask, Response, current_app, jsonify, request
 from flask_cors import CORS
 from flask_limiter import Limiter

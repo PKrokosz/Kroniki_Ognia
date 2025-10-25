@@ -12,11 +12,10 @@
 Zasady:
 - Brak odwołań do historii czatu.
 - Aktualizacje repo muszą odzwierciedlać stan planu i zadań.
-- Paleta i ambient opisane w AGENTS.md są kanoniczne; `tests/test_responsive_theme.py` chroni responsywność i warstwę wizualną.
-- Wielowarstwowe tła korzystają ze zdjęć w `img/` i są mapowane w `assets/styles.css`; regresje wychwyci `tests/test_ambient_backgrounds.py`. Widoczność warstw (opacity ≥ 0.45, `z-index` ponad pseudo-elementami) jest częścią wymagań jakości.
-- Wielowarstwowe tła korzystają ze zdjęć w `img/` i są mapowane w `assets/styles.css`; regresje wychwyci `tests/test_ambient_backgrounds.py`.
-- Baner Notebook LM jest elementem obowiązkowym na każdej stronie; jego obecność (wraz z CTA do Google Drive i ikoną) sprawdza `tests/test_notebook_banner.py`.
-- Baner Notebook LM jest elementem obowiązkowym na każdej stronie; jego obecność sprawdza `tests/test_notebook_banner.py`.
-- Panel "Oceń pomysł" na stronie `organizacja.html` musi zachować obsługę `localStorage` i markup kontrolowany przez `tests/test_feedback_panel.py`.
-- Formularz „Dodaj pomysł” wymaga działającego endpointu `/api/ideas`; kontrakt chroni `tests/test_idea_submission.py`.
-- Smoke `tests/test_api.py` gwarantuje, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `scripts/smoke.sh` pozwala sprawdzić tunel ręcznie.
+- Paleta i ambient opisane w `AGENTS.md` są kanoniczne; `tests/test_responsive_theme.py` oraz `tests/test_ambient_backgrounds.py` pilnują responsywności i widoczności (opacity ≥ 0.45, `z-index` ≥ -1).
+- Wielowarstwowe tła korzystają z katalogu `img/`; ich mapowanie chroni `tests/test_ambient_backgrounds.py`.
+- Baner Notebook LM jest obowiązkowy na każdej stronie; jego obecność i CTA do Google Drive weryfikuje `tests/test_notebook_banner.py`.
+- Panel "Oceń pomysł" na `organizacja.html` musi obsługiwać `localStorage` (test `tests/test_feedback_panel.py`).
+- Formularz „Dodaj pomysł” wymaga działającego endpointu `/api/ideas`; kontrakt pilnuje `tests/test_idea_submission.py` oraz `tests/test_api.py`.
+- Smoke `tests/test_api.py` oraz `scripts/smoke.sh` gwarantują, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `/api/health` raportuje gotowość storage.
+- Dokumentacja pozostaje zwięzła i bez duplikatów nagłówków; `tests/test_documentation.py` pilnuje spójności README.
