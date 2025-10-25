@@ -268,10 +268,10 @@ body::before {
     radial-gradient(circle at 70% 70%, rgba(94, 78, 125, 0.08), transparent 65%),
     linear-gradient(120deg, rgba(20, 16, 29, 0.5), rgba(10, 8, 13, 0.85));
   mix-blend-mode: screen;
-  opacity: 0.45;
+  opacity: 0.35;
   pointer-events: none;
   animation: emberPulse 18s ease-in-out infinite;
-  z-index: -1;
+  z-index: -2;
 }
 
 @keyframes emberPulse {
@@ -296,6 +296,7 @@ body::before {
   }
   .ambient-layer {
     animation: none;
+    transform: none;
   }
 }
 

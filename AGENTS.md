@@ -33,6 +33,7 @@ Coding standards:
 - Tests live under `tests/` and must be runnable with `pytest`.
 - Maintain a subdued, ember-toned palette (earthy browns, muted golds) and reuse the ambient overlay/hero patterns when rozbudowywanie UI.
 - Zachowuj responsywne bloki @media <= 600px tak, by nawigacja przechodziła w układ kolumnowy; nowe komponenty muszą respektować mobilny padding.
+- Ambient backgrounds korzystają z kontenera `.ambient-background` z trzema warstwami `.ambient-layer--1..3` na każdej stronie. Każda strona wykorzystuje obrazy z `img/` (około trzy na widok); aktualizacje wymagają synchronizacji z testem `tests/test_ambient_backgrounds.py` i mapą w `assets/styles.css`. Zachowaj widoczne nasycenie (opacity warstw ≥ 0.45) i upewnij się, że znajdują się nad innymi efektami (`z-index` ≥ -1).
 - Panel komentarzy "Oceń pomysł" w `organizacja.html` musi pozostać domyślnie zwinięty, obsługiwać `localStorage` z czytelnym komunikatem statusu oraz być testowany w `tests/test_feedback_panel.py`.
 - Interaktywne komponenty front-endowe wymagają obsługi braku `localStorage` (fallback komunikatu) i aktualizacji dokumentacji w README oraz `docs/notes.md`.
 - Ambient backgrounds korzystają z kontenera `.ambient-background` z trzema warstwami `.ambient-layer--1..3` na każdej stronie. Każda strona wykorzystuje obrazy z `img/` (około trzy na widok); aktualizacje wymagają synchronizacji z testem `tests/test_ambient_backgrounds.py` i mapą w `assets/styles.css`.

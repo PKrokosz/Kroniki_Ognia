@@ -27,6 +27,7 @@
 - `pytest` przechodzi z nowym testem responsywności.
 - Na urządzeniach mobilnych nawigacja układa się w kolumnę, a karty mają zmniejszone paddingi.
 - Paleta kolorów została zdesaturowana i udokumentowana w README.
+- Ambientowe warstwy tła pozostają widoczne ponad innymi efektami (warstwy mają opacity ≥ 0.45, animacja dryfu zauważalna przy horyzontalnym ruchu).
 - Akceptacyjne: `tests/test_responsive_theme.py::test_mobile_media_queries_present`, `tests/test_responsive_theme.py::test_ambient_effects_defined` oraz `tests/test_ambient_backgrounds.py` są zielone.
 
 ## Cel fazy 3 — Custom domain i hosting Pages

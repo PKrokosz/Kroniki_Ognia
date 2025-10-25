@@ -10,6 +10,34 @@
 - Nawigacja na urządzeniach mobilnych przechodzi w układ kolumnowy, a karty otrzymują mniejsze paddingi, co poprawia ergonomię.
 - Powstał zestaw testów `tests/test_responsive_theme.py` weryfikujących zarówno bloki @media, jak i obecność efektów graficznych.
 - Wdrożono wielowarstwowe, rozmyte tła z zasobów `img/` — trzy obrazy na podstronę płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
+- Wzmocniono ekspozycję ambientowych warstw: zwiększona jasność, saturacja i amplituda ruchu sprawiają, że galeria jest wyraźnie widoczna nawet pod nakładającymi się efektami.
+
+## 5xWhy — Wzmocnienie widoczności ambientu
+1. Dlaczego należy zwiększyć jasność i saturację warstw?
+   - (A) Aby obrazki były zauważalne mimo rozmycia i niskiej przezroczystości.
+   - (B) Aby zachować spójność kolorystyczną z narracją o żarze i płomieniach.
+   - (C) Aby umożliwić wyróżnienie sekcji CTA bez dodatkowych elementów.
+   **Decyzja:** A jako główna potrzeba, uzupełniona o narracyjny charakter z (B).
+2. Dlaczego animacja powinna mieć większą amplitudę horyzontalnego ruchu?
+   - (A) Małe przesunięcia były praktycznie niezauważalne dla odbiorcy.
+   - (B) Większa amplituda oddaje efekt falowania żaru na wietrze.
+   - (C) Ułatwia testowanie regresji wizualnych w przyszłych iteracjach.
+   **Decyzja:** A jako priorytet użytkowy, z dodaniem klimatu z (B).
+3. Dlaczego należy skorygować relację `z-index` między ambientem a innymi efektami?
+   - (A) Poprzednio nakładające się pseudo-elementy maskowały tła.
+   - (B) Wyższy `z-index` ułatwia przyszłą rozbudowę (np. dodatkowe efekty świetlne).
+   - (C) Dzięki temu animacja nie znika na urządzeniach mobilnych z niższą wydajnością.
+   **Decyzja:** A jako kluczowe, rozszerzone o przyszłościowość z (B).
+4. Dlaczego należy odnotować zmianę w dokumentacji?
+   - (A) Nowi agenci muszą wiedzieć, że widoczność jest wymogiem jakości.
+   - (B) README stanowi checklistę akceptacyjną przed wdrożeniem.
+   - (C) Notatki tworzą historię decyzji potrzebną do audytu.
+   **Decyzja:** B jako punkt kontrolny, wzmocniony archiwizacją z (C).
+5. Dlaczego trzeba zaplanować tryb akcentowy ekspozycji?
+   - (A) Niektóre sekcje (np. CTA) mogą potrzebować mocniejszego tła.
+   - (B) Zmiany oparte na sekcjach umożliwią dalsze testy kontrastów.
+   - (C) Przygotowuje grunt pod interaktywne sterowanie w kolejnych fazach.
+   **Decyzja:** A jako najbliższa potrzeba, doprawiona testowalnością z (B).
 
 ## 5xWhy — Ambientowe galerie tła
 1. Dlaczego dodajemy wielowarstwowe galerie tła?

@@ -16,4 +16,5 @@ Witryna posiadała jedynie statyczne gradienty, które nie wykorzystywały istni
 - Warstwa wizualna wykorzystuje zasoby `img/` bez powielania plików i zachowuje klimat płomiennego klasztoru.
 - Testy `pytest` pilnują, że każda podstrona ma komplet trzech obrazów i że animacje respektują preferencje ruchu.
 - W dokumentacji `docs/tasks.md` pojawia się kontynuacyjne zadanie rozszerzenia efektu o progresywne sterowanie prędkością (np. via IntersectionObserver) w przyszłej iteracji.
+- Wymóg widoczności (opacity ≥ 0.45, `z-index` nad pseudo-elementami) jest na stałe wpisany w `AGENTS.md` i README jako kryterium akceptacji wizualnej.
 - Dodanie nowych stron wymaga dopisania klas `page-*` i aktualizacji mapy obrazów, co zostało udokumentowane w `AGENTS.md`.
