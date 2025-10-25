@@ -8,6 +8,8 @@ const backendReady = wireBackendForms();
     return;
   }
 
+  const apiKey = form.dataset.apiKey || 'dev-key';
+
   const titleInput = document.getElementById('idea-title');
   const textarea = document.getElementById('idea-text');
   const tagsInput = document.getElementById('idea-tags');
@@ -91,6 +93,7 @@ const backendReady = wireBackendForms();
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-API-Key': apiKey,
         },
         body: JSON.stringify(payload),
       });

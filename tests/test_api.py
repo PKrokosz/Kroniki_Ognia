@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import pytest
 
-from app import app
+from app import API_KEY, app
 
 
 def test_health_endpoint():
@@ -24,11 +24,26 @@ def test_post_ideas_smoke():
         "/api/ideas",
         data=json.dumps({"title": "t", "content": "c"}),
         content_type="application/json",
+        headers={"X-API-Key": API_KEY},
     )
     # Aktualizacja: endpoint sukcesu powinien zawsze zwracać 201.
     assert resp.status_code == 201
     data = resp.get_json()
     assert data and data.get("status") == "ok"
+    assert data.get("id")
+    assert data.get("record_id")
+
+
+def test_post_ideas_requires_api_key():
+    client = app.test_client()
+    resp = client.post(
+        "/api/ideas",
+        data=json.dumps({"title": "t", "content": "c"}),
+        content_type="application/json",
+    )
+    assert resp.status_code == 401
+    payload = resp.get_json()
+    assert payload == {"status": "error", "error": "unauthorized"}
 
 
 def test_post_ideas_rejects_non_json_content_type():
@@ -37,6 +52,7 @@ def test_post_ideas_rejects_non_json_content_type():
         "/api/ideas",
         data="title=t&content=c",
         content_type="application/x-www-form-urlencoded",
+        headers={"X-API-Key": API_KEY},
     )
     assert resp.status_code == 415
     payload = resp.get_json()
@@ -49,6 +65,7 @@ def test_post_ideas_rejects_large_payload():
     resp = client.post(
         "/api/ideas",
         json={"title": "t", "content": too_large},
+        headers={"X-API-Key": API_KEY},
     )
     assert resp.status_code == 413
     payload = resp.get_json()
@@ -62,6 +79,7 @@ def test_post_ideas_requires_json_object(payload):
         "/api/ideas",
         data=json.dumps(payload),
         content_type="application/json",
+        headers={"X-API-Key": API_KEY},
     )
     status = resp.status_code
     body = resp.get_json()
@@ -75,7 +93,33 @@ def test_post_ideas_rejects_invalid_json():
         "/api/ideas",
         data="{invalid json}",
         content_type="application/json",
+        headers={"X-API-Key": API_KEY},
     )
     assert resp.status_code == 400
     payload = resp.get_json()
     assert payload and "Nieprawidłowy JSON" in payload["message"]
+
+
+def test_post_ideas_forwards_to_n8n(monkeypatch):
+    client = app.test_client()
+
+    captured: dict[str, dict] = {}
+
+    def fake_forward(payload: dict[str, dict]) -> None:
+        captured["payload"] = payload
+
+    monkeypatch.setattr("app._forward_to_n8n_async", fake_forward)
+    monkeypatch.setattr("app.N8N_WEBHOOK_URL", "https://example.com/webhook")
+
+    resp = client.post(
+        "/api/ideas",
+        json={"title": "Idea", "content": "Treść", "tags": ["ognisko"]},
+        headers={"X-API-Key": API_KEY},
+    )
+
+    assert resp.status_code == 201
+    assert "payload" in captured
+    payload = captured["payload"]
+    assert payload["idea"]["title"] == "Idea"
+    assert payload["idea"]["tags"] == ["ognisko"]
+    assert payload["source"] == "kroniki-ognia-form"

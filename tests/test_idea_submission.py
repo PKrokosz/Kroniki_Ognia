@@ -3,7 +3,7 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from app import create_app
+from app import API_KEY, create_app
 
 
 def _read_log(log_path: Path) -> str:
@@ -23,6 +23,7 @@ def test_submit_idea_persists(tmp_path):
             "content": "Testowy pomysł o rytuale",
             "tags": ["rytuał", "ognisko"],
         },
+        headers={"X-API-Key": API_KEY},
     )
 
     assert response.status_code == 201
@@ -30,6 +31,7 @@ def test_submit_idea_persists(tmp_path):
     assert payload
     assert payload["status"] == "ok"
     assert payload["id"]
+    assert payload["record_id"]
 
     log_path = tmp_path / "ideas.txt"
     log_contents = _read_log(log_path)
@@ -47,7 +49,11 @@ def test_submit_idea_requires_text(tmp_path):
     app = create_app(tmp_path)
     client = app.test_client()
 
-    response = client.post("/api/ideas", json={"title": "Bez treści", "content": "   "})
+    response = client.post(
+        "/api/ideas",
+        json={"title": "Bez treści", "content": "   "},
+        headers={"X-API-Key": API_KEY},
+    )
 
     assert response.status_code == 400
     payload = response.get_json()
