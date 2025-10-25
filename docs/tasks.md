@@ -18,3 +18,8 @@
 ## Faza 3 — Integracja bazy wiedzy
 - [x] Zadanie 1: Dodać baner "flying object" prowadzący do Notebook LM — Test: `pytest tests/test_notebook_banner.py::test_notebook_banner_present_with_link`
 - [ ] Zadanie 2: Streścić kluczowe wnioski z Notebook LM na stronie i dodać test spójności — Test: do zdefiniowania (planowane `tests/test_notebook_summary.py`)
+
+## Faza 4 — Rejestr pomysłów
+- [x] Zadanie 1: Formularz "Dodaj pomysł" z walidacją i fetch — Test: ręczna weryfikacja + `pytest tests/test_idea_submission.py::test_submit_idea_persists`
+- [x] Zadanie 2: Backend Flask zapisujący do SQLite i pliku — Test: `pytest tests/test_idea_submission.py::test_submit_idea_persists`
+- [ ] Zadanie 3 (kontynuacja): Udostępnić panel przeglądania zgłoszonych pomysłów z filtrowaniem — Test: do zaplanowania (`tests/test_idea_listing.py`)

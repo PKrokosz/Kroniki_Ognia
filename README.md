@@ -17,6 +17,16 @@ Strony to statyczne pliki HTML. Wystarczy otworzyć dowolny plik w przeglądarce
 python -m http.server 8000
 ```
 
+## Backend formularza „Dodaj pomysł”
+Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego.
+
+```bash
+pip install -r requirements.txt
+flask --app app run
+```
+
+> Domyślnie dane trafiają do `data/ideas.sqlite3` i `data/ideas.txt`. Ścieżkę można nadpisać zmienną `IDEAS_DATA_DIR`.
+
 ## Testy
 ```bash
 pip install -r requirements.txt
@@ -24,13 +34,14 @@ pytest
 ```
 
 Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także to, że konfiguracja domeny jest udokumentowana jako proces ręczny w ustawieniach GitHub Pages (`tests/test_custom_domain.py`).
-Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), a także integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`).
+Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mobilnych styli i ambientowych efektów w `assets/styles.css` (`tests/test_responsive_theme.py`), integralność banera kierującego do bazy wiedzy Notebook LM (`tests/test_notebook_banner.py`) oraz zapis formularza „Dodaj pomysł” zarówno w bazie, jak i w pliku (`tests/test_idea_submission.py`).
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i upewnij się, że wszystkie linki prowadzą do właściwych stron.
 - Zweryfikuj responsywność nagłówka i nawigacji na szerokościach mobilnych (układ kolumnowy, zmniejszone paddingi kart).
 - Oceń nową, stonowaną paletę i subtelny efekt pulsującego tła w kontekście narracji projektu.
 - Kliknij baner Notebook LM i sprawdź, czy otwiera się właściwy notebook z bazą wiedzy brainstormu.
+- Uruchom backend (`flask --app app run`), wprowadź pomysł w sekcji „Dodaj pomysł” i sprawdź, że otrzymasz potwierdzenie, a w katalogu `data/` pojawiły się wpisy w SQLite i `ideas.txt`.
 
 ## Konfiguracja domeny `www.larpkronikiognia.pl`
 1. **GitHub Pages (repozytorium):** w ustawieniach Pages wskaż domenę `www.larpkronikiognia.pl`. Repozytorium nie przechowuje pliku `CNAME`; GitHub Pages zapisze go automatycznie w gałęzi serwującej stronę.
@@ -64,3 +75,4 @@ Testy sprawdzają spójność nawigacji na wszystkich podstronach, obecność mo
 ## Kolejne kroki (propozycja)
 - Dodać automatyczny linting HTML/CSS (np. HTMLHint, Stylelint) i włączyć do CI.
 - Przygotować komponentowe podejście (np. Eleventy) dla dalszej rozbudowy.
+- Zaprojektować widok prezentujący zgłoszone pomysły wraz z moderacją i eksportem.
