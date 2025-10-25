@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kroniki Ognia - Klasztor Magów Ognia V2</title>
+    <!-- Ładowanie Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Konfiguracja Tailwind z niestandardowymi kolorami -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Głęboki, palony brąz (Tło)
+                        'cinder': '#100a06', /* Ciemniejsze tło */
+                        // Ciemniejszy brąz dla sekcji/paneli
+                        'parchment': '#20150b',
+                        // Ciepły, złoty/bursztynowy (Akcenty, Ogień)
+                        'ember': '#f59e0b', /* Bardziej intensywny złoty */
+                        // Jaśniejszy złoty dla głównego tekstu
+                        'brass': '#e5e7eb', /* Lekko jaśniejsza szarość */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #100a06; /* cinder */
+            color: #e5e7eb; /* brass */
+        }
+        /* Styl dla efektu ognistego cienia wokół kluczowych elementów */
+        .fire-glow {
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.7);
+        }
+        /* Styl dla dużych, uroczystych nagłówków */
+        .ritual-title {
+            text-shadow: 0 0 5px rgba(245, 158, 11, 0.8);
+            letter-spacing: 0.1em;
+        }
+        /* Subtelna animacja hover na kartach */
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4);
+        }
+        /* Pionowy separator dla podziału sekcji */
+        .vertical-separator {
+            width: 4px;
+            background-color: #f59e0b; /* ember */
+            opacity: 0.7;
+            border-radius: 9999px; /* Zaokrąglone końce */
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+
+    <!-- Sekcja Nagłówka i Wprowadzenia -->
+    <header class="py-16 md:py-24 bg-parchment border-b border-ember shadow-xl">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h1 class="text-5xl sm:text-6xl md:text-7xl text-center font-extrabold text-ember ritual-title mb-4 uppercase">
+                Kroniki Ognia
+            </h1>
+            <p class="text-xl sm:text-3xl text-center font-light text-brass italic opacity-90 max-w-3xl mx-auto">
+                Klasztor Magów Ognia. Intensywne środowisko, rytuał i polityka w przeddzień upadku.
+            </p>
+        </div>
+    </header>
+
+    <!-- Główna Sekcja Treści -->
+    <main class="container mx-auto px-4 py-16 max-w-7xl">
+
+        <!-- I. Główne Haki Fabularne i Kontekstowe -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-center text-amber-300 border-b pb-4 border-ember/50">
+                🔥 Główne Haki Fabularne 🔥
+            </h2>
+            <div class="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
+                <!-- 1. Geneza Bariery -->
+                <div class="feature-card bg-parchment p-6 rounded-xl border-t-4 border-ember transition duration-500 hover:fire-glow">
+                    <div class="text-4xl mb-3">🔮</div>
+                    <h3 class="font-bold text-xl text-ember mb-2">Geneza Bariery</h3>
+                    <p class="text-sm text-brass/80">Desperackie rozwiązanie kryzysu, nie boski cud. Skupienie na moralnych dylematach, procesie planowania i błędach konstrukcyjnych, które doprowadziły do niekontrolowanego rozrostu. Cały sezon to 3 epizody.</p>
+                </div>
+                <!-- 2. Klasztor jako Centrum Władzy -->
+                <div class="feature-card bg-parchment p-6 rounded-xl border-t-4 border-amber-500 transition duration-500 hover:fire-glow">
+                    <div class="text-4xl mb-3">👑</div>
+                    <h3 class="font-bold text-xl text-amber-300 mb-2">Klasztor jako Sąd Arbitrażowy</h3>
+                    <p class="text-sm text-brass/80">Ośrodek duchowy i kluczowy gracz polityczny. Magowie jako sędziowie, kronikarze i mediatorzy. Centralny konflikt o podatki i symbol władzy sądowniczej („żółta czapa”) między miastem, farmą a magami.</p>
+                </div>
+                <!-- 3. Rozłam Doktryn Ognia -->
+                <div class="feature-card bg-parchment p-6 rounded-xl border-t-4 border-red-600 transition duration-500 hover:fire-glow">
+                    <div class="text-4xl mb-3">⚔️</div>
+                    <h3 class="font-bold text-xl text-red-400 mb-2">Wewnętrzny Rozłam Doktryn</h3>
+                    <p class="text-sm text-brass/80">Schizma wynikająca z rywalizacji 3 klasztorów: Khorinis (wiedza/nauka), Nordmar (surowy dogmat/sprawiedliwość), Stolica (narzędzie władzy/legitymizacja imperium).</p>
+                </div>
+                <!-- 4. Łuk Fabularny Xardasa -->
+                <div class="feature-card bg-parchment p-6 rounded-xl border-t-4 border-gray-600 transition duration-500 hover:fire-glow">
+                    <div class="text-4xl mb-3">🌑</div>
+                    <h3 class="font-bold text-xl text-gray-400 mb-2">Łuk Fabularny Xardasa</h3>
+                    <p class="text-sm text-brass/80">Transformacja prymusa intelektualnego na heretyka i buntownika. Jego eksperymenty, przekonanie, że ogień to struktura do poznania, prowadzi do ideowego rozłamu i powstania podziemnej frakcji.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PIONOWY SEPARATOR -->
+        <div class="flex justify-center mb-16">
+            <div class="vertical-separator h-24"></div>
+        </div>
+
+        <!-- II. Unikalne Cechy Świata i Filozofii -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-center text-amber-300 border-b pb-4 border-ember/50">
+                📖 Filozofia i Imersja Świata 🕯️
+            </h2>
+            <div class="grid lg:grid-cols-2 gap-12">
+
+                <!-- LEWA KOLUMNA (Architektura, Magia) -->
+                <div class="space-y-8">
+                    <div class="p-6 bg-parchment rounded-xl shadow-lg border-l-4 border-ember">
+                        <h3 class="flex items-center text-2xl font-semibold text-ember mb-3">
+                            <span class="mr-3 text-3xl">🏛️</span> Architektura Nasycona Symboliką
+                        </h3>
+                        <p class="text-brass/90">Przestrzeń zaprojektowana na wzór historycznych klasztorów. Każde pomieszczenie ma funkcję symboliczną i narracyjną, wspierającą intrygi i rytuały.</p>
+                        <ul class="list-disc ml-8 mt-3 text-sm text-brass/70">
+                            <li>Krużganki i Wirydarz (serce intryg)</li>
+                            <li>Refektarz (rytualne posiłki i napięcia społeczne)</li>
+                            <li>Skryptorium/Biblioteka (wiedza i herezja)</li>
+                            <li>Sala Popiołów (Infirmarium)</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-6 bg-parchment rounded-xl shadow-lg border-l-4 border-amber-500">
+                        <h3 class="flex items-center text-2xl font-semibold text-amber-300 mb-3">
+                            <span class="mr-3 text-3xl">🔬</span> Magia Naukowa i Hermeneutyka Płomienia
+                        </h3>
+                        <p class="text-brass/90">Magia ognia to alchemia i badanie rytmu materii. Zamiast wróżbiarstwa – **Omenistyka**: analiza subtelnych „Sygnałów” (kształty płomienia, drgania gwiazd) w celu prognozowania zmian i rozpoznawania historycznych wzorców.</p>
+                    </div>
+                </div>
+
+                <!-- PRAWA KOLUMNA (Kultura, Hierarchia) -->
+                <div class="space-y-8">
+                    <div class="p-6 bg-parchment rounded-xl shadow-lg border-l-4 border-ember">
+                        <h3 class="flex items-center text-2xl font-semibold text-ember mb-3">
+                            <span class="mr-3 text-3xl">🛎️</span> Kultura Ognia i Rytmy Codzienności
+                        </h3>
+                        <p class="text-brass/90">Klimat budowany przez mistycyzm, ciszę i drobne rytuały. Ogień jako żywioł czujności (gasnąca świeca = zaniedbanie). Rytm klasztoru organizowany przez dzwon, wspólne posiłki i **Ceremonię Wieści**.</p>
+                    </div>
+
+                    <div class="p-6 bg-parchment rounded-xl shadow-lg border-l-4 border-amber-500">
+                        <h3 class="flex items-center text-2xl font-semibold text-amber-300 mb-3">
+                            <span class="mr-3 text-3xl">🧑‍🤝‍🧑</span> Hierarchia Funkcjonalna
+                        </h3>
+                        <p class="text-brass/90">Relacje oparte na funkcjach, nie tylko edukacji. Nowicjusze są „rękami, które utrzymują płomień” (praca fizyczna, przepisywanie), magowie są nadzorcami. Różne poziomy dostępu do wiedzy są przypisane do sektorów (Alchemia, Biblioteka, Kuźnia).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PIONOWY SEPARATOR -->
+        <div class="flex justify-center mb-16">
+            <div class="vertical-separator h-24"></div>
+        </div>
+
+        <!-- III. Mechanika i Imersja -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-center text-amber-300 border-b pb-4 border-ember/50">
+                ⚙️ Unikalne Mechaniki Gry 🛡️
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- 1. Dzienniki Fabularne -->
+                <div class="p-6 bg-parchment rounded-xl border-2 border-ember transition duration-300 hover:scale-[1.02]">
+                    <h4 class="text-2xl font-semibold text-ember mb-2">📜 Karty jako Dzienniki</h4>
+                    <p class="text-sm text-brass/80">Karta postaci to fizyczny dziennik nowicjusza (artefakt diegetyczny). Zawiera wpisy, notatki i pieczęcie. Mechanika (prestiż, krąg magii) jest ukryta w środku, wzmacniając interakcje społeczne.</p>
+                </div>
+
+                <!-- 2. Prestiż jako Waluta -->
+                <div class="p-6 bg-parchment rounded-xl border-2 border-amber-500 transition duration-300 hover:scale-[1.02]">
+                    <h4 class="text-2xl font-semibold text-amber-300 mb-2">⚖️ Prestiż (Waluta Społeczna)</h4>
+                    <p class="text-sm text-brass/80">System Reputacji/Prestiżu jako miara autorytetu. Gracze stają przed dylematami typu „między dwoma złymi”, które natychmiast wpływają na ich reputację w klasztorze lub u frakcji zewnętrznych (strażnicy, kupcy, farmerzy).</p>
+                </div>
+
+                <!-- 3. Warsztaty Rzemieślnicze -->
+                <div class="p-6 bg-parchment rounded-xl border-2 border-amber-500 transition duration-300 hover:scale-[1.02]">
+                    <h4 class="text-2xl font-semibold text-amber-300 mb-2">🛠️ Próby Praktyczne</h4>
+                    <p class="text-sm text-brass/80">Zajęcia praktyczne integralne z fabułą: lekcje walki kijem (medytacja w ruchu), tłoczenie wina, kaligrafia, oraz **tworzenie run z gliny** (próba cierpliwości i przemiana materii).</p>
+                </div>
+
+                <!-- 4. Gra Nocna i Intryga -->
+                <div class="p-6 bg-parchment rounded-xl border-2 border-gray-600 transition duration-300 hover:scale-[1.02]">
+                    <h4 class="text-2xl font-semibold text-gray-400 mb-2">🤫 Gra Nocna i Kancelaria</h4>
+                    <p class="text-sm text-brass/80">Przestrzeń do nocnej rozgrywki (tzw. **godzina skradania**), pozwalająca na wkrady do archiwum. Intryga biurokratyczna w Kancelarii Ognia, w której nowicjusze mogą odkrywać spiski lub fałszować dokumenty.</p>
+                </div>
+
+                <!-- 5. Rytuał Oczyszczenia -->
+                <div class="p-6 bg-parchment rounded-xl border-2 border-red-600 transition duration-300 hover:scale-[1.02]">
+                    <h4 class="text-2xl font-semibold text-red-400 mb-2">⚖️ Rytuał Oczyszczenia</h4>
+                    <p class="text-sm text-brass/80">Klasztorna sprawiedliwość oparta na rytuałach mających „przepalić winę”. Sąd Ognia jako publiczny spektakl, gdzie nawet oczekujący na wyrok nowicjusze muszą aktywnie budować swoją sprawę poprzez świadectwa.</p>
+                </div>
+
+                <!-- 6. Otwarcie Gry -->
+                <div class="p-6 bg-parchment rounded-xl border-2 border-ember transition duration-300 hover:scale-[1.02]">
+                    <h4 class="text-2xl font-semibold text-ember mb-2">✨ Imersyjne Otwarcie</h4>
+                    <p class="text-sm text-brass/80">LARP rozpoczyna się poprzez **"wejście we śnienie"** (Gracze zasypiają off-game i budzą się in-game). Poranek jest wyreżyserowany jako liturgia z dzwonami, szeptem i gestami, natychmiast wprowadzając w klimat.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sekcja Stopki -->
+    <footer class="mt-16 py-8 bg-parchment border-t border-ember">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <p class="text-center text-sm text-brass/70">
+                Projekt stworzony dla Klasztoru Magów Ognia. Ogień daje wiedzę, ale także żąda ofiary.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
