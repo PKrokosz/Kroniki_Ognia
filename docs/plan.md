@@ -50,3 +50,15 @@
 - Baner Notebook LM jest widoczny i funkcjonalny na każdej podstronie repo.
 - Dokumentacja (README, notes) opisuje nowe CTA i wskazuje sposób ręcznej weryfikacji.
 - Akceptacyjne: kliknięcie banera otwiera wskazany notebook, a motyw "flying object" jest zachowany w tekście.
+
+## Cel fazy 4 — Rejestr pomysłów uczestników
+- [Scope] Udostępnić na stronie głównej formularz "Dodaj pomysł" z walidacją i informacją zwrotną.
+- [Scope] Zapisać zgłoszenia w trwałej bazie danych oraz równoległym pliku tekstowym do audytu narracyjnego.
+- [Scope] Zapewnić backend Flask (`app.py`) wraz z testem kontraktowym i dokumentacją procesu w README oraz docs/.
+- [Non-Goals] Publiczne wyświetlanie listy pomysłów, moderacja treści, uwierzytelnianie użytkowników.
+
+## Definicja ukończenia fazy 4 (DoD)
+- `pytest` obejmuje test API rejestrujący pomysł i przechodzi zielono.
+- Formularz na stronie głównej przekazuje komunikat powodzenia/błędu z użyciem `aria-live` i korzysta z fetch.
+- README, notes oraz ADR dokumentują architekturę formularza i kroki uruchomienia backendu.
+- Akceptacyjne: ręczne złożenie pomysłu zapisuje rekord w SQLite oraz dopisuje linię w `data/ideas.txt`.

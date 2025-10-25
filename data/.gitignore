@@ -1,0 +1,5 @@
+# Persisted idea storage generated at runtime
+*.sqlite3
+*.db
+ideas.txt
+!.gitignore
