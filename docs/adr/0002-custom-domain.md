@@ -9,6 +9,7 @@ Projekt "Kroniki Ognia" jest publikowany jako statyczna witryna na GitHub Pages.
 ## Decyzja
 - Konfigurujemy custom domain `www.larpkronikiognia.pl` wyłącznie poprzez ustawienia GitHub Pages; plik `CNAME` nie jest śledzony w repozytorium.
 - Dodajemy test `tests/test_custom_domain.py`, który pilnuje braku pliku `CNAME` oraz obecności dokumentacji opisującej ręczną konfigurację domeny.
+- README dokumentuje wymagane rekordy DNS (`CNAME` dla `www` na `pkr0kosz.github.io`, opcjonalny wariant `.com`, rekordy `A` dla domeny głównej) oraz kroki weryfikacji (`dig`, `curl`) wraz z przypomnieniem o potwierdzeniu wpisu w ustawieniach Pages.
 - README dokumentuje wymagane rekordy DNS (`CNAME` dla `www`, rekordy `A` dla domeny głównej) oraz kroki weryfikacji (`dig`, `curl`) wraz z przypomnieniem o potwierdzeniu wpisu w ustawieniach Pages.
 
 ## Konsekwencje

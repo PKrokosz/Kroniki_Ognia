@@ -30,12 +30,16 @@
 
 ## Cel fazy 3 — Custom domain i hosting Pages
 - [Scope] Zapewnienie automatycznego testu kontrolującego brak pliku `CNAME` w repozytorium oraz kompletność dokumentacji ręcznej konfiguracji domeny.
+- [Scope] Udokumentowanie kroków DNS oraz procedury weryfikacji i audytu w README/dokumentacji, z jednoznacznym wskazaniem hosta `pkr0kosz.github.io`.
 - [Scope] Udokumentowanie kroków DNS oraz procedury weryfikacji i audytu w README/dokumentacji.
 - [Scope] Przygotowanie checklisty do monitorowania dostępności i certyfikatu HTTPS (kontynuacja w kolejnych zadaniach).
 - [Non-Goals] Automatyczne narzędzia monitoringu uptime, wdrożenia CD poza GitHub Pages, zakup certyfikatów zewnętrznych.
 
 ## Definicja ukończenia fazy 3 (DoD)
 - `pytest` obejmuje test `tests/test_custom_domain.py` potwierdzający brak śledzonego pliku `CNAME` i obecność dokumentacji.
+- README opisuje kroki konfiguracji DNS, jednoznacznie wskazuje host `pkr0kosz.github.io`, a `docs/notes.md` zawiera log 5xWhy dla decyzji o przeniesieniu `CNAME` do ustawień Pages.
+- `docs/tasks.md` zawiera checklistę z ukończonym zadaniem dokumentacji custom domain i planem dalszych kroków dla monitoringu.
+- Akceptacyjne: ręczna weryfikacja `dig`/`curl` odnotowana w README.
 - README opisuje kroki konfiguracji DNS, a `docs/notes.md` zawiera log 5xWhy dla decyzji o przeniesieniu `CNAME` do ustawień Pages.
 - `docs/tasks.md` zawiera checklistę z ukończonym zadaniem dokumentacji custom domain i planem dalszych kroków dla monitoringu.
 - Akceptacyjne: ręczna weryfikacja `dig`/`curl` odnotowana w README.

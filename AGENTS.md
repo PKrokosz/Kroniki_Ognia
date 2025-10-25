@@ -10,6 +10,7 @@ Repo owner directives:
 - Tests, lint, and documentation updates are mandatory companions to feature work.
 - Expand this AGENTS file when new patterns or decisions emerge.
 - Custom domain `www.larpkronikiognia.pl` konfigurujemy w ustawieniach GitHub Pages; repozytorium nie przechowuje pliku `CNAME`.
+- Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME`, brak pliku w repo i wskazuje host `pkr0kosz.github.io` (plus ewentualną domenę `.com`).
 - Testy dotyczące domeny muszą sprawdzać, że dokumentacja opisuje ręczne ustawienie `CNAME` i brak pliku w repo.
 
 Documentation scope:
