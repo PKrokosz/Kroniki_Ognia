@@ -18,7 +18,7 @@ Zasady:
 - Baner Notebook LM jest obowiązkowy na każdej stronie; jego obecność i CTA do Google Drive weryfikuje `tests/test_notebook_banner.py`.
 - Panel "Oceń pomysł" na `organizacja.html` musi obsługiwać `localStorage` (test `tests/test_feedback_panel.py`).
 - Formularz „Dodaj pomysł” wymaga działającego endpointu `/api/ideas`; kontrakt pilnuje `tests/test_idea_submission.py` oraz `tests/test_api.py`.
-- Endpoint `/api/ideas` jest chroniony nagłówkiem `X-API-Key` (domyślnie `dev-key`) i przekazuje zgłoszenia do n8n (domyślnie `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`, z aliasem payloadu `pomysł`).
+- Endpoint `/api/ideas` jest chroniony nagłówkami `Authorization: Bearer <klucz>` oraz `X-API-Key` (domyślnie `dev-key`) i przekazuje zgłoszenia do n8n (domyślnie `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`, z aliasem payloadu `pomysł`).
 - Smoke `tests/test_api.py` oraz `scripts/smoke.sh` gwarantują, że `POST /api/ideas` zwraca `{ "status": "ok" }`, a `/api/health` raportuje gotowość storage.
 - Dokumentacja pozostaje zwięzła i bez duplikatów nagłówków; `tests/test_documentation.py` pilnuje spójności README.
 - Kafelki tekstowe na wszystkich stronach udostępniają edycję treści przez zakładkę sterowaną `assets/editable-tiles.js`; działanie wymaga `localStorage`, a fallback informuje o blokadzie zapisu.
