@@ -9,6 +9,34 @@
 - Paleta barw została przygaszona wokół barw ziemistych, dodano ambientową warstwę tła i animację pulsującą, zachowując czytelność tekstów.
 - Nawigacja na urządzeniach mobilnych przechodzi w układ kolumnowy, a karty otrzymują mniejsze paddingi, co poprawia ergonomię.
 - Powstał zestaw testów `tests/test_responsive_theme.py` weryfikujących zarówno bloki @media, jak i obecność efektów graficznych.
+- Wdrożono wielowarstwowe, rozmyte tła z zasobów `img/` — trzy obrazy na podstronę płynnie przesuwają się horyzontalnie i respektują `prefers-reduced-motion`.
+
+## 5xWhy — Ambientowe galerie tła
+1. Dlaczego dodajemy wielowarstwowe galerie tła?
+   - (A) Aby wizualnie zróżnicować każdą podstronę bez naruszania treści.
+   - (B) Aby wykorzystać istniejące zdjęcia z katalogu `img/` zamiast szukać nowych zasobów.
+   - (C) Aby wzmocnić immersję przez subtelny ruch.
+   **Decyzja:** C jako cel przewodni, wzbogacony o kuratorskie wykorzystanie istniejących zdjęć z (B).
+2. Dlaczego ruch tła powinien być delikatny i horyzontalny?
+   - (A) Horyzontalny dryf koresponduje z rozpościeraniem się płomieni na wietrze.
+   - (B) Pionowy ruch mógłby zakłócić czytelność sekcji tekstowych.
+   - (C) Delikatność pomaga uniknąć rozpraszania odbiorcy.
+   **Decyzja:** A jako motyw narracyjny, doprawiony o ograniczenie rozpraszania z (C).
+3. Dlaczego potrzebna jest automatyczna weryfikacja obrazów w CSS?
+   - (A) Zapobiega przypadkowemu usunięciu któregoś z plików `img/`.
+   - (B) Upewnia, że każda podstrona ma przypisane trzy warstwy.
+   - (C) Przygotowuje grunt pod dalszą automatyzację parametrów animacji.
+   **Decyzja:** B jako główny wymóg jakości, rozszerzony o kontrolę zasobów z (A).
+4. Dlaczego blok `prefers-reduced-motion` musi obejmować też tła?
+   - (A) Odbiorcy wrażliwi na ruch powinni móc bezpiecznie przeglądać repozytorium.
+   - (B) Spójność dostępności buduje zaufanie do całej witryny.
+   - (C) Ułatwia audyt CTO personie.
+   **Decyzja:** A jako wymóg dostępności, połączony ze spójnością marki z (B).
+5. Dlaczego animacje są oparte na czystym CSS zamiast JS?
+   - (A) CSS zapewnia niższy narzut wydajnościowy.
+   - (B) Brak JS upraszcza utrzymanie na GitHub Pages.
+   - (C) Pozwala zachować kompatybilność z dotychczasowymi testami.
+   **Decyzja:** B jako gwarancja prostoty, uzupełniona o wydajność z (A).
 
 # Notatki (Faza 3)
 - Dodano wspólny baner "flying object" prowadzący do Notebook LM z bazą wiedzy brainstormu; zachowuje klimat projektu dzięki animowanej ikonie zwiadowcy.
@@ -254,3 +282,9 @@
    - (B) Zapewnia prosty testowy klient do `pytest`.
    - (C) Przygotowuje grunt pod ewentualną rozbudowę API.
    **Decyzja:** B dla kompatybilności testów, z elastycznością rozbudowy z (C).
+
+## Raport agenta — Ambientowe tła
+- **Co zostało zrobione:** Każda podstrona otrzymała trzywarstwowe, rozmyte tło z galerii zdjęć, które powoli przesuwa się horyzontalnie, utrzymując klimat płonącego klasztoru.
+- **Dlaczego (z czego zrezygnowano):** Odłożono dynamiczne sterowanie prędkością w oparciu o scroll JS, aby zachować lekkość implementacji i kompatybilność z hostingiem statycznym.
+- **Cel funkcji i stan pipeline'u:** Warstwa wizualna ma pogłębić immersję bez utraty dostępności; pipeline jest zabezpieczony nowym testem `tests/test_ambient_backgrounds.py`, a kontynuacją jest zaplanowanie sterowania ruchem w `docs/tasks.md`.
+- **Spojrzenie na cel repo + kolejny krok ku MVP:** Repo zmierza ku pełnemu doświadczeniu LARP (wizualia + interakcje). Następny krok to dostosowanie prędkości tła do scrolla i przygotowanie narzędzi do dalszego rozszerzania ambientu.
