@@ -18,6 +18,7 @@ Repo owner directives:
   400 dla walidacji).
 - Formularze integrujące backend muszą ładować moduł `assets/js/backend-config.js`, oznaczać endpoint `data-api` i polegać na
   `wireBackendForms` do ustawienia `form.action`.
+- Formularze wysyłające do `POST /api/ideas` muszą dodawać nagłówek `X-API-Key` (domyślnie `dev-key` w `data-api-key`).
 - Backend `app.py` utrzymuje endpoint `GET /api/health` (JSON `{ "status": "ok" }`) oraz restrykcyjną walidację `POST /api/ideas`
   (`Content-Type: application/json`, limit 5 KB, poprawne JSON-y). Aktualizacje muszą zachować te kontrakty i testy.
 - Storage dla nowych funkcji trafia do katalogu `data/` (tworzonego dynamicznie). Repozytorium śledzi jedynie pliki konfiguracyjne

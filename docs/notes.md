@@ -135,6 +135,7 @@
 - `scripts/smoke.sh` umożliwia szybki smoke test tunelu.
 - Endpoint `/api/health` raportuje gotowość storage i jest sprawdzany przez `tests/test_api.py`.
 - README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” z krokami konfiguracji tunelu.
+- `POST /api/ideas` wymaga nagłówka `X-API-Key` (domyślnie `dev-key`) i potrafi przekazać zdarzenie do n8n w tle.
 - Workflow `ci.yml` uruchamia `pytest`, `ruff` i `mypy` przy każdym PR.
 
 ## 5xWhy — Dlaczego dokumentujemy Quick Tunnel w README
@@ -163,6 +164,33 @@
    - (B) Pozwala na szybkie rozszerzenie zestawu narzędzi (np. `types-requests`).
    - (C) Zapewnia, że smoke README ma realne odwzorowanie w CI.
    **Decyzja:** A jako gwarancja polityki narzędziowej, rozszerzona elastycznością z (B).
+
+## 5xWhy — Dlaczego dodajemy klucz API i forwarding do n8n
+1. Dlaczego `POST /api/ideas` potrzebuje dodatkowego zabezpieczenia?
+   - (A) Publiczny tunel łatwo nadużyć bez jakiejkolwiek ochrony.
+   - (B) Klucz API pozwala śledzić źródła ruchu między środowiskami.
+   - (C) Pozwala szybko wygasić formularz bez dotykania kodu.
+   **Decyzja:** A jako tarcza przed nadużyciami, uzupełniona inspekcją źródeł z (B).
+2. Dlaczego stawiamy na nagłówek `X-API-Key`, a nie ukryte pole formularza?
+   - (A) Nagłówek można rotować bez edycji markup.
+   - (B) Ukryte pole jest trywialne do podejrzenia i nadpisania przez boty.
+   - (C) Nagłówek nie trafia do logów GitHub Pages.
+   **Decyzja:** A jako elastyczność operacyjna, wzmocniona prywatnością z (C).
+3. Dlaczego forwarding do n8n wykonujemy asynchronicznie?
+   - (A) Użytkownik natychmiast dostaje `201`, nawet jeśli n8n chwilowo nie odpowiada.
+   - (B) Pozwala delegować retry na poziomie scenariusza n8n.
+   - (C) Otwiera drogę do kolejnych integracji (np. Discord) bez zmiany kontraktu API.
+   **Decyzja:** A jako UX-first, doprawione skalowalnością z (C).
+4. Dlaczego generujemy `event_id` dla każdego zgłoszenia?
+   - (A) Idempotencja przepływów n8n bazuje na unikalnym identyfikatorze.
+   - (B) Łatwiej korelować logi SQLite i pliki tekstowe z webhookami.
+   - (C) Pomaga przy audycie i raportach manualnych.
+   **Decyzja:** A jako klucz do deduplikacji, poszerzony obserwowalnością z (B).
+5. Dlaczego formularz odczytuje klucz z `data-api-key`?
+   - (A) Pozwala konfigurować różne wartości per środowisko bez bundlera.
+   - (B) Testy end-to-end zachowują kompatybilność dzięki domyślnemu `dev-key`.
+   - (C) CTA HTML pozostaje czyste — brak dodatkowych inputów w treści formularza.
+   **Decyzja:** A jako wsparcie środowisk, rozszerzone kompatybilnością z (B).
 
 # Notatki (Iteracja — higiena dokumentacji i ambient 2024-09)
 - README, plan, zadania, notatki i CONTEXT zostały odchudzone z duplikatów, a nagłówki są unikalne.

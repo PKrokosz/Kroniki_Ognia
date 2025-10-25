@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import os
 import sqlite3
+import threading
+import time
 import uuid
 from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
@@ -15,6 +17,8 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.exceptions import BadRequest
 
+import requests
+
 
 # Aktualizacja: definiujemy TypedDict dla payloadu, aby doprecyzować kontrakt API.
 class IdeaPayload(TypedDict, total=False):
@@ -22,6 +26,31 @@ class IdeaPayload(TypedDict, total=False):
     content: str
     tags: Sequence[str] | str | None
     idea: str | None
+
+
+N8N_WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", "")
+N8N_TOKEN = os.getenv("N8N_TOKEN", "")
+API_KEY = os.getenv("API_KEY", "dev-key")
+
+
+def _forward_to_n8n_async(payload: dict[str, Any]) -> None:
+    def _job() -> None:
+        try:
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {N8N_TOKEN}",
+            }
+            requests.post(
+                N8N_WEBHOOK_URL,
+                json=payload,
+                headers=headers,
+                timeout=5,
+            )
+        except Exception:
+            # Fire-and-forget: nie przerywamy UX przy problemach po stronie n8n.
+            pass
+
+    threading.Thread(target=_job, daemon=True).start()
 
 
 def _resolve_data_dir(app: Flask) -> Path:
@@ -133,6 +162,9 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
     @flask_app.post("/api/ideas")
     @limiter.limit("10 per minute")
     def submit_idea() -> tuple[Response, int] | Response:
+        if request.headers.get("X-API-Key") != API_KEY:
+            return jsonify({"status": "error", "error": "unauthorized"}), 401
+
         if request.mimetype != "application/json":
             return (
                 jsonify({"message": "Wymagany nagłówek Content-Type: application/json."}),
@@ -180,7 +212,9 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
         else:
             return jsonify({"message": "Pole tags musi być listą lub tekstem."}), 400
 
-        timestamp = datetime.now(UTC).isoformat(timespec="seconds")
+        now = datetime.now(UTC)
+        timestamp = now.isoformat(timespec="seconds")
+        event_id = f"{int(time.time())}-{uuid.uuid4().hex[:8]}"
         data_dir_path = _resolve_data_dir(flask_app)
         db_path = data_dir_path / "ideas.sqlite3"
         with sqlite3.connect(db_path) as connection:
@@ -194,9 +228,29 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
         text_log = data_dir_path / "ideas.txt"
         with text_log.open("a", encoding="utf-8") as handle:
             tags_fragment = f" | tags: {', '.join(tags)}" if tags else ""
-            handle.write(f"{timestamp} | {title} | {content}{tags_fragment}\n")
+            handle.write(f"{timestamp} | {title} | {content}{tags_fragment} | event: {event_id}\n")
 
-        return jsonify({"id": str(idea_id), "status": "ok"}), 201
+        response_json = {"id": event_id, "status": "ok", "record_id": str(idea_id)}
+
+        if N8N_WEBHOOK_URL:
+            client_ip = request.headers.get("CF-Connecting-IP") or request.remote_addr
+            n8n_payload = {
+                "event_id": event_id,
+                "received_at": now.isoformat(),
+                "source": "kroniki-ognia-form",
+                "idea": {
+                    "title": title,
+                    "content": content,
+                    "tags": tags,
+                },
+                "client": {
+                    "ip": client_ip,
+                    "ua": request.headers.get("User-Agent"),
+                },
+            }
+            _forward_to_n8n_async(n8n_payload)
+
+        return jsonify(response_json), 201
 
     return flask_app
 

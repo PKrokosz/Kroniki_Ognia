@@ -49,6 +49,7 @@
 - [x] Zadanie 3: Dodać `scripts/smoke.sh` oraz sekcję README „Run with tunnel” — Test: `pytest tests/test_api.py::test_post_ideas_smoke`
 - [x] Zadanie 3b: Dodać `GET /api/health` i test zdrowia backendu — Test: `pytest tests/test_api.py::test_health_ok`
 - [x] Zadanie 4: Utwardzić walidację JSON (`Content-Type`, limit 5 KB, błąd parsowania) — Test: `pytest tests/test_api.py::test_post_ideas_rejects_non_json_content_type`
+- [x] Zadanie 10: Wysłać zgłoszenia do n8n z kluczem `X-API-Key` — Test: `pytest tests/test_api.py::test_post_ideas_forwards_to_n8n`
 - [ ] Zadanie 5: Przygotować skrypt synchronizujący `config.json` między katalogiem głównym a `public/` — Test: do zaprojektowania (`tests/test_config_json.py::test_sync_script`)
 - [ ] Zadanie 6: Zintegrować monitor health-checka z alertem (np. cron + webhook) — Test: do zaprojektowania (`tests/test_tunnel_health.py::test_health_alert_workflow`)
 - [ ] Zadanie 7: Zautomatyzować smoke tunelu z użyciem GitHub Actions cron i raportu w issues — Test: do zaprojektowania (`tests/test_tunnel_health.py::test_cron_monitoring`)

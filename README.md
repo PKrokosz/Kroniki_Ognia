@@ -25,9 +25,16 @@ python -m http.server 8000
 ## Backend formularza „Dodaj pomysł”
 Formularz na stronie głównej komunikuje się z lekkim backendem Flask zapisującym wpisy do SQLite oraz dziennika tekstowego. Moduł `assets/js/backend-config.js` odczytuje `config.json` i przypisuje docelowy adres każdemu formularzowi oznaczonemu `data-api`.
 
-Payload ma schemat `{ "title": str, "content": str, "tags": [str]? }`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok" }`. Endpoint `POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB i waliduje poprawność JSON-u. W razie błędu zwraca komunikat JSON z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
+Payload ma schemat `{ "title": str, "content": str, "tags": [str]? }`. Każde zgłoszenie trafia do `data/ideas.sqlite3` i `data/ideas.txt` oraz zwraca odpowiedź `201` z `{ "id": "...", "status": "ok", "record_id": "..." }` (gdzie `id` to klucz idempotencji, a `record_id` pochodzi z SQLite). Endpoint `POST /api/ideas` wymaga nagłówka `Content-Type: application/json`, odrzuca payloady większe niż 5 KB i waliduje poprawność JSON-u. W razie błędu zwraca komunikat JSON z kodem 4xx (415 dla błędnego typu, 413 dla zbyt dużego ładunku, 400 dla błędnego JSON-u).
 
 Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dziennik tekstowy). Limit 10 zgłoszeń na minutę chroni przed floodem, a CORS dopuszcza wyłącznie `https://pkrokosz.github.io`, `https://pkrokosz.github.io/Kroniki_Ognia` oraz `https://*.trycloudflare.com`.
+
+### Prosty klucz API i forwarding do n8n
+
+- Każde wywołanie `POST /api/ideas` musi przekazać nagłówek `X-API-Key` (domyślnie `dev-key`). Wersję produkcyjną skonfigurujesz przez zmienną środowiskową `API_KEY`.
+- Formularz front-endowy pobiera wartość klucza z atrybutu `data-api-key` (fallback do `dev-key`) i dołącza ją automatycznie w `assets/idea-form.js`.
+- Ustaw zmienne środowiskowe `N8N_WEBHOOK_URL` oraz `N8N_TOKEN`, aby backend asynchronicznie przekazywał dane do scenariusza n8n. W przypadku niedostępności webhooku żądanie użytkownika kończy się powodzeniem, a forwarding próbuje ponownie w tle bez blokowania UX.
+- Payload do n8n zawiera `event_id` (unikalny klucz idempotencji), dane zgłoszenia oraz metadane klienta (`ip`, `User-Agent`).
 
 ```bash
 pip install -r requirements.txt

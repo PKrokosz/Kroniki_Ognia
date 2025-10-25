@@ -78,6 +78,7 @@
 - [Scope] Dodanie smoke testów i skryptu CLI do walidacji tunelu.
 - [Scope] Wymuszenie limitu 10/min na `POST /api/ideas` (Flask-Limiter) oraz kontrola CORS.
 - [Scope] Zapewnienie health-checka JSON raportującego gotowość storage.
+- [Scope] Dodanie prostego klucza API oraz forwarding do scenariusza n8n bez blokowania UX.
 - [Non-Goals] Pełna autoryzacja żądań, zarządzanie tajnymi tokenami, publikacja listy pomysłów w UI.
 
 ## Definicja ukończenia fazy 5 (DoD)
@@ -87,6 +88,7 @@
 - README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” prowadzącą przez uruchomienie tunelu.
 - CORS i rate limit skonfigurowane w `app.py`; ADR/notes zawierają analizę 5xWhy tunelu.
 - Health-check i walidacja JSON są chronione testami (`tests/test_api.py`).
+- Test `tests/test_api.py::test_post_ideas_forwards_to_n8n` pilnuje forwarding do n8n oraz wymogu `X-API-Key`.
 
 ## Cel fazy 6 — Kuracja treści kafelków
 - [Scope] Udostępnić edycję tekstów kafelków przez zakładki po prawej stronie oraz pamięć w `localStorage`.
