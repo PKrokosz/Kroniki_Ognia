@@ -8,6 +8,7 @@
 - Bieżące ADR w `docs/adr/`
 - Backend Flask (`app.py`) realizuje formularz „Dodaj pomysł”; dane trafiają do katalogu `data/`.
 - `config.json` (w katalogu głównym i `public/`) wskazuje adres tunelu backendu, wykorzystywany przez JS frontu.
+- Workflow `.github/workflows/ci.yml` uruchamia `pytest`, `ruff`, `mypy` jako bloker PR.
 
 Zasady:
 - Brak odwołań do historii czatu.

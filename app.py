@@ -7,11 +7,21 @@ import uuid
 from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any, TypedDict, cast
+
 from flask import Flask, Response, current_app, jsonify, request
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.exceptions import BadRequest
+
+
+# Aktualizacja: definiujemy TypedDict dla payloadu, aby doprecyzować kontrakt API.
+class IdeaPayload(TypedDict, total=False):
+    title: str
+    content: str
+    tags: Sequence[str] | str | None
+    idea: str | None
 
 
 def _resolve_data_dir(app: Flask) -> Path:
@@ -101,20 +111,23 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
         return flask_app.send_static_file("index.html")
 
     @flask_app.get("/api/health")
-    def health() -> Response:
+    def health() -> tuple[Response, int]:
         data_dir_path = _resolve_data_dir(flask_app)
         db_path = data_dir_path / "ideas.sqlite3"
         text_log = data_dir_path / "ideas.txt"
 
-        return jsonify(
-            {
-                "status": "ok",
-                "storage": {
-                    "data_dir": str(data_dir_path),
-                    "database_exists": db_path.exists(),
-                    "log_exists": text_log.exists(),
-                },
-            }
+        return (
+            jsonify(
+                {
+                    "status": "ok",
+                    "storage": {
+                        "data_dir": str(data_dir_path),
+                        "database_exists": db_path.exists(),
+                        "log_exists": text_log.exists(),
+                    },
+                }
+            ),
+            200,
         )
 
     @flask_app.post("/api/ideas")
@@ -134,12 +147,14 @@ def create_app(data_dir: Path | str | None = None) -> Flask:
             )
 
         try:
-            payload = request.get_json(force=False, silent=False)
+            raw_payload: Any = request.get_json(force=False, silent=False)
         except BadRequest:
             return jsonify({"message": "Nieprawidłowy JSON w żądaniu."}), 400
 
-        if not isinstance(payload, Mapping):
+        if not isinstance(raw_payload, Mapping):
             return jsonify({"message": "Payload musi być obiektem JSON."}), 400
+
+        payload: IdeaPayload = cast(IdeaPayload, raw_payload)
 
         legacy_idea = str(payload.get("idea") or "").strip()
         title = str(payload.get("title") or "").strip()

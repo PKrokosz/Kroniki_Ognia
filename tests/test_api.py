@@ -25,7 +25,8 @@ def test_post_ideas_smoke():
         data=json.dumps({"title": "t", "content": "c"}),
         content_type="application/json",
     )
-    assert resp.status_code in (200, 201)
+    # Aktualizacja: endpoint sukcesu powinien zawsze zwracać 201.
+    assert resp.status_code == 201
     data = resp.get_json()
     assert data and data.get("status") == "ok"
 

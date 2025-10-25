@@ -46,7 +46,8 @@ async function loadBackendUrl() {
         continue;
       }
 
-      return backendUrl;
+      // Aktualizacja: zwracamy adres backendu bez końcowych ukośników zgodnie z config.json.
+      return backendUrl.replace(/\/+$/u, "");
     } catch (error) {
       attempts.push(`${candidate}: ${error instanceof Error ? error.message : String(error)}`);
     }
