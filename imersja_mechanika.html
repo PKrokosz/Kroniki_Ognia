@@ -4,116 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imersja Klasztoru Magów Ognia</title>
-    <!-- Ładowanie Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Używamy Inter jako głównego fontu, a dla nagłówków klasycznego szeryfowego (serif) -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap');
-        :root {
-            --primary-bg: #1A1A1A;
-            --secondary-bg: #333333;
-            --text-main: #D4D4D4;
-            --accent-primary: #B30000; /* Zostawiamy jako subtelny kontrast */
-            --accent-secondary: #FFCC00; /* Złocisty Płomień (NOWY GŁÓWNY AKCENT) */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-main);
-        }
-        h1, h2 {
-            font-family: 'Libre Baskerville', serif;
-            color: var(--accent-secondary); /* Zmienione na Złocisty Płomień */
-            text-transform: uppercase;
-        }
-        .section-card {
-            background-color: var(--secondary-bg);
-            border-left: 5px solid var(--accent-secondary); /* Zmienione na Złocisty Płomień */
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .section-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(255, 204, 0, 0.1); 
-        }
-        .arcana-script {
-            /* Symulacja fontu kaligraficznego */
-            font-family: 'Libre Baskerville', serif;
-            color: var(--accent-secondary); /* Zmienione na Złocisty Płomień */
-            cursor: pointer;
-            border-bottom: 1px dotted var(--accent-secondary);
-            transition: color 0.3s;
-        }
-        .arcana-script:hover {
-            color: var(--accent-primary); /* Subtelny Karmazynowy hover */
-        }
-        /* Efekt migotania płomienia dla nagłówka */
-        @keyframes flicker {
-            0%, 100% { text-shadow: 0 0 7px var(--accent-secondary); opacity: 1; }
-            50% { text-shadow: 0 0 10px var(--accent-secondary), 0 0 20px var(--accent-secondary); opacity: 0.8; }
-        }
-        .flame-title {
-            animation: flicker 4s infinite alternate;
-        }
-
-        /* Stylizacja tabel/kart dla responsywności */
-        .grid-container {
-            display: grid;
-            gap: 24px;
-            grid-template-columns: 1fr;
-        }
-        @media (min-width: 768px) {
-            .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .tool-card {
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            border-radius: 8px;
-            background-color: var(--secondary-bg);
-            border-top: 3px solid var(--accent-secondary); /* Zmienione na Złocisty Płomień */
-        }
-        .tool-name {
-            color: var(--accent-secondary);
-            font-weight: bold;
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-        }
-        .tool-title {
-            color: var(--accent-secondary); /* Zmienione na Złocisty Płomień */
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px dashed var(--accent-secondary); /* Zmienione na Złocisty Płomień */
-        }
-        .section-intro {
-             border-bottom: 1px solid var(--secondary-bg);
-             padding-bottom: 1rem;
-             margin-bottom: 2rem;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body class="min-h-screen p-4 md:p-8">
 
-    <div class="max-w-6xl mx-auto">
+<body class="theme-dark">
+  <a class="skip-link" href="#main-content">Pomiń nawigację</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Kroniki Ognia</a>
+      <nav class="site-nav" aria-label="Główna nawigacja">
+        <ul>
+          <li><a href="index.html">🏠 Strona główna</a></li>
+          <li><a href="cechy.html">🔥 Cechy świata</a></li>
+          <li><a href="draft_planu.html">🧭 Draft planu</a></li>
+          <li><a href="imersja_mechanika.html">✨ Imersja i mechanika</a></li>
+          <li><a href="organizacja.html">🏛️ Organizacja</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+    <section class="page-hero">
+    <div class="container">
+      <h1>Archiwum Klasztoru Ognia</h1>
+      <p>Imersja, Mechaniki i Rytm Dnia</p>
+      <p class="section-intro-text">Aby stworzyć głębokie poczucie imersji i odzwierciedlić mikrokosmos Klasztoru Magów Ognia, kluczowe jest wykorzystanie zarówno fizycznych rekwizytów, jak i mechanik fabularnych i rytualnych, które nasycają codzienność symbolem i znaczeniem. Poniżej znajduje się spis narzędzi.</p>
+      <div class="hero-icons">🕯️ 📜 🔥</div>
+    </div>
+  </section>
+
+    <main id="main-content" class="site-main">
+    <div class="content-container">
+      <div class="max-w-6xl mx-auto">
         <!-- Hero Section/Tytuł Główny -->
-        <header class="text-center py-16 mb-12 border-b border-solid border-[#333333]">
-            <h1 class="text-3xl md:text-5xl tracking-widest flame-title">
-                Archiwum Klasztoru Ognia
-            </h1>
-            <p class="text-base md:text-xl mt-4 text-gray-400">
-                Imersja, Mechaniki i Rytm Dnia
-            </p>
-        </header>
-
-        <!-- Wprowadzenie -->
-        <section class="mb-16">
-            <p class="text-lg leading-relaxed text-center max-w-4xl mx-auto">
-                Aby stworzyć głębokie poczucie imersji i odzwierciedlić mikrokosmos Klasztoru Magów Ognia, kluczowe jest wykorzystanie zarówno fizycznych rekwizytów, jak i mechanik fabularnych i rytualnych, które nasycają codzienność symbolem i znaczeniem. Poniżej znajduje się spis narzędzi.
-            </p>
-        </section>
 
         <!-- SEKCJA I: FIZYCZNE ARTEFAKTY I REKWIZYTY -->
         <section class="mb-16">
@@ -272,7 +194,9 @@
                 <span class="text-[#D4D4D4]">Pergamin</span>
             </div>
         </footer>
+      </div>
     </div>
+  </main>
 
     <!-- JavaScript dla funkcji Immersyjnych (Sekretne Fragmenty) -->
     <script>
@@ -299,5 +223,8 @@
             }
         }
     </script>
+  <footer class="site-footer">
+    Kroniki Ognia • Statyczna dokumentacja projektu — przygotowane do publikacji na GitHub Pages.
+  </footer>
 </body>
 </html>

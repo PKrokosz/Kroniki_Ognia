@@ -4,82 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kroniki Ognia - Klasztor Magów Ognia V2</title>
-    <!-- Ładowanie Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Konfiguracja Tailwind z niestandardowymi kolorami -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // Głęboki, palony brąz (Tło)
-                        'cinder': '#100a06', /* Ciemniejsze tło */
-                        // Ciemniejszy brąz dla sekcji/paneli
-                        'parchment': '#20150b',
-                        // Ciepły, złoty/bursztynowy (Akcenty, Ogień)
-                        'ember': '#f59e0b', /* Bardziej intensywny złoty */
-                        // Jaśniejszy złoty dla głównego tekstu
-                        'brass': '#e5e7eb', /* Lekko jaśniejsza szarość */
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #100a06; /* cinder */
-            color: #e5e7eb; /* brass */
-        }
-        /* Styl dla efektu ognistego cienia wokół kluczowych elementów */
-        .fire-glow {
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.7);
-        }
-        /* Styl dla dużych, uroczystych nagłówków */
-        .ritual-title {
-            text-shadow: 0 0 5px rgba(245, 158, 11, 0.8);
-            letter-spacing: 0.1em;
-        }
-        /* Subtelna animacja hover na kartach */
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4);
-        }
-        /* Pionowy separator dla podziału sekcji */
-        .vertical-separator {
-            width: 4px;
-            background-color: #f59e0b; /* ember */
-            opacity: 0.7;
-            border-radius: 9999px; /* Zaokrąglone końce */
-        }
-    </style>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body class="min-h-screen antialiased">
 
-    <!-- Sekcja Nagłówka i Wprowadzenia -->
-    <header class="py-16 md:py-24 bg-parchment border-b border-ember shadow-xl">
-        <div class="container mx-auto px-4 max-w-7xl">
-            <h1 class="text-5xl sm:text-6xl md:text-7xl text-center font-extrabold text-ember ritual-title mb-4 uppercase">
-                Kroniki Ognia
-            </h1>
-            <p class="text-xl sm:text-3xl text-center font-light text-brass italic opacity-90 max-w-3xl mx-auto">
-                Klasztor Magów Ognia. Intensywne środowisko, rytuał i polityka w przeddzień upadku.
-            </p>
-        </div>
-    </header>
+<body class="theme-dark">
+  <a class="skip-link" href="#main-content">Pomiń nawigację</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Kroniki Ognia</a>
+      <nav class="site-nav" aria-label="Główna nawigacja">
+        <ul>
+          <li><a href="index.html">🏠 Strona główna</a></li>
+          <li><a href="cechy.html">🔥 Cechy świata</a></li>
+          <li><a href="draft_planu.html">🧭 Draft planu</a></li>
+          <li><a href="imersja_mechanika.html">✨ Imersja i mechanika</a></li>
+          <li><a href="organizacja.html">🏛️ Organizacja</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+    <section class="page-hero">
+    <div class="container">
+      <h1>Kroniki Ognia</h1>
+      <p>Klasztor Magów Ognia. Intensywne środowisko, rytuał i polityka w przeddzień upadku.</p>
+      <div class="hero-icons">🔥 🕯️ 📜</div>
+    </div>
+  </section>
+    
 
-    <!-- Główna Sekcja Treści -->
-    <main class="container mx-auto px-4 py-16 max-w-7xl">
+  <main id="main-content" class="site-main">
+    <div class="content-container">
 
         <!-- I. Główne Haki Fabularne i Kontekstowe -->
         <section class="mb-16">
             <h2 class="text-4xl font-bold mb-8 text-center text-amber-300 border-b pb-4 border-ember/50">
                 🔥 Główne Haki Fabularne 🔥
             </h2>
-            <div class="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
+            <div class="grid lg:grid-cols-2 xl:grid-cols-4 gap-8 cards-grid columns-4">
                 <!-- 1. Geneza Bariery -->
                 <div class="feature-card bg-parchment p-6 rounded-xl border-t-4 border-ember transition duration-500 hover:fire-glow">
                     <div class="text-4xl mb-3">🔮</div>
@@ -117,7 +78,7 @@
             <h2 class="text-4xl font-bold mb-8 text-center text-amber-300 border-b pb-4 border-ember/50">
                 📖 Filozofia i Imersja Świata 🕯️
             </h2>
-            <div class="grid lg:grid-cols-2 gap-12">
+            <div class="grid lg:grid-cols-2 gap-12 cards-grid columns-2">
 
                 <!-- LEWA KOLUMNA (Architektura, Magia) -->
                 <div class="space-y-8">
@@ -171,7 +132,7 @@
             <h2 class="text-4xl font-bold mb-8 text-center text-amber-300 border-b pb-4 border-ember/50">
                 ⚙️ Unikalne Mechaniki Gry 🛡️
             </h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 cards-grid columns-3">
 
                 <!-- 1. Dzienniki Fabularne -->
                 <div class="p-6 bg-parchment rounded-xl border-2 border-ember transition duration-300 hover:scale-[1.02]">
@@ -212,16 +173,14 @@
             </div>
         </section>
 
-    </main>
-
-    <!-- Sekcja Stopki -->
-    <footer class="mt-16 py-8 bg-parchment border-t border-ember">
-        <div class="container mx-auto px-4 max-w-7xl">
-            <p class="text-center text-sm text-brass/70">
-                Projekt stworzony dla Klasztoru Magów Ognia. Ogień daje wiedzę, ale także żąda ofiary.
-            </p>
         </div>
-    </footer>
+      <section class="callout-panel">
+        <p class="muted-text">Projekt stworzony dla Klasztoru Magów Ognia. Ogień daje wiedzę, ale także żąda ofiary.</p>
+      </section>
+  </main>
 
+  <footer class="site-footer">
+    Kroniki Ognia • Statyczna dokumentacja projektu — przygotowane do publikacji na GitHub Pages.
+  </footer>
 </body>
 </html>

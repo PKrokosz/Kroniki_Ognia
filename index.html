@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kroniki Ognia — Archiwum Projektowe</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="theme-dark">
+  <a class="skip-link" href="#main-content">Pomiń nawigację</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Kroniki Ognia</a>
+      <nav class="site-nav" aria-label="Główna nawigacja">
+        <ul>
+          <li><a href="index.html">🏠 Strona główna</a></li>
+          <li><a href="cechy.html">🔥 Cechy świata</a></li>
+          <li><a href="draft_planu.html">🧭 Draft planu</a></li>
+          <li><a href="imersja_mechanika.html">✨ Imersja i mechanika</a></li>
+          <li><a href="organizacja.html">🏛️ Organizacja</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Kroniki Ognia</h1>
+      <p>Archiwum koncepcji LARP osadzonego w klasztorze Magów Ognia.</p>
+      <p class="section-intro-text">Strona główna zbiera najważniejsze materiały — od analizy świata, przez plan dnia, po narzędzia imersji i organizację produkcji.</p>
+      <div class="hero-icons">📚 🔥 🕯️</div>
+    </div>
+  </section>
+
+  <main id="main-content" class="site-main">
+    <div class="content-container">
+      <section class="content-section">
+        <h2 class="section-title">Poznaj kompendium</h2>
+        <p class="section-intro-text">Każda podstrona eksploruje inny aspekt projektu. Karty poniżej prowadzą do pełnych opracowań, zachowując pierwotną treść źródłową.</p>
+        <div class="cards-grid columns-2">
+          <article class="plan-card">
+            <h3>🔥 Cechy świata</h3>
+            <p>Zanurz się w filozofii, architekturze i rytmie klasztoru. Sekcja gromadzi haki fabularne oraz rytuały budujące klimat.</p>
+            <p class="schedule-meta"><strong>Zakres:</strong> światotworzenie i dramaturgia.</p>
+            <a class="badge-outline" href="cechy.html">Przejdź do cech świata</a>
+          </article>
+          <article class="plan-card">
+            <h3>🧭 Draft planu</h3>
+            <p>Szczegółowy harmonogram epizodów wraz z automatycznie generowaną osią dnia i kartami kluczowych aktywności.</p>
+            <p class="schedule-meta"><strong>Zakres:</strong> planowanie rytmu gry i zajęć.</p>
+            <a class="badge-outline" href="draft_planu.html">Otwórz plan dnia</a>
+          </article>
+          <article class="plan-card">
+            <h3>✨ Imersja i mechanika</h3>
+            <p>Praktyczne narzędzia budujące doświadczenie: rekwizyty, rytuały, zasady interakcji oraz skryte mechanizmy.</p>
+            <p class="schedule-meta"><strong>Zakres:</strong> sensoryka, narzędzia i rytuały.</p>
+            <a class="badge-outline" href="imersja_mechanika.html">Poznaj narzędzia</a>
+          </article>
+          <article class="plan-card">
+            <h3>🏛️ Organizacja</h3>
+            <p>Dane z burzy mózgów zebrane w interaktywne sekcje — wątki organizacyjne, fabularne, światowe i osobiste.</p>
+            <p class="schedule-meta"><strong>Zakres:</strong> struktura projektu i backlog wątków.</p>
+            <a class="badge-outline" href="organizacja.html">Przeglądaj archiwum</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2 class="section-title">Jak korzystać z repozytorium</h2>
+        <div class="cards-grid columns-2">
+          <div class="plan-card">
+            <h3>Proces i dokumentacja</h3>
+            <p>Plan faz, zadania oraz notatki znajdziesz w katalogu <code>docs/</code>. Aktualne decyzje architektoniczne trzymamy w <code>docs/adr/</code>.</p>
+            <p class="schedule-meta"><strong>Najważniejsze pliki:</strong> docs/plan.md, docs/tasks.md, docs/notes.md.</p>
+          </div>
+          <div class="plan-card">
+            <h3>Automatyzacja</h3>
+            <p>Repo zawiera testy w <code>tests/</code> oraz workflow GitHub Actions (<code>.github/workflows/codex.yml</code>) uruchamiający pytest.</p>
+            <p class="schedule-meta"><strong>Cel:</strong> utrzymać spójność nawigacji i jakości strony na GitHub Pages.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="callout-panel">
+        <p class="muted-text">Repozytorium jest gotowe do hostingu na GitHub Pages — wystarczy skierować publikację na gałąź z plikami statycznymi.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    Kroniki Ognia • Statyczna dokumentacja projektu — przygotowane do publikacji na GitHub Pages.
+  </footer>
+</body>
+</html>
