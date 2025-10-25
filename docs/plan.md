@@ -84,6 +84,7 @@
 - `tests/test_api.py` obejmuje smoke dla `/api/ideas` i `/api/health`.
 - `config.json` jest serwowany zarówno z katalogu głównego, jak i `public/` (`tests/test_config_json.py`).
 - `scripts/smoke.sh` opisany w README umożliwia walidację tunelu.
+- README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” prowadzącą przez uruchomienie tunelu.
 - CORS i rate limit skonfigurowane w `app.py`; ADR/notes zawierają analizę 5xWhy tunelu.
 - Health-check i walidacja JSON są chronione testami (`tests/test_api.py`).
 

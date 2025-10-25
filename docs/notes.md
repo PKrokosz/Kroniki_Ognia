@@ -134,6 +134,35 @@
 - Duplikat `config.json` w katalogu głównym eliminuje 404 podczas serwowania strony spod `/Kroniki_Ognia/`.
 - `scripts/smoke.sh` umożliwia szybki smoke test tunelu.
 - Endpoint `/api/health` raportuje gotowość storage i jest sprawdzany przez `tests/test_api.py`.
+- README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” z krokami konfiguracji tunelu.
+- Workflow `ci.yml` uruchamia `pytest`, `ruff` i `mypy` przy każdym PR.
+
+## 5xWhy — Dlaczego dokumentujemy Quick Tunnel w README
+1. Dlaczego potrzebna jest sekcja krok po kroku?
+   - (A) Agent backendowy musi szybko odtworzyć tunel bez wertowania notatek.
+   - (B) Nowi wolontariusze frontu chcą samodzielnie potwierdzić konfigurację.
+   - (C) CI wymaga jasnego punktu odniesienia dla smoke testu.
+   **Decyzja:** A jako krytyczna instrukcja operacyjna, uzupełniona onboardingiem z (B).
+2. Dlaczego kopiujemy przykładowy URL tunelu?
+   - (A) Zapobiega literówkom w `config.json` przy ręcznej edycji.
+   - (B) Ułatwia testy manualne smoke, bo nie trzeba pamiętać struktury hosta.
+   - (C) Skraca opis w innych dokumentach.
+   **Decyzja:** B jako wsparcie smoke testu, rozszerzone o bezpieczeństwo konfiguracji z (A).
+3. Dlaczego przypominamy o dwóch kopiach `config.json`?
+   - (A) Front serwowany spod `/Kroniki_Ognia/` potrzebuje wariantu w `public/`.
+   - (B) Test `tests/test_config_json.py` blokuje rozjazdy.
+   - (C) Synchronizacja ręczna jest podatna na błędy przy szybkim hotfixie.
+   **Decyzja:** C jako motywacja do dyscypliny, wzmocniona testem z (B).
+4. Dlaczego sekcja wskazuje `cloudflared tunnel --url`?
+   - (A) Komenda jest mniej oczywista niż `cloudflared tunnel run` i bywa mylona.
+   - (B) Zapewnia zgodność z polityką CTO (żadnych skrótów shell bez kontekstu).
+   - (C) Ułatwia łączenie z lokalnym portem 5000 bez dodatkowych flag.
+   **Decyzja:** A jako zapobieganie błędom, uzupełnione prostotą z (C).
+5. Dlaczego workflow CI ma instalować `pytest`, `ruff`, `mypy` jawnie?
+   - (A) Gwarantuje wersje zgodne z instrukcjami CTO niezależnie od `requirements.txt`.
+   - (B) Pozwala na szybkie rozszerzenie zestawu narzędzi (np. `types-requests`).
+   - (C) Zapewnia, że smoke README ma realne odwzorowanie w CI.
+   **Decyzja:** A jako gwarancja polityki narzędziowej, rozszerzona elastycznością z (B).
 
 # Notatki (Iteracja — higiena dokumentacji i ambient 2024-09)
 - README, plan, zadania, notatki i CONTEXT zostały odchudzone z duplikatów, a nagłówki są unikalne.

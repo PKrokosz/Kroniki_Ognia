@@ -41,7 +41,7 @@ Statyczny front na GitHub Pages ładuje adres backendu z `config.json` serwowane
 
 ```json
 {
-  "BACKEND_URL": "https://random-words-1234.trycloudflare.com"
+  "BACKEND_URL": "https://humor-classroom-archived-hereby.trycloudflare.com"
 }
 ```
 
@@ -52,11 +52,20 @@ Po wdrożeniu tunelu front ustawi `form.action` na `${BACKEND_URL}/api/ideas` i 
 ### Smoke test tunelu
 
 ```bash
-# co robi: smoke z publicznego URL (tunnel)
-./scripts/smoke.sh https://api-kroniki.<MOJA-DOMENA>
+# co robi: smoke z publicznego URL (tunel Quick Tunnel)
+./scripts/smoke.sh https://humor-classroom-archived-hereby.trycloudflare.com
 ```
 
 Skrypt wysyła testowy POST i wypisuje odpowiedź JSON.
+
+### Dev: Quick Tunnel → lokalny Flask
+
+```bash
+flask run --port 5000                                   # co robi: start backendu lokalnie
+cloudflared tunnel --url http://127.0.0.1:5000          # co robi: wystawia publiczny URL *.trycloudflare.com
+# Skopiuj URL i ustaw w config.json:
+# { "BACKEND_URL": "https://humor-classroom-archived-hereby.trycloudflare.com" }
+```
 
 ## Hosting GitHub Pages bez Jekylla
 - Plik `.nojekyll` w katalogu głównym zapobiega uruchamianiu silnika Jekyll.

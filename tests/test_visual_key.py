@@ -2,15 +2,29 @@ from __future__ import annotations
 
 from html.parser import HTMLParser
 from pathlib import Path
+from typing import TypedDict
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX_HTML = REPO_ROOT / "index.html"
 
-EXPECTED_TILES = {
+EXPECTED_TILES: dict[str, dict[str, str]] = {
     "visual-key__tile--ember": {"image": "img/1.jpg", "link": "cechy.html"},
     "visual-key__tile--glow": {"image": "img/4.jpg", "link": "imersja_mechanika.html"},
     "visual-key__tile--flame": {"image": "img/7.jpg", "link": "draft_planu.html"},
 }
+
+
+# Aktualizacja: jawnie typujemy strukturę kafelków na potrzeby `mypy .`.
+class VisualKeyTile(TypedDict, total=False):
+    classes: list[str]
+    image: str | None
+    alt: str | None
+    link: str | None
+
+
+class AutoplayButton(TypedDict, total=False):
+    type: str | None
+    data: str | None
 
 
 class VisualKeyParser(HTMLParser):
@@ -19,9 +33,9 @@ class VisualKeyParser(HTMLParser):
         self.in_section = False
         self.section_depth = 0
         self.section_found = False
-        self.tiles: list[dict[str, str | list[str] | None]] = []
-        self.current_tile: dict[str, str | list[str] | None] | None = None
-        self.autoplay_button: dict[str, str | None] | None = None
+        self.tiles: list[VisualKeyTile] = []
+        self.current_tile: VisualKeyTile | None = None
+        self.autoplay_button: AutoplayButton | None = None
         self.status_roles: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]):
@@ -38,7 +52,7 @@ class VisualKeyParser(HTMLParser):
         if self.in_section:
             self.section_depth += 1
             if tag == "figure" and "visual-key__tile" in class_list:
-                tile = {
+                tile: VisualKeyTile = {
                     "classes": class_list,
                     "image": None,
                     "alt": None,
