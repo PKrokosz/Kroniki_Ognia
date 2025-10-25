@@ -12,3 +12,6 @@
 - [x] Zadanie 1a: Zabezpieczyć repo przed przypadkowym dodaniem `CNAME` — Test: `pytest tests/test_custom_domain.py::test_cname_managed_via_github_settings`
 - [ ] Zadanie 2: Przygotować automatyczną weryfikację certyfikatu HTTPS — Test: `pytest tests/test_https_monitoring.py::test_certificate_expiry` (do implementacji)
 - [ ] Zadanie 3: Zautomatyzować sprawdzanie wpisu custom domain przez API GitHub Pages — Test: `pytest tests/test_pages_domain_status.py::test_custom_domain_sync` (do zaprojektowania)
+## Faza 3 — Integracja bazy wiedzy
+- [x] Zadanie 1: Dodać baner "flying object" prowadzący do Notebook LM — Test: `pytest tests/test_notebook_banner.py::test_notebook_banner_present_with_link`
+- [ ] Zadanie 2: Streścić kluczowe wnioski z Notebook LM na stronie i dodać test spójności — Test: do zdefiniowania (planowane `tests/test_notebook_summary.py`)

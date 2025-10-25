@@ -33,6 +33,87 @@ body {
   overflow-x: hidden;
 }
 
+.notebook-banner {
+  position: relative;
+  background: linear-gradient(135deg, rgba(34, 26, 40, 0.95), rgba(18, 14, 24, 0.92));
+  border-bottom: 1px solid rgba(108, 88, 63, 0.55);
+  padding: 14px 24px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.notebook-banner__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.notebook-banner__icon {
+  font-size: 1.75rem;
+  animation: notebookGlide 9s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(195, 150, 80, 0.4));
+}
+
+.notebook-banner__text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.notebook-banner__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(180, 122, 54, 0.18);
+  color: var(--color-text);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.notebook-banner__link:hover,
+.notebook-banner__link:focus {
+  background: rgba(196, 161, 90, 0.35);
+  transform: translateY(-1px);
+}
+
+.notebook-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 20%, rgba(221, 175, 108, 0.18), transparent 60%),
+    radial-gradient(circle at 85% 80%, rgba(143, 107, 163, 0.18), transparent 65%);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.notebook-banner__link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+@keyframes notebookGlide {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  45% {
+    transform: translateY(-6px) rotate(3deg);
+  }
+  70% {
+    transform: translateY(3px) rotate(-2deg);
+  }
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -62,6 +143,9 @@ body::before {
 
 @media (prefers-reduced-motion: reduce) {
   body::before {
+    animation: none;
+  }
+  .notebook-banner__icon {
     animation: none;
   }
 }
@@ -276,6 +360,15 @@ a:focus {
 }
 
 @media (max-width: 600px) {
+  .notebook-banner {
+    padding: 16px;
+  }
+
+  .notebook-banner__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
   .site-header .container {
     flex-direction: column;
     align-items: stretch;
