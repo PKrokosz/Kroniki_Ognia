@@ -2,6 +2,7 @@
 - Repo zawiera strony HTML z bogatą treścią narracyjną; wszystkie korzystają ze wspólnej nawigacji i arkusza `assets/styles.css`.
 - `index.html` pełni rolę landingu dla GitHub Pages.
 - Pipeline CI rozszerzono o `ruff` i `mypy`, a dokumentacja (`AGENTS.md`, `CONTEXT.md`, `docs/plan.md`, `docs/tasks.md`) stanowi źródło prawdy.
+- Po sukcesie formularza `assets/idea-form.js` dubluje zgłoszenie na webhook Cloudflare Pages (`source: "github-pages"`), dzięki czemu pomysł trafi do n8n nawet przy awarii tunelu.
 - `.gitignore` obejmuje cache testów, środowiska i logi, aby repo pozostawało wolne od artefaktów lokalnych.
 - Test `tests/test_documentation.py::test_adr_headings_unique` pilnuje, aby każdy ADR miał niepowtarzalny nagłówek tytułowy.
 
@@ -275,6 +276,33 @@
    - (B) Zmusza do utrzymania spójności między polską a angielską strukturą.
    - (C) Zapobiega cichym regresjom podczas optymalizacji payloadu.
    **Decyzja:** B jako gwarancja spójności, rozszerzona osłoną regresji z (C).
+
+## 5xWhy — Dlaczego front wysyła dodatkowy webhook produkcyjny
+1. Dlaczego dokładamy klientowi fetch do docelowego webhooka n8n po stronie frontu?
+   - (A) GitHub Pages może działać bez tunelu, a mimo to przekierować pomysł do scenariusza.
+   - (B) Dwustopniowy forwarding (backend → n8n) stanowi dodatkową redundancję.
+   - (C) Pozwala ominąć incydenty z konfiguracją `config.json` podczas warsztatów.
+   **Decyzja:** A jako sposób na niezależność od tunelu, wzmocniona redundancją z (B).
+2. Dlaczego robimy to natychmiast po komunikacie sukcesu, zamiast czekać na cron lub worker?
+   - (A) Uczestnik widzi, że jego pomysł trafił „dalej” w tym samym kroku.
+   - (B) Cron wymagałby dodatkowej infrastruktury i monitoringu.
+   - (C) Worker w przeglądarce (Service Worker) podniósłby próg skomplikowania.
+   **Decyzja:** A jako UX-first, doprawione prostotą operacyjną z (B).
+3. Dlaczego korzystamy z `mode: "cors"`, mimo że webhook jest publiczny?
+   - (A) Zapewnia kompatybilność z GitHub Pages i Cloudflare Pages.
+   - (B) Pozwala kontrolować, że `Content-Type` zostanie poprawnie dołączony.
+   - (C) Ułatwia debugowanie, bo przeglądarka wymusi preflight przy nowych nagłówkach.
+   **Decyzja:** A jako wymóg hostingu, rozszerzony możliwością kontroli nagłówków z (B).
+4. Dlaczego pakujemy dane w obiekt `idea`, zamiast wysyłać czysty tekst?
+   - (A) Zachowujemy kompatybilność z dotychczasowym scenariuszem n8n.
+   - (B) Obiekt łatwo rozszerzyć o metadane (np. `id` z backendu) w kolejnych iteracjach.
+   - (C) Minimalizujemy ryzyko, że w JSON-ie znikną tagi pomysłu.
+   **Decyzja:** A jako wymóg integracji, wzbogacony elastycznością z (B).
+5. Dlaczego logujemy błąd, ale nie blokujemy UX przy awarii webhooka?
+   - (A) Najważniejsze, że pomysł został zapisany lokalnie — to jest źródło prawdy.
+   - (B) Powiadomienia toast/alert mogłyby zniechęcać uczestników przy incydentach.
+   - (C) Logi konsoli wystarczą, żeby MG zdiagnozował problem.
+   **Decyzja:** A jako priorytet niezawodności archiwum, dopełniony spokojnym UX z (B).
 
 ## 5xWhy — Dlaczego rozszerzamy CORS o nagłówek `X-API-Key`
 1. Dlaczego przeglądarka blokowała formularz mimo poprawnego klucza API?

@@ -1,5 +1,23 @@
 import { wireBackendForms } from './js/backend-config.js';
 
+const PRODUCTION_WEBHOOK_URL =
+  'https://submission-belt-pill-donors.trycloudflare.com/webhook/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50';
+
+async function submitIdea(idea) {
+  const res = await fetch(PRODUCTION_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ idea, source: 'github-pages' }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`${res.status} ${await res.text()}`);
+  }
+
+  return res.headers.get('content-type')?.includes('application/json') ? res.json() : {};
+}
+
 const backendReady = wireBackendForms();
 
 (function () {
@@ -109,6 +127,14 @@ const backendReady = wireBackendForms();
       }
 
       setFeedback('Dziękujemy! Pomysł został zapisany.', 'success');
+      const forwardedIdea = {
+        title,
+        content,
+        tags: Array.isArray(payload.tags) ? payload.tags : [],
+      };
+      submitIdea(forwardedIdea).catch((err) => {
+        console.error('Błąd dodatkowego forwardingu do n8n produkcyjnego', err);
+      });
       titleInput.value = '';
       textarea.value = '';
       if (tagsInput) {

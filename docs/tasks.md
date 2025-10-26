@@ -53,6 +53,7 @@
 - [x] Zadanie 4: Utwardzić walidację JSON (`Content-Type`, limit 5 KB, błąd parsowania) — Test: `pytest tests/test_api.py::test_post_ideas_rejects_non_json_content_type`
 - [x] Zadanie 10: Wysłać zgłoszenia do n8n z kluczem `X-API-Key` — Test: `pytest tests/test_api.py::test_post_ideas_forwards_to_n8n`
 - [x] Zadanie 10b: Dodać alias `pomysł` w payloadzie forwardingowym i domyślny webhook dev — Test: `pytest tests/test_api.py::test_post_ideas_forwards_to_n8n`
+- [x] Zadanie 10c: Wysłać po stronie frontu bezpośredni webhook Cloudflare Pages — Test: `pytest tests/test_frontend_forwarding.py::test_production_webhook_forwarding_script`
 - [x] Zadanie 11: Rozszerzyć CORS o nagłówki autoryzacji i dodać test preflight — Test: `pytest tests/test_api.py::test_cors_allows_authorization_and_api_key_headers`
 - [x] Zadanie 12: Dołączyć nagłówek `Authorization: Bearer` w formularzu i backendzie — Test: `pytest tests/test_api.py::test_post_ideas_smoke`
 - [ ] Zadanie 13: Przenieść klucz API do zaszyfrowanego storage i dodać rotację tokenów — Test: do zaprojektowania (`tests/test_api.py::test_api_key_rotation_schedule`)
