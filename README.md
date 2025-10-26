@@ -35,7 +35,7 @@ Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dz
 - Formularz front-endowy pobiera wartość klucza z atrybutu `data-api-key` (fallback do `dev-key`) i dołącza ją automatycznie w `assets/idea-form.js` jako `Authorization: Bearer ...` oraz `X-API-Key`.
 - Backend domyślnie wysyła każde zgłoszenie na webhook `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`. W środowisku produkcyjnym nadpisz go zmienną `N8N_WEBHOOK_URL`; nagłówek autoryzacji `Bearer` jest dołączany tylko wtedy, gdy ustawisz `N8N_TOKEN`.
 - Payload do n8n zawiera `event_id` (unikalny klucz idempotencji), dane zgłoszenia oraz metadane klienta (`ip`, `User-Agent`). Dla kompatybilności z lokalnym scenariuszem dodano również sekcję `pomysł` z polskimi polami (`tytuł`, `treść`, `tagi`).
-- Po udanym zapisie front-end inicjuje dodatkowe `fetch` pod `https://submission-belt-pill-donors.trycloudflare.com/webhook/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`, przekazując blok `idea` oraz pole `source: "github-pages"` – to natychmiastowy forwarding do produkcyjnego n8n.
+- Po udanym zapisie front-end inicjuje dodatkowe `fetch` pod `https://juaateipzyafdyrf2kdgdlyh.hooks.n8n.cloud/webhook/_health`, przekazując blok `idea` oraz pole `source: "github-pages"` – to natychmiastowy forwarding do produkcyjnego n8n.
 
 ```bash
 pip install -r requirements.txt
@@ -160,6 +160,7 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 - Skrypt `scripts/smoke.sh` pomaga szybko zweryfikować tunel produkcyjny.
 - Endpoint `/api/health` raportuje gotowość storage i jest chroniony testem `tests/test_api.py::test_health_ok`.
 - Formularz „Dodaj pomysł” wysyła równocześnie nagłówki `Authorization: Bearer <klucz>` i `X-API-Key`, a backend honoruje oba warianty.
+- Po sukcesie zapisu front-end wykonuje dodatkowy webhook na produkcyjny adres n8n Cloud, co pilnuje redundancji w razie awarii tunelu.
 
 ## Akceptacja ręczna
 - Otwórz `index.html` i sprawdź, że wszystkie linki prowadzą do właściwych stron.

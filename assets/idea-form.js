@@ -1,7 +1,7 @@
 import { wireBackendForms } from './js/backend-config.js';
 
 const PRODUCTION_WEBHOOK_URL =
-  'https://submission-belt-pill-donors.trycloudflare.com/webhook/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50';
+  'https://juaateipzyafdyrf2kdgdlyh.hooks.n8n.cloud/webhook/_health';
 
 async function submitIdea(idea) {
   const res = await fetch(PRODUCTION_WEBHOOK_URL, {
