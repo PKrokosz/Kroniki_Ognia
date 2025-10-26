@@ -36,6 +36,7 @@ Documentation scope:
 - `CONTEXT.md` lists truth sources and active decisions.
 - `.codex/prompts/*.md` store role prompts; follow naming `NN_name.md`.
 - README i kluczowe dokumenty (`docs/plan.md`, `docs/tasks.md`, `docs/notes.md`, `CONTEXT.md`) muszą mieć unikalne nagłówki — kontroluje to `tests/test_documentation.py`.
+- Tytuły ADR w `docs/adr/` muszą być unikalne i zaczynać się od nagłówka `#`; egzekwuje to `tests/test_documentation.py::test_adr_headings_unique`.
 
 Coding standards:
 - Prefer semantic HTML5 elements, accessible markup, and responsive design.

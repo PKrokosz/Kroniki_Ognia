@@ -5,7 +5,7 @@
 - [x] Zadanie 4: Rozszerzyć toolchain backendu o `ruff` i `mypy` — Test: `ruff check .`, `mypy app.py`
 - [x] Zadanie 5: Oczyścić dokumentację z duplikatów i dodać strażnika nagłówków README — Test: `pytest tests/test_documentation.py`
 - [x] Zadanie 5a: Rozszerzyć strażnika dokumentacji o `docs/` (plan, notes, tasks, CONTEXT) — Test: `pytest tests/test_documentation.py::test_docs_headings_unique`
-- [ ] Zadanie 5b: Rozszerzyć walidację nagłówków na katalog `docs/adr/` (tytuły ADR muszą być unikalne) — Test: do zaprojektowania (`tests/test_documentation.py::test_adr_headings_unique`)
+- [x] Zadanie 5b: Rozszerzyć walidację nagłówków na katalog `docs/adr/` (tytuły ADR muszą być unikalne) — Test: `pytest tests/test_documentation.py::test_adr_headings_unique`
 - [ ] Zadanie 6: Dodać lokalny alias (np. `make lint`) agregujący `ruff`, `mypy`, `pytest` — Test: do zaprojektowania (`tests/test_cli_tasks.py::test_make_lint_runs_tools`)
 - [ ] Zadanie 7: Zautomatyzować kontrolę `.gitignore` w CI — Test: do zdefiniowania (`tests/test_gitignore_guard.py`)
 

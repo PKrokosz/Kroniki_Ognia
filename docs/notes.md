@@ -3,6 +3,7 @@
 - `index.html` pełni rolę landingu dla GitHub Pages.
 - Pipeline CI rozszerzono o `ruff` i `mypy`, a dokumentacja (`AGENTS.md`, `CONTEXT.md`, `docs/plan.md`, `docs/tasks.md`) stanowi źródło prawdy.
 - `.gitignore` obejmuje cache testów, środowiska i logi, aby repo pozostawało wolne od artefaktów lokalnych.
+- Test `tests/test_documentation.py::test_adr_headings_unique` pilnuje, aby każdy ADR miał niepowtarzalny nagłówek tytułowy.
 
 ## 5xWhy — Higiena `.gitignore`
 1. Dlaczego potrzebujemy rozszerzyć `.gitignore`?
@@ -30,6 +31,33 @@
    - (B) Automatyzacja pozwoli szybciej wykrywać regresje.
    - (C) Wzmacnia kulturę narzędziową przed MVP.
    **Decyzja:** B jako impuls do CI, uzupełniony o kulturę narzędziową z (C).
+
+## 5xWhy — Dlaczego tytuły ADR muszą być unikalne
+1. Dlaczego pilnujemy unikalnych tytułów ADR?
+   - (A) Aby szybko rozróżniać decyzje architektoniczne w dyskusjach.
+   - (B) Aby zapobiec kolizjom przy linkowaniu do konkretnych ADR-ów.
+   - (C) Aby zachować przejrzystość historii decyzji w pipeline'ie review.
+   **Decyzja:** A jako fundament komunikacji, wzmocniony przejrzystością z (C).
+2. Dlaczego automatyczny test jest potrzebny?
+   - (A) Manualne sprawdzanie nazw jest podatne na błąd przy rozbudowie katalogu.
+   - (B) CI może wcześnie złapać regresję zanim trafi na produkcję.
+   - (C) Pozwala wykryć brak nagłówka w nowym ADR.
+   **Decyzja:** B jako gwarancja ciągłej kontroli, doprawiona walidacją struktury z (C).
+3. Dlaczego walidujemy nagłówek `#` zamiast nazw plików?
+   - (A) Tytuły są prezentowane w UI i linkowane, więc muszą być unikalne.
+   - (B) Pliki mogą współdzielić schemat numeracji bez kolizji treści.
+   - (C) Nazwa pliku nie zawsze odpowiada finalnemu tytułowi decyzji.
+   **Decyzja:** A jako wymóg UX dokumentacji, rozszerzony elastycznością nazewnictwa z (C).
+4. Dlaczego test powinien failować, jeśli brakuje nagłówka?
+   - (A) Zapobiega to publikacji ADR bez podstawowego metadanych.
+   - (B) Wymusza spójność formatowania z istniejącymi wpisami.
+   - (C) Ułatwia generowanie automatycznych spisów treści.
+   **Decyzja:** A jako fundament kompletności, uzupełniony spójnością z (B).
+5. Dlaczego logujemy wszystkie pliki kolidujące w komunikacie błędu?
+   - (A) Przyspiesza to naprawę, wskazując dokładne źródło konfliktu.
+   - (B) Wspiera parowanie pracy architekta i implementera podczas review.
+   - (C) Pozwala dokumentaliście natychmiast poprawić referencje.
+   **Decyzja:** A jako narzędzie szybkiej diagnozy, wzbogacone współpracą z (B).
 
 # Notatki (Faza 2)
 - Paleta barw została przygaszona wokół barw ziemistych; dodano ambientową warstwę tła i animację pulsującą przy zachowaniu czytelności tekstów.

@@ -124,6 +124,7 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 ### Higiena dokumentacji
 - Zredukowano duplikaty w README, planie, zadaniach, notatkach i CONTEXT — nagłówki są unikalne i odzwierciedlają aktualny stan repozytorium.
 - Dodano test `tests/test_documentation.py`, który blokuje ponowne pojawienie się zduplikowanych nagłówków README.
+- Rozszerzono strażnika dokumentacji o katalog `docs/adr/`, dzięki czemu każdy ADR musi mieć unikalny tytuł pilnowany przez `tests/test_documentation.py::test_adr_headings_unique`.
 
 ### Infrastruktura CI
 - Workflow `codex.yml` wykonuje `ruff check .`, `mypy app.py` i `pytest`, aby spełnić wymagania CTO persony dotyczące lintów oraz analizy typów.
