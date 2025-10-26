@@ -15,6 +15,14 @@ def _duplicate_headings(headings: list[str]) -> set[str]:
     return {heading for heading, occurrences in counts.items() if occurrences > 1}
 
 
+def _primary_heading(markdown: str) -> str | None:
+    for line in markdown.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("# "):
+            return stripped
+    return None
+
+
 def test_readme_headings_unique() -> None:
     readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
     headings = _heading_lines(readme)
@@ -37,3 +45,23 @@ def test_docs_headings_unique() -> None:
         if duplicates:
             problems[document.relative_to(REPO_ROOT).as_posix()] = duplicates
     assert not problems, f"Duplikaty nagłówków w dokumentacji: {problems}"
+
+
+def test_adr_headings_unique() -> None:
+    adr_dir = REPO_ROOT / "docs" / "adr"
+    seen_headings: dict[str, str] = {}
+    duplicates: dict[str, list[str]] = {}
+
+    for adr_file in sorted(adr_dir.glob("*.md")):
+        content = adr_file.read_text(encoding="utf-8")
+        heading = _primary_heading(content)
+        relative_name = adr_file.relative_to(REPO_ROOT).as_posix()
+
+        assert heading is not None, f"Brak nagłówka tytułu w {relative_name}"
+
+        if heading in seen_headings:
+            duplicates.setdefault(heading, [seen_headings[heading]]).append(relative_name)
+        else:
+            seen_headings[heading] = relative_name
+
+    assert not duplicates, f"Zduplikowane tytuły ADR: {duplicates}"

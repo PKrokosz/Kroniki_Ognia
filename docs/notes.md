@@ -2,7 +2,9 @@
 - Repo zawiera strony HTML z bogatą treścią narracyjną; wszystkie korzystają ze wspólnej nawigacji i arkusza `assets/styles.css`.
 - `index.html` pełni rolę landingu dla GitHub Pages.
 - Pipeline CI rozszerzono o `ruff` i `mypy`, a dokumentacja (`AGENTS.md`, `CONTEXT.md`, `docs/plan.md`, `docs/tasks.md`) stanowi źródło prawdy.
+- Po sukcesie formularza `assets/idea-form.js` dubluje zgłoszenie na webhook Cloudflare Pages (`source: "github-pages"`), dzięki czemu pomysł trafi do n8n nawet przy awarii tunelu.
 - `.gitignore` obejmuje cache testów, środowiska i logi, aby repo pozostawało wolne od artefaktów lokalnych.
+- Test `tests/test_documentation.py::test_adr_headings_unique` pilnuje, aby każdy ADR miał niepowtarzalny nagłówek tytułowy.
 
 ## 5xWhy — Higiena `.gitignore`
 1. Dlaczego potrzebujemy rozszerzyć `.gitignore`?
@@ -30,6 +32,33 @@
    - (B) Automatyzacja pozwoli szybciej wykrywać regresje.
    - (C) Wzmacnia kulturę narzędziową przed MVP.
    **Decyzja:** B jako impuls do CI, uzupełniony o kulturę narzędziową z (C).
+
+## 5xWhy — Dlaczego tytuły ADR muszą być unikalne
+1. Dlaczego pilnujemy unikalnych tytułów ADR?
+   - (A) Aby szybko rozróżniać decyzje architektoniczne w dyskusjach.
+   - (B) Aby zapobiec kolizjom przy linkowaniu do konkretnych ADR-ów.
+   - (C) Aby zachować przejrzystość historii decyzji w pipeline'ie review.
+   **Decyzja:** A jako fundament komunikacji, wzmocniony przejrzystością z (C).
+2. Dlaczego automatyczny test jest potrzebny?
+   - (A) Manualne sprawdzanie nazw jest podatne na błąd przy rozbudowie katalogu.
+   - (B) CI może wcześnie złapać regresję zanim trafi na produkcję.
+   - (C) Pozwala wykryć brak nagłówka w nowym ADR.
+   **Decyzja:** B jako gwarancja ciągłej kontroli, doprawiona walidacją struktury z (C).
+3. Dlaczego walidujemy nagłówek `#` zamiast nazw plików?
+   - (A) Tytuły są prezentowane w UI i linkowane, więc muszą być unikalne.
+   - (B) Pliki mogą współdzielić schemat numeracji bez kolizji treści.
+   - (C) Nazwa pliku nie zawsze odpowiada finalnemu tytułowi decyzji.
+   **Decyzja:** A jako wymóg UX dokumentacji, rozszerzony elastycznością nazewnictwa z (C).
+4. Dlaczego test powinien failować, jeśli brakuje nagłówka?
+   - (A) Zapobiega to publikacji ADR bez podstawowego metadanych.
+   - (B) Wymusza spójność formatowania z istniejącymi wpisami.
+   - (C) Ułatwia generowanie automatycznych spisów treści.
+   **Decyzja:** A jako fundament kompletności, uzupełniony spójnością z (B).
+5. Dlaczego logujemy wszystkie pliki kolidujące w komunikacie błędu?
+   - (A) Przyspiesza to naprawę, wskazując dokładne źródło konfliktu.
+   - (B) Wspiera parowanie pracy architekta i implementera podczas review.
+   - (C) Pozwala dokumentaliście natychmiast poprawić referencje.
+   **Decyzja:** A jako narzędzie szybkiej diagnozy, wzbogacone współpracą z (B).
 
 # Notatki (Faza 2)
 - Paleta barw została przygaszona wokół barw ziemistych; dodano ambientową warstwę tła i animację pulsującą przy zachowaniu czytelności tekstów.
@@ -247,6 +276,33 @@
    - (B) Zmusza do utrzymania spójności między polską a angielską strukturą.
    - (C) Zapobiega cichym regresjom podczas optymalizacji payloadu.
    **Decyzja:** B jako gwarancja spójności, rozszerzona osłoną regresji z (C).
+
+## 5xWhy — Dlaczego front wysyła dodatkowy webhook produkcyjny
+1. Dlaczego dokładamy klientowi fetch do docelowego webhooka n8n po stronie frontu?
+   - (A) GitHub Pages może działać bez tunelu, a mimo to przekierować pomysł do scenariusza.
+   - (B) Dwustopniowy forwarding (backend → n8n) stanowi dodatkową redundancję.
+   - (C) Pozwala ominąć incydenty z konfiguracją `config.json` podczas warsztatów.
+   **Decyzja:** A jako sposób na niezależność od tunelu, wzmocniona redundancją z (B).
+2. Dlaczego robimy to natychmiast po komunikacie sukcesu, zamiast czekać na cron lub worker?
+   - (A) Uczestnik widzi, że jego pomysł trafił „dalej” w tym samym kroku.
+   - (B) Cron wymagałby dodatkowej infrastruktury i monitoringu.
+   - (C) Worker w przeglądarce (Service Worker) podniósłby próg skomplikowania.
+   **Decyzja:** A jako UX-first, doprawione prostotą operacyjną z (B).
+3. Dlaczego korzystamy z `mode: "cors"`, mimo że webhook jest publiczny?
+   - (A) Zapewnia kompatybilność z GitHub Pages i Cloudflare Pages.
+   - (B) Pozwala kontrolować, że `Content-Type` zostanie poprawnie dołączony.
+   - (C) Ułatwia debugowanie, bo przeglądarka wymusi preflight przy nowych nagłówkach.
+   **Decyzja:** A jako wymóg hostingu, rozszerzony możliwością kontroli nagłówków z (B).
+4. Dlaczego pakujemy dane w obiekt `idea`, zamiast wysyłać czysty tekst?
+   - (A) Zachowujemy kompatybilność z dotychczasowym scenariuszem n8n.
+   - (B) Obiekt łatwo rozszerzyć o metadane (np. `id` z backendu) w kolejnych iteracjach.
+   - (C) Minimalizujemy ryzyko, że w JSON-ie znikną tagi pomysłu.
+   **Decyzja:** A jako wymóg integracji, wzbogacony elastycznością z (B).
+5. Dlaczego logujemy błąd, ale nie blokujemy UX przy awarii webhooka?
+   - (A) Najważniejsze, że pomysł został zapisany lokalnie — to jest źródło prawdy.
+   - (B) Powiadomienia toast/alert mogłyby zniechęcać uczestników przy incydentach.
+   - (C) Logi konsoli wystarczą, żeby MG zdiagnozował problem.
+   **Decyzja:** A jako priorytet niezawodności archiwum, dopełniony spokojnym UX z (B).
 
 ## 5xWhy — Dlaczego rozszerzamy CORS o nagłówek `X-API-Key`
 1. Dlaczego przeglądarka blokowała formularz mimo poprawnego klucza API?

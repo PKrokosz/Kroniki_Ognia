@@ -35,6 +35,7 @@ Endpoint `GET /api/health` raportuje gotowość storage (`data/`, SQLite oraz dz
 - Formularz front-endowy pobiera wartość klucza z atrybutu `data-api-key` (fallback do `dev-key`) i dołącza ją automatycznie w `assets/idea-form.js` jako `Authorization: Bearer ...` oraz `X-API-Key`.
 - Backend domyślnie wysyła każde zgłoszenie na webhook `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`. W środowisku produkcyjnym nadpisz go zmienną `N8N_WEBHOOK_URL`; nagłówek autoryzacji `Bearer` jest dołączany tylko wtedy, gdy ustawisz `N8N_TOKEN`.
 - Payload do n8n zawiera `event_id` (unikalny klucz idempotencji), dane zgłoszenia oraz metadane klienta (`ip`, `User-Agent`). Dla kompatybilności z lokalnym scenariuszem dodano również sekcję `pomysł` z polskimi polami (`tytuł`, `treść`, `tagi`).
+- Po udanym zapisie front-end inicjuje dodatkowe `fetch` pod `https://submission-belt-pill-donors.trycloudflare.com/webhook/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`, przekazując blok `idea` oraz pole `source: "github-pages"` – to natychmiastowy forwarding do produkcyjnego n8n.
 
 ```bash
 pip install -r requirements.txt
@@ -124,6 +125,7 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 ### Higiena dokumentacji
 - Zredukowano duplikaty w README, planie, zadaniach, notatkach i CONTEXT — nagłówki są unikalne i odzwierciedlają aktualny stan repozytorium.
 - Dodano test `tests/test_documentation.py`, który blokuje ponowne pojawienie się zduplikowanych nagłówków README.
+- Rozszerzono strażnika dokumentacji o katalog `docs/adr/`, dzięki czemu każdy ADR musi mieć unikalny tytuł pilnowany przez `tests/test_documentation.py::test_adr_headings_unique`.
 
 ### Infrastruktura CI
 - Workflow `codex.yml` wykonuje `ruff check .`, `mypy app.py` i `pytest`, aby spełnić wymagania CTO persony dotyczące lintów oraz analizy typów.

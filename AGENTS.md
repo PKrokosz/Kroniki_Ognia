@@ -22,6 +22,7 @@ Repo owner directives:
 - Backend `app.py` utrzymuje endpoint `GET /api/health` (JSON `{ "status": "ok" }`) oraz restrykcyjną walidację `POST /api/ideas`
   (`Content-Type: application/json`, limit 5 KB, poprawne JSON-y). Aktualizacje muszą zachować te kontrakty i testy.
 - Forwarding do n8n musi utrzymywać alias `pomysł` (`tytuł`, `treść`, `tagi`) i domyślnie kierować na `http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`; produkcję konfigurujemy przez `N8N_WEBHOOK_URL` i opcjonalny `N8N_TOKEN`.
+- Front-end po udanym `POST /api/ideas` wykonuje dodatkowy `fetch` na `https://submission-belt-pill-donors.trycloudflare.com/webhook/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50` z blokiem `{ idea, source: "github-pages" }`; nie wolno blokować UX przy awarii tego webhooka.
 - Storage dla nowych funkcji trafia do katalogu `data/` (tworzonego dynamicznie). Repozytorium śledzi jedynie pliki konfiguracyjne
   i `.gitignore`, bez binarnych artefaktów baz danych.
 - `public/config.json` przechowuje `BACKEND_URL` tunelu backendu; brak tego pliku lub klucza traktujemy jako błąd krytyczny.
@@ -36,6 +37,7 @@ Documentation scope:
 - `CONTEXT.md` lists truth sources and active decisions.
 - `.codex/prompts/*.md` store role prompts; follow naming `NN_name.md`.
 - README i kluczowe dokumenty (`docs/plan.md`, `docs/tasks.md`, `docs/notes.md`, `CONTEXT.md`) muszą mieć unikalne nagłówki — kontroluje to `tests/test_documentation.py`.
+- Tytuły ADR w `docs/adr/` muszą być unikalne i zaczynać się od nagłówka `#`; egzekwuje to `tests/test_documentation.py::test_adr_headings_unique`.
 
 Coding standards:
 - Prefer semantic HTML5 elements, accessible markup, and responsive design.
