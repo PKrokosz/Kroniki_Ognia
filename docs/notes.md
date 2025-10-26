@@ -2,7 +2,7 @@
 - Repo zawiera strony HTML z bogatą treścią narracyjną; wszystkie korzystają ze wspólnej nawigacji i arkusza `assets/styles.css`.
 - `index.html` pełni rolę landingu dla GitHub Pages.
 - Pipeline CI rozszerzono o `ruff` i `mypy`, a dokumentacja (`AGENTS.md`, `CONTEXT.md`, `docs/plan.md`, `docs/tasks.md`) stanowi źródło prawdy.
-- Po sukcesie formularza `assets/idea-form.js` dubluje zgłoszenie na webhook Cloudflare Pages (`source: "github-pages"`), dzięki czemu pomysł trafi do n8n nawet przy awarii tunelu.
+- Po sukcesie formularza `assets/idea-form.js` dubluje zgłoszenie na webhook produkcyjny n8n Cloud (`https://juaateipzyafdyrf2kdgdlyh.hooks.n8n.cloud/webhook/_health`, `source: "github-pages"`), dzięki czemu pomysł trafi do n8n nawet przy awarii tunelu.
 - `.gitignore` obejmuje cache testów, środowiska i logi, aby repo pozostawało wolne od artefaktów lokalnych.
 - Test `tests/test_documentation.py::test_adr_headings_unique` pilnuje, aby każdy ADR miał niepowtarzalny nagłówek tytułowy.
 
@@ -193,6 +193,7 @@
 - README zawiera sekcję „Dev: Quick Tunnel → lokalny Flask” z krokami konfiguracji tunelu.
 - `POST /api/ideas` wymaga nagłówka `X-API-Key` (domyślnie `dev-key`) i potrafi przekazać zdarzenie do n8n w tle.
 - Forwarding n8n ma domyślny adres developerski (`http://localhost:5678/webhook-test/f11f16e1-4e7e-4fa6-b99e-bf1e47f02a50`) oraz alias payloadu `pomysł` dla lokalnych scenariuszy.
+- Front-end równolegle uderza w produkcyjny webhook n8n Cloud (`https://juaateipzyafdyrf2kdgdlyh.hooks.n8n.cloud/webhook/_health`) niezależnie od tunelu.
 - Workflow `ci.yml` uruchamia `pytest`, `ruff` i `mypy` przy każdym PR.
 - Test preflight CORS pilnuje, że nagłówek `X-API-Key` przechodzi z GitHub Pages na tunelowany backend.
 
