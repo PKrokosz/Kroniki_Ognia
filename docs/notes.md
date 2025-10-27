@@ -6,6 +6,12 @@
 - `.gitignore` obejmuje cache testów, środowiska i logi, aby repo pozostawało wolne od artefaktów lokalnych.
 - Test `tests/test_documentation.py::test_adr_headings_unique` pilnuje, aby każdy ADR miał niepowtarzalny nagłówek tytułowy.
 
+## Raport układu — karty i zakładki edycji (2024-09-19)
+- `.cards-grid.columns-2` wykorzystywało wyłącznie `--card-min-width`, więc przy szerokości powyżej ~960 px przeglądarka układała trzy kolumny w pierwszym rzędzie, pozostawiając czwarty kafelek samotnie w kolejnym wierszu. Brakowało zmiennej limitującej liczbę kolumn i ograniczającej szerokość całej siatki, co teraz kontroluje test `tests/test_responsive_theme.py::test_cards_grid_columns_capped`.
+- `.tile-edit-tab` miało `right: -18px`, co wypychało przycisk „Edytuj” poza obrys kafelka. W połączeniu z rotacją `rotate(90deg)` powodowało to, że zakładki nachodziły na sąsiednie karty i generowały horyzontalny scroll na desktopie.
+- `.tile-editable__content` nie posiadało dodatkowego odsunięcia od prawej krawędzi, więc po skorygowaniu zakładki tekst mógł dotykać przycisku. Dodano elastyczny `padding-inline-end`, aby zachować odstęp przy różnych szerokościach kafelków.
+- Sekcja `.page-hero` na stronie głównej korzystała jedynie z gradientu. Aby fotografie z `img/` stały się realnym tłem, dołożono wielowarstwowy `background-image` z obrazami `img/1.jpg`, `img/4.jpg`, `img/7.jpg` oraz dopasowanymi pozycjami i blendami; regresję blokuje test `tests/test_responsive_theme.py::test_home_hero_uses_gallery_images`.
+
 ## 5xWhy — Higiena `.gitignore`
 1. Dlaczego potrzebujemy rozszerzyć `.gitignore`?
    - (A) Aby uniknąć przypadkowego commitowania wirtualnych środowisk.
@@ -119,6 +125,33 @@
    - (B) Testy kodują nowe kontrakty CTO persony i blokują regresje responsywności.
    - (C) Automatyczny strażnik skraca feedback podczas review i CI.
    **Decyzja:** B jako forma kontraktu, rozszerzona o szybki feedback z (C).
+
+## 5xWhy — Limit kolumn i zakładka edycji (2024-09-19)
+1. Dlaczego potrzebny był limit kolumn w `.cards-grid.columns-2`?
+   - (A) Aby zapobiec układaniu trzeciej kolumny przy szerokich ekranach i zachować symetrię kompendium.
+   - (B) Aby ułatwić projektowanie nowych sekcji kart poprzez jeden wspólny parametr.
+   - (C) Aby uprościć testy wizualne manualnie wykonywane przez zespół.
+   **Decyzja:** A jako klucz do spójności wizualnej, wzmocnione modularnością z (B).
+2. Dlaczego wprowadzamy `max-width` zależne od `--cards-max-columns`?
+   - (A) Pozwala fizycznie ograniczyć szerokość kontenera i wymusić dziedziczenie liczby kolumn.
+   - (B) Minimalizuje konieczność dopisywania `margin: 0 auto` w HTML.
+   - (C) Chroni przed dryfowaniem zakładek edycji poza układ kart.
+   **Decyzja:** A jako bezpośrednia kontrola layoutu, doprawiona ochroną przed dryfem z (C).
+3. Dlaczego repozycjonujemy `.tile-edit-tab` do wnętrza kafelka?
+   - (A) Wystające przyciski generowały horyzontalny scroll i psuły rytm kolumn.
+   - (B) Ułatwia to interakcję na urządzeniach dotykowych, gdzie dotknięcie elementu tuż przy krawędzi bywa trudne.
+   - (C) Pozwala zachować wrażenie obramowania bez ingerencji w `overflow` kafelka.
+   **Decyzja:** A jako eliminacja defektu UX, z dodatkiem ergonomii dotykowej z (B).
+4. Dlaczego dodajemy `padding-inline-end` do `.tile-editable__content`?
+   - (A) Tekst nie będzie nachodził na zakładkę, gdy ta zostanie przesunięta do wnętrza.
+   - (B) Ułatwia to rozbudowę o ikonografię w prawym górnym rogu.
+   - (C) Zapobiega zbyt wąskiemu polu edycji przy włączonym panelu bocznym.
+   **Decyzja:** A jako warunek czytelności, z potencjałem na ikonografię z (B).
+5. Dlaczego sekcja `.page-home .page-hero` korzysta z trzech obrazów jednocześnie?
+   - (A) Pozwala natychmiast pokazać kluczowe fotografie projektu bez dodatkowych elementów HTML.
+   - (B) Wzmacnia narrację wizualną spójną z sekcją visual key.
+   - (C) Ułatwia testom automatycznym kontrolę użytych zasobów.
+   **Decyzja:** A jako realizacja potrzeby właściciela, rozszerzona o spójność narracji z (B).
 
 # Notatki (Faza 3)
 - Baner „flying object” prowadzi do Notebook LM i archiwum Google Drive; animacja respektuje `prefers-reduced-motion`.

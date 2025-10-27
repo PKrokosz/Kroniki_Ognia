@@ -51,9 +51,27 @@ def test_cards_grid_auto_fit(stylesheet_text: str) -> None:
     assert "--card-min-width" in block, "Siatka kart wymaga zmiennej --card-min-width do sterowania szerokością kafelka."
 
 
+def test_cards_grid_columns_capped(stylesheet_text: str) -> None:
+    base_block = _extract_block(stylesheet_text, ".cards-grid")
+    assert "--cards-max-columns" in base_block, "Brakuje zmiennej ograniczającej liczbę kolumn."
+    assert "max-width:" in base_block and "var(--cards-max-columns" in base_block, (
+        "Siatka powinna ograniczać maksymalną szerokość zależnie od liczby kolumn."
+    )
+
+    columns_two = _extract_block(stylesheet_text, ".cards-grid.columns-2")
+    assert "--cards-max-columns: 2" in columns_two, "Wariant columns-2 powinien blokować układ do dwóch kolumn."
+
+
 def test_visual_key_images_blurred(stylesheet_text: str) -> None:
     block = _extract_block(stylesheet_text, ".visual-key__tile img")
     assert block, "Brak definicji obrazów visual key w arkuszu stylów."
     assert "position: absolute" in block, "Obrazy visual key powinny wypełniać kafelek jako tło."
     assert "filter: blur" in block, "Obrazy visual key muszą być rozmyte dla efektu tła."
     assert "opacity:" in block, "Obrazy visual key powinny mieć kontrolowaną przezroczystość."
+
+
+def test_home_hero_uses_gallery_images(stylesheet_text: str) -> None:
+    block = _extract_block(stylesheet_text, ".page-home .page-hero")
+    assert block, "Brak dedykowanej sekcji tła dla strony głównej."
+    for image in ("img/1.jpg", "img/4.jpg", "img/7.jpg"):
+        assert image in block, f"Tło strony głównej powinno wykorzystywać {image}."

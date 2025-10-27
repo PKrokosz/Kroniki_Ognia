@@ -27,6 +27,27 @@ class ScriptParser(HTMLParser):
         self.scripts.append(attrs_dict.get("src"))
 
 
+def _extract_block(css: str, selector: str) -> str:
+    start = css.find(selector)
+    if start == -1:
+        return ""
+
+    brace_index = css.find("{", start)
+    if brace_index == -1:
+        return ""
+
+    depth = 0
+    for index in range(brace_index, len(css)):
+        char = css[index]
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return css[start : index + 1]
+    return ""
+
+
 def test_editable_tiles_module_loaded():
     for html_file in HTML_FILES:
         parser = ScriptParser()
@@ -45,6 +66,19 @@ def test_editable_tiles_styles_defined():
     ]
     for snippet in required_snippets:
         assert snippet in css, f"Brak definicji stylu {snippet} w assets/styles.css"
+
+
+def test_editable_tab_positioned_within_card():
+    css = CSS_FILE.read_text(encoding="utf-8")
+    assert ".tile-edit-tab" in css, "Brak sekcji stylującej przycisk edycji."
+    assert "right: clamp" in css, "Zakładka edycji powinna być zakotwiczona wewnątrz kafelka."
+    assert "transform: rotate(90deg)" in css, "Zachowaj estetykę obróconej zakładki."
+
+
+def test_tile_editable_content_has_padding():
+    css = CSS_FILE.read_text(encoding="utf-8")
+    assert ".tile-editable__content" in css, "Brak definicji treści kafelka."
+    assert "padding-inline-end" in css, "Treść kafelka powinna omijać zakładkę edycji."
 
 
 def test_editable_tiles_fallback_documented():
