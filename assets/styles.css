@@ -27,6 +27,13 @@ html, body {
   min-height: 100%;
 }
 
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+}
+
 body {
   position: relative;
   min-height: 100vh;
