@@ -396,6 +396,18 @@ a:focus {
   overflow: hidden;
 }
 
+.page-home .page-hero {
+  background-image:
+    linear-gradient(135deg, rgba(18, 14, 22, 0.82), rgba(8, 6, 12, 0.78)),
+    url('../img/1.jpg'),
+    url('../img/4.jpg'),
+    url('../img/7.jpg');
+  background-size: cover, 60%, 55%, 58%;
+  background-position: center, 8% 42%, 50% 38%, 92% 44%;
+  background-repeat: no-repeat;
+  background-blend-mode: normal, screen, lighten, lighten;
+}
+
 .page-hero::after {
   content: '';
   position: absolute;
@@ -405,6 +417,12 @@ a:focus {
   mix-blend-mode: screen;
   opacity: 0.55;
   pointer-events: none;
+}
+
+.page-home .page-hero::after {
+  opacity: 0.38;
+  background: radial-gradient(circle at 50% 20%, rgba(221, 175, 108, 0.18), transparent 75%),
+    linear-gradient(160deg, rgba(38, 30, 44, 0.4), rgba(9, 7, 11, 0.7));
 }
 
 .page-hero .container {
@@ -469,22 +487,33 @@ a:focus {
 
 .cards-grid {
   --card-min-width: 260px;
+  --cards-gap: clamp(16px, 2.5vw, 28px);
+  --cards-max-columns: 4;
   display: grid;
-  gap: clamp(16px, 2.5vw, 28px);
+  gap: var(--cards-gap);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min-width, 260px)), 1fr));
   align-items: stretch;
+  width: 100%;
+  margin-inline: auto;
+  max-width: calc(
+    var(--cards-max-columns, 4) * var(--card-min-width, 260px) +
+      (var(--cards-max-columns, 4) - 1) * var(--cards-gap, 24px)
+  );
 }
 
 .cards-grid.columns-2 {
   --card-min-width: 320px;
+  --cards-max-columns: 2;
 }
 
 .cards-grid.columns-3 {
   --card-min-width: 280px;
+  --cards-max-columns: 3;
 }
 
 .cards-grid.columns-4 {
   --card-min-width: 220px;
+  --cards-max-columns: 4;
 }
 
 @media (min-width: 768px) {
@@ -728,6 +757,7 @@ a:focus {
 
 .tile-editable__content {
   transition: margin-right 0.3s ease;
+  padding-inline-end: clamp(16px, 4vw, 32px);
 }
 
 .tile-editable.tile-editing .tile-editable__content {
@@ -743,8 +773,8 @@ a:focus {
 
 .tile-edit-tab {
   position: absolute;
-  top: 32px;
-  right: -18px;
+  top: clamp(24px, 4vw, 32px);
+  right: clamp(12px, 3vw, 18px);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -765,7 +795,7 @@ a:focus {
 .tile-edit-tab:focus {
   background: rgba(196, 161, 90, 0.36);
   border-color: rgba(196, 161, 90, 0.85);
-  transform: rotate(90deg) translateY(-2px);
+  transform: rotate(90deg) translateX(4px);
 }
 
 .tile-edit-tab:disabled,

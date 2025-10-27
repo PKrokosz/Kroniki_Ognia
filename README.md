@@ -117,10 +117,12 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 - Siatki `.cards-grid` korzystają z `repeat(auto-fit, minmax(...))` sterowanego zmienną `--card-min-width`, dzięki czemu karty zachowują proporcje na wąskich i szerokich ekranach.
 - Tekst w kartach i sekcjach ma wymuszone `overflow-wrap:anywhere`, co eliminuje problem z nadmiernie długimi słowami i nierównym zawijaniem.
 - Kafelki sekcji „Próby Płomienia” renderują fotografie jako rozmyte tła (`filter: blur(...)`) z półprzezroczystym overlayem, pozostawiając czytelny tekst figcaption.
+- Limit `--cards-max-columns` i zależny od niego `max-width` utrzymują dwie kolumny w kompendium nawet na szerokich ekranach, co potwierdza test `tests/test_responsive_theme.py::test_cards_grid_columns_capped`.
 
 ### Ambient i warstwa wizualna
 - Podniesiono widoczność animowanych teł: `opacity` warstw osiąga ≥ 0.45, a filtr `saturate(1.35) brightness(1.12)` eksponuje fotografie z `img/`.
 - `ambient-background` posiada `z-index: -1`, dzięki czemu dryfujące warstwy znajdują się ponad innymi efektami tła i są weryfikowane testem `tests/test_ambient_backgrounds.py::test_ambient_layers_meet_visibility_thresholds`.
+- Sekcja bohatera na stronie głównej korzysta z nakładających się zdjęć `img/1.jpg`, `img/4.jpg`, `img/7.jpg`, dzięki czemu fotografie są widocznym tłem bez dodatkowego HTML; test `tests/test_responsive_theme.py::test_home_hero_uses_gallery_images` pilnuje mapowania zasobów.
 
 ### Higiena dokumentacji
 - Zredukowano duplikaty w README, planie, zadaniach, notatkach i CONTEXT — nagłówki są unikalne i odzwierciedlają aktualny stan repozytorium.
@@ -135,6 +137,7 @@ Workflow `.github/workflows/codex.yml` uruchamia `ruff`, `mypy` oraz `pytest` pr
 - Po otwarciu zakładki zawartość kafelka przechodzi w tryb `contenteditable`; zapis utrwala zmiany w `localStorage`, a komunikat `aria-live` potwierdza operację.
 - Brak dostępu do `localStorage` blokuje edycję i wyświetla globalne powiadomienie o konieczności odblokowania pamięci przeglądarki.
 - Test `tests/test_editable_tiles.py` pilnuje obecności modułu JS na każdej stronie i obecności styli dla zakładki oraz fallbacku.
+- Repozycjonowanie zakładki `Edytuj` i dodatkowy `padding-inline-end` w treści kafelka zapobiegają wychodzeniu przycisku poza obrys kart; kontrakt pilnują testy `tests/test_editable_tiles.py::test_editable_tab_positioned_within_card` i `tests/test_editable_tiles.py::test_tile_editable_content_has_padding`.
 
 ## Aktualizacja fazy 1
 - Ujednolicona nawigacja i styl wszystkich stron HTML; test `tests/test_navigation.py` pilnuje spójności.

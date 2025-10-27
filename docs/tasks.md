@@ -17,6 +17,9 @@
 - [x] Zadanie 5: Wprowadzić sekcję visual key z trzema progami narracyjnymi i testem — Test: `pytest tests/test_visual_key.py::test_visual_key_section_present`
 - [x] Zadanie 8: Ustandaryzować siatki kart poprzez `repeat(auto-fit, minmax(...))` i `--card-min-width` — Test: `pytest tests/test_responsive_theme.py::test_cards_grid_auto_fit`
 - [x] Zadanie 9: Zamienić fotografie visual key na rozmyte tła z kontrolą opacity — Test: `pytest tests/test_responsive_theme.py::test_visual_key_images_blurred`
+- [x] Zadanie 10: Ograniczyć `.cards-grid.columns-2` do dwóch kolumn przy pomocy `--cards-max-columns` oraz limitu `max-width` — Test: `pytest tests/test_responsive_theme.py::test_cards_grid_columns_capped`
+- [x] Zadanie 11: Uwidocznić fotografie `img/1.jpg`, `img/4.jpg`, `img/7.jpg` w tle sekcji bohatera strony głównej — Test: `pytest tests/test_responsive_theme.py::test_home_hero_uses_gallery_images`
+- [ ] Zadanie 12: Zaprojektować animowaną sekwencję przewijania tła bohatera (parallax + prefers-reduced-motion) — Test: do zaprojektowania (`tests/test_responsive_theme.py::test_home_hero_parallax_placeholder`)
 - [ ] Zadanie 6: Sterować prędkością warstw tła zależnie od scrolla (`prefers-reduced-motion`, IntersectionObserver) — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_scroll_speed_variant`)
 - [ ] Zadanie 7: Zaprojektować tryb akcentowy zwiększający ekspozycję warstw w sekcjach CTA — Test: do zaprojektowania (`tests/test_ambient_backgrounds.py::test_section_accent_visibility`)
 
@@ -67,4 +70,5 @@
 ## Faza 6 — Kuracja treści kafelków
 - [x] Zadanie 1: Udostępnić zakładki edycji treści kafelków z zapisem w `localStorage` — Test: `pytest tests/test_editable_tiles.py::test_editable_tiles_module_loaded`
 - [x] Zadanie 1a: Zaprojektować fallback UI przy braku `localStorage` i udokumentować proces — Test: `pytest tests/test_editable_tiles.py::test_editable_tiles_fallback_documented`
+- [x] Zadanie 1b: Uporządkować położenie zakładek `Edytuj` wewnątrz kafelków i odsunąć treść od krawędzi — Testy: `pytest tests/test_editable_tiles.py::test_editable_tab_positioned_within_card`, `pytest tests/test_editable_tiles.py::test_tile_editable_content_has_padding`
 - [ ] Zadanie 2: Zasymulować synchronizację edytowanych kafelków przez eksport JSON (proof-of-concept) — Test: do zaplanowania (`tests/test_editable_tiles.py::test_tile_export_placeholder`)
