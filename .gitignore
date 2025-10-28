@@ -11,6 +11,7 @@ env/
 # Distribution / packaging
 build/
 dist/
+!mindmap-viewer/dist/
 *.egg-info/
 .eggs/
 

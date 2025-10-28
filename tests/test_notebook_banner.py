@@ -8,6 +8,7 @@ HTML_FILES = [
     REPO_ROOT / "cechy.html",
     REPO_ROOT / "draft_planu.html",
     REPO_ROOT / "imersja_mechanika.html",
+    REPO_ROOT / "mindmap.html",
     REPO_ROOT / "organizacja.html",
 ]
 
