@@ -11,8 +11,6 @@ HTML_FILES = [
 ]
 CSS_FILE = REPO_ROOT / "assets" / "styles.css"
 JS_FILE = REPO_ROOT / "assets" / "editable-tiles.js"
-README_FILE = REPO_ROOT / "README.md"
-NOTES_FILE = REPO_ROOT / "docs" / "notes.md"
 
 
 class ScriptParser(HTMLParser):
@@ -48,51 +46,39 @@ def _extract_block(css: str, selector: str) -> str:
     return ""
 
 
-def test_editable_tiles_module_loaded():
+def test_editable_tiles_module_removed():
     for html_file in HTML_FILES:
         parser = ScriptParser()
         parser.feed(html_file.read_text(encoding="utf-8"))
         assert (
-            "assets/editable-tiles.js" in parser.scripts
-        ), f"Brak modułu editable-tiles na stronie {html_file.name}"
+            "assets/editable-tiles.js" not in parser.scripts
+        ), f"Strona {html_file.name} nadal ładuje wyłączoną zakładkę edycji"
 
 
-def test_editable_tiles_styles_defined():
+def test_editable_tiles_styles_removed():
     css = CSS_FILE.read_text(encoding="utf-8")
-    required_snippets = [
+    forbidden_snippets = [
         ".tile-edit-tab",
         ".tile-edit-panel",
-        ".tile-edit-notice",
+        ".tile-editable__content",
     ]
-    for snippet in required_snippets:
-        assert snippet in css, f"Brak definicji stylu {snippet} w assets/styles.css"
+    for snippet in forbidden_snippets:
+        assert (
+            snippet not in css
+        ), f"assets/styles.css nadal zawiera styl {snippet}, mimo usunięcia zakładki edycji"
 
 
-def test_editable_tab_positioned_within_card():
+def test_no_residual_positioning_rules():
     css = CSS_FILE.read_text(encoding="utf-8")
-    assert ".tile-edit-tab" in css, "Brak sekcji stylującej przycisk edycji."
-    assert "right: clamp" in css, "Zakładka edycji powinna być zakotwiczona wewnątrz kafelka."
-    assert "transform: rotate(90deg)" in css, "Zachowaj estetykę obróconej zakładki."
+    assert "right: clamp" not in css, "Pozostały reguły pozycjonujące zakładkę edycji."
+    assert "transform: rotate(90deg)" not in css, "Pozostały obroty zakładki edycji."
 
 
-def test_tile_editable_content_has_padding():
+def test_no_padding_reserved_for_edit_panel():
     css = CSS_FILE.read_text(encoding="utf-8")
-    assert ".tile-editable__content" in css, "Brak definicji treści kafelka."
-    assert "padding-inline-end" in css, "Treść kafelka powinna omijać zakładkę edycji."
+    assert "padding-inline-end" not in css, "Pozostawiono odsunięcie pod panel edycji."
+    assert "margin-right: 260px" not in css, "Pozostawiono margines dla panelu edycji."
 
 
-def test_editable_tiles_fallback_documented():
-    js_content = JS_FILE.read_text(encoding="utf-8")
-    assert (
-        "Edycja kafelków jest wyłączona" in js_content
-    ), "Brak komunikatu fallbacku w assets/editable-tiles.js"
-
-    readme_content = README_FILE.read_text(encoding="utf-8")
-    assert (
-        "Brak dostępu do `localStorage` blokuje edycję" in readme_content
-    ), "README nie opisuje zachowania bez localStorage"
-
-    notes_content = NOTES_FILE.read_text(encoding="utf-8")
-    assert (
-        "brak dostępu komunikowany jest w UI" in notes_content
-    ), "docs/notes.md nie odnotowuje fallbacku UI"
+def test_editable_tiles_module_deleted():
+    assert not JS_FILE.exists(), "Plik assets/editable-tiles.js powinien zostać usunięty"
