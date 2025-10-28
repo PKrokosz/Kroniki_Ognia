@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kroniki Ognia — Mapa myśli</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="theme-dark page-mindmap">
+  <div class="ambient-background" aria-hidden="true">
+    <div class="ambient-layer ambient-layer--1"></div>
+    <div class="ambient-layer ambient-layer--2"></div>
+    <div class="ambient-layer ambient-layer--3"></div>
+  </div>
+  <a class="skip-link" href="#main-content">Pomiń nawigację</a>
+  <div class="notebook-banner" role="complementary" aria-label="Notebook LM — baza wiedzy z brainstormu">
+    <div class="notebook-banner__inner">
+      <span class="notebook-banner__icon" aria-hidden="true">🪽</span>
+      <div class="notebook-banner__content">
+        <p class="notebook-banner__text">
+          Latający zwiadowca projektu niesie wieści: pełna baza wiedzy z burzy mózgów czeka w Notebooku.
+        </p>
+        <div class="notebook-banner__cta-group" role="group" aria-label="Materiały projektu Kroniki Ognia">
+          <a class="notebook-banner__link" href="https://notebooklm.google.com/notebook/cf797fdc-a8c2-44eb-b933-5ca5a3216674" target="_blank" rel="noopener">
+            Otwórz Notebook LM
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M3.2 8a.8.8 0 0 1 .8-.8h6.02L7.56 4.76a.8.8 0 0 1 1.13-1.13l4 4a.8.8 0 0 1 0 1.13l-4 4a.8.8 0 1 1-1.13-1.13L10.02 8.8H4a.8.8 0 0 1-.8-.8Z" />
+            </svg>
+          </a>
+          <a class="notebook-banner__link notebook-banner__link--drive" href="https://drive.google.com/drive/folders/1ra1Qt97ojx5oc_De8R3ubHayC_gnKLRO?usp=sharing" target="_blank" rel="noopener">
+            <svg class="notebook-banner__drive-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-icon="google-drive">
+              <path d="M7.53 3 2 12l4.47 7.5h6.13L7.53 3Z" fill="#0F9D58" />
+              <path d="m16.47 3 5.53 9-4.47 7.5H11.4l5.07-8.25L16.47 3Z" fill="#4285F4" />
+              <path d="M11.4 19.5H6.47L2 12h6.13l3.27 5.31L11.4 19.5Z" fill="#F4B400" />
+            </svg>
+            Archiwum Google Drive
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Kroniki Ognia</a>
+      <nav class="site-nav" aria-label="Główna nawigacja">
+        <ul>
+          <li><a href="index.html">🏠 Strona główna</a></li>
+          <li><a href="cechy.html">🔥 Cechy świata</a></li>
+          <li><a href="draft_planu.html">🧭 Draft planu</a></li>
+          <li><a href="imersja_mechanika.html">✨ Imersja i mechanika</a></li>
+          <li><a href="mindmap.html">🧠 Mapa myśli</a></li>
+          <li><a href="organizacja.html">🏛️ Organizacja</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Nawigator drzewa myśli</h1>
+      <p>Interaktywna mapa porządkująca gałęzie koncepcji Kronik Ognia.</p>
+      <p class="section-intro-text">Ścieżki prowadzą przez główne filary produkcji — od wizji świata, przez rytuały i plan dnia, po pipeline organizacyjny.</p>
+      <div class="hero-icons">🧠 🔥 🗺️</div>
+    </div>
+  </section>
+  <main id="main-content" class="site-main">
+    <div class="content-container">
+      <section class="content-section">
+        <h2 class="section-title">Jak pracować z mapą</h2>
+        <div class="mindmap-grid">
+          <div class="mindmap-panel">
+            <h3>Wskazówki nawigacyjne</h3>
+            <ul class="mindmap-instructions">
+              <li><strong>Strzałki ← →</strong> — zmieniają zaznaczoną gałąź na danym poziomie.</li>
+              <li><strong>Enter</strong> — wchodzi głębiej w wybraną gałąź, otwierając jej szczegóły.</li>
+              <li><strong>Strzałka ↑</strong> — cofa na wyższy poziom, pozwalając szybko odnaleźć kontekst.</li>
+              <li><strong>Kliknięcia</strong> — działają równolegle do skrótów, ułatwiając prezentację mapy w trakcie warsztatu.</li>
+            </ul>
+            <p class="mindmap-note">Mapa bazuje na danych z modułu mindmap_viewer i aktualizuje się wraz z rozwojem repozytorium.</p>
+          </div>
+          <div class="mindmap-viewer">
+            <iframe
+              src="mindmap-viewer/dist/index.html"
+              title="Interaktywny mindmap Kronik Ognia"
+              loading="lazy"
+              class="mindmap-frame"
+            ></iframe>
+            <p class="mindmap-fallback" role="note">
+              Jeśli osadzona aplikacja nie załaduje się, otwórz ją bezpośrednio pod adresem
+              <a href="mindmap-viewer/dist/index.html">mindmap-viewer/dist/index.html</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    Kroniki Ognia • Statyczna dokumentacja projektu — przygotowane do publikacji na GitHub Pages.
+  </footer>
+</body>
+</html>

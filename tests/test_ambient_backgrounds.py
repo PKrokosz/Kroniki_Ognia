@@ -10,6 +10,7 @@ HTML_FILES = {
     REPO_ROOT / "cechy.html": "page-cechy",
     REPO_ROOT / "draft_planu.html": "page-draft",
     REPO_ROOT / "imersja_mechanika.html": "page-imersja",
+    REPO_ROOT / "mindmap.html": "page-mindmap",
     REPO_ROOT / "organizacja.html": "page-organizacja",
 }
 
@@ -18,6 +19,7 @@ PAGE_LAYER_IMAGES = {
     "page-cechy": ["../img/4.jpg", "../img/5.jpg", "../img/6.jpg"],
     "page-draft": ["../img/7.jpg", "../img/8.jpg", "../img/2.jpg"],
     "page-imersja": ["../img/3.jpg", "../img/6.jpg", "../img/9.jpg"],
+    "page-mindmap": ["../img/8.jpg", "../img/9.jpg", "../img/6.jpg"],
     "page-organizacja": ["../img/1.jpg", "../img/4.jpg", "../img/5.jpg"],
 }
 

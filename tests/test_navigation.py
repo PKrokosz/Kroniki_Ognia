@@ -7,6 +7,7 @@ HTML_FILES = [
     REPO_ROOT / "cechy.html",
     REPO_ROOT / "draft_planu.html",
     REPO_ROOT / "imersja_mechanika.html",
+    REPO_ROOT / "mindmap.html",
     REPO_ROOT / "organizacja.html",
 ]
 
@@ -15,6 +16,7 @@ EXPECTED_LINKS = [
     ("cechy.html", "🔥 Cechy świata"),
     ("draft_planu.html", "🧭 Draft planu"),
     ("imersja_mechanika.html", "✨ Imersja i mechanika"),
+    ("mindmap.html", "🧠 Mapa myśli"),
     ("organizacja.html", "🏛️ Organizacja"),
 ]
 
